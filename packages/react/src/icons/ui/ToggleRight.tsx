@@ -1,0 +1,24 @@
+// This file is auto-generated. Do not edit manually.
+// Source: svgs/ui/toggle-right.svg
+import { forwardRef } from 'react'
+import type { IconMeta } from '@power-puff/core'
+import { Icon } from '../../components/Icon'
+import type { IconProps } from '../../components/Icon'
+
+export const ToggleRightMeta: IconMeta = {
+  name: 'toggle-right',
+  category: 'ui',
+  tags: [],
+  version: '0.1.0',
+}
+
+export const ToggleRightIcon = forwardRef<SVGSVGElement, IconProps>(function ToggleRightIcon(props, ref) {
+  return (
+    <Icon ref={ref} {...props}>
+      <rect x="1" y="5" width="22" height="14" rx="7" ry="7"/>
+  <circle cx="16" cy="12" r="3"/>
+    </Icon>
+  )
+})
+
+ToggleRightIcon.displayName = 'ToggleRightIcon'
