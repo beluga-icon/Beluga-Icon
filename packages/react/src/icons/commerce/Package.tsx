@@ -1,0 +1,26 @@
+// This file is auto-generated. Do not edit manually.
+// Source: svgs/commerce/package.svg
+import { forwardRef } from 'react'
+import type { IconMeta } from '@power-puff/core'
+import { Icon } from '../../components/Icon'
+import type { IconProps } from '../../components/Icon'
+
+export const PackageMeta: IconMeta = {
+  name: 'package',
+  category: 'commerce',
+  tags: [],
+  version: '0.1.0',
+}
+
+export const PackageIcon = forwardRef<SVGSVGElement, IconProps>(function PackageIcon(props, ref) {
+  return (
+    <Icon ref={ref} {...props}>
+      <polyline points="16.5 9.4 7.5 4.21"/>
+  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+  <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+  <line x1="12" y1="22.08" x2="12" y2="12"/>
+    </Icon>
+  )
+})
+
+PackageIcon.displayName = 'PackageIcon'
