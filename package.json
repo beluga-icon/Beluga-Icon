@@ -2,6 +2,7 @@
   "name": "power-puff-icon",
   "version": "0.0.1",
   "private": true,
+  "type": "module",
   "description": "Monorepo for Power Puff Icon library",
   "workspaces": [
     "packages/*",
@@ -11,19 +12,21 @@
     "build": "npm run build --workspaces --if-present",
     "generate": "tsx scripts/generate-icons.ts",
     "generate:watch": "tsx watch scripts/generate-icons.ts",
-    "lint": "eslint packages/*/src --ext .ts,.tsx",
-    "typecheck": "tsc --build",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit -p packages/core/tsconfig.json && tsc --noEmit -p packages/react/tsconfig.json",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "demo": "npm run dev --workspace=apps/demo",
     "demo:build": "npm run build --workspace=apps/demo",
+    "size": "npm run size --workspace=packages/react",
     "changeset": "changeset",
     "version": "changeset version",
     "release": "npm run build && changeset publish"
   },
   "devDependencies": {
     "@changesets/cli": "^2.30.0",
+    "@size-limit/preset-small-lib": "^12.0.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
@@ -36,8 +39,10 @@
     "prettier": "^3.3.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "size-limit": "^12.0.1",
     "tsx": "^4.19.0",
     "typescript": "^5.6.0",
+    "typescript-eslint": "^8.58.0",
     "vitest": "^4.1.2"
   },
   "engines": {

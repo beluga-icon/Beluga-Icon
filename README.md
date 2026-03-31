@@ -1,127 +1,180 @@
 # Power Puff Icon
 
-A monorepo icon library — stroke-based SVG icons with React support, full TypeScript types, and tree-shaking built in.
+[![CI](https://github.com/fatihserhatturan/Power-Puff-Icon/actions/workflows/ci.yml/badge.svg)](https://github.com/fatihserhatturan/Power-Puff-Icon/actions/workflows/ci.yml)
+[![npm version](https://img.shields.io/npm/v/@power-puff/react)](https://www.npmjs.com/package/@power-puff/react)
+[![Bundle size](https://img.shields.io/bundlephobia/minzip/@power-puff/react)](https://bundlephobia.com/package/@power-puff/react)
+[![License: MIT](https://img.shields.io/badge/License-MIT-black.svg)](LICENSE)
+
+**500 icons · 24 categories · React · TypeScript · Tree-shakeable**
+
+Stroke-based SVG icons with React support, full TypeScript types, and tree-shaking built in.
+
+---
 
 ## Packages
 
-| Package | Description | Version |
-|---------|-------------|---------|
-| [`@power-puff/react`](./packages/react) | React icon components | ![npm](https://img.shields.io/npm/v/@power-puff/react) |
-| [`@power-puff/core`](./packages/core) | Shared types and utilities (internal) | ![npm](https://img.shields.io/npm/v/@power-puff/core) |
+| Package | Description |
+|---------|-------------|
+| [`@power-puff/react`](./packages/react) | React icon components |
+| [`@power-puff/core`](./packages/core) | Shared types & utilities |
 
-## Getting Started (Users)
+---
 
-Install the React package:
+## Installation
 
 ```bash
 npm install @power-puff/react
 ```
 
-Use it in your project:
+---
+
+## Usage
 
 ```tsx
-import { SearchIcon, HeartIcon } from '@power-puff/react'
+import { SearchIcon, HeartIcon, ArrowUpIcon } from '@power-puff/react'
 
-<SearchIcon size="lg" />
-<HeartIcon color="red" label="Favorite" />
+// Basic usage
+<SearchIcon />
+
+// With props
+<HeartIcon size="xl" color="#e11d48" strokeWidth={1.5} />
+
+// Accessible icon (screen-reader visible)
+<ArrowUpIcon label="Scroll to top" />
+
+// Ref forwarding
+const ref = useRef<SVGSVGElement>(null)
+<SearchIcon ref={ref} />
 ```
 
-See the full API in [`packages/react/README.md`](./packages/react/README.md).
+---
+
+## Icon Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl' \| number` | `'md'` | Named sizes: xs=12, sm=16, md=20, lg=24, xl=32, 2xl=48px. Numeric values are pixel width/height. |
+| `color` | `string` | `'currentColor'` | Stroke color — any CSS color. Inherits text color by default. |
+| `strokeWidth` | `number` | `2` | Stroke width in pixels. |
+| `label` | `string` | — | Accessible label. Sets `aria-label` + `role="img"`. Omit for decorative icons. |
+| `className` | `string` | — | CSS class forwarded to the `<svg>` element. |
+| `style` | `Record<string, string \| number>` | — | Inline styles forwarded to the `<svg>` element. |
+| `ref` | `React.Ref<SVGSVGElement>` | — | Forwarded ref to the underlying `<svg>` element. |
+| `...rest` | `SVGProps<SVGSVGElement>` | — | All other native SVG attributes are forwarded. |
+
+---
+
+## `IconProvider` — Global Defaults
+
+Set default props for all icons in a subtree. Explicit props on individual icons always win.
+
+```tsx
+import { IconProvider } from '@power-puff/react'
+
+// Global defaults for the whole app
+<IconProvider value={{ size: 'lg', color: '#333', strokeWidth: 1.5 }}>
+  <App />
+</IconProvider>
+
+// Nested providers — inner overrides outer for matching props only
+<IconProvider value={{ size: 'md', color: 'blue' }}>
+  <Header />
+  <IconProvider value={{ color: 'red' }}>
+    {/* size='md' from outer, color='red' from inner */}
+    <Sidebar />
+  </IconProvider>
+</IconProvider>
+
+// Per-icon override always takes precedence
+<IconProvider value={{ size: 'xl' }}>
+  <HeartIcon />            {/* size='xl' from provider */}
+  <HeartIcon size="sm" />  {/* size='sm' — explicit wins */}
+</IconProvider>
+```
+
+---
+
+## `createIcon` — Custom Icons
+
+Create custom icons with identical behavior and API to library icons, including ref forwarding, `IconProvider` support, and full TypeScript types.
+
+```tsx
+import { createIcon } from '@power-puff/react'
+
+const MyBrandIcon = createIcon({
+  displayName: 'MyBrandIcon',
+  render: () => (
+    <>
+      <circle cx="12" cy="12" r="10" />
+      <path d="M8 12h8M12 8v8" />
+    </>
+  ),
+})
+
+// Behaves exactly like any library icon
+<MyBrandIcon size="xl" color="blue" label="My brand" />
+<MyBrandIcon ref={ref} strokeWidth={1} />
+```
+
+---
+
+## Categories
+
+| Category | Category | Category | Category |
+|----------|----------|----------|----------|
+| accessibility | arrows | buildings | chart |
+| commerce | communication | development | devices |
+| files | food | layout | math |
+| media | medical | nature | navigation |
+| productivity | shapes | social | status |
+| time | transportation | ui | weather |
 
 ---
 
 ## Development
 
-### Prerequisites
-
-- Node.js ≥ 18
-- npm ≥ 9
-
-### Setup
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for the full guide.
 
 ```bash
-git clone <repo>
-cd power-puff-icon
-npm install
+npm install          # install dependencies
+npm run demo         # icon browser at http://localhost:5173
+npm test             # run tests
+npm run lint         # ESLint
+npm run typecheck    # TypeScript check
+npm run build        # build all packages
+npm run size         # bundle size check
+npm run generate     # regenerate icons from svgs/
 ```
 
-### Commands
+---
 
-| Command | Description |
-|---------|-------------|
-| `npm run build` | Build all packages |
-| `npm test` | Run all tests |
-| `npm run test:watch` | Run tests in watch mode |
-| `npm run test:coverage` | Run tests with coverage report |
-| `npm run generate` | Generate React components from SVG files |
-| `npm run demo` | Start the icon browser demo app |
-| `npm run demo:build` | Build the demo app |
-
-### Adding Icons
-
-1. Create a `24×24` stroke-based SVG file in `svgs/<category>/icon-name.svg`
-2. Optionally create `svgs/<category>/icon-name.meta.json` with tags:
-   ```json
-   { "tags": ["direction", "navigate"] }
-   ```
-3. Run `npm run generate`
-4. The icon is now available as `<IconNameIcon />` from `@power-puff/react`
-
-**Icon rules:**
-- File names must be `kebab-case` (e.g. `arrow-up.svg`)
-- viewBox must be `0 0 24 24`
-- Icons must be stroke-based (`fill="none"`, `stroke="currentColor"`)
-- Avoid abbreviations (`chevron`, not `chev`)
-
-### Project Structure
+## Project Structure
 
 ```
 power-puff-icon/
-├── apps/
-│   └── demo/              Vite + React icon browser
+├── .github/workflows/    CI + release automation
+├── apps/demo/            Vite + React icon browser
 ├── packages/
-│   ├── core/              @power-puff/core — shared types
-│   └── react/             @power-puff/react — React components
+│   ├── core/             @power-puff/core — shared types
+│   └── react/            @power-puff/react — React components
 ├── scripts/
-│   └── generate-icons.ts  SVG → TSX generator
-└── svgs/
-    ├── arrows/
-    ├── communication/
-    ├── files/
-    ├── media/
-    ├── navigation/
-    ├── social/
-    ├── status/
-    └── ui/
+│   └── generate-icons.ts SVG → TSX generator
+└── svgs/                 Source SVG files (24 category dirs)
 ```
 
-## Publishing a Release
+---
 
-This project uses [Changesets](https://github.com/changesets/changesets) for version management.
+## Publishing
 
-**1. Create a changeset after your changes:**
+This project uses [Changesets](https://github.com/changesets/changesets). The [release workflow](.github/workflows/release.yml) handles versioning and publishing automatically.
 
 ```bash
-npm run changeset
+npm run changeset  # create a changeset after making changes
+npm run version    # bump versions (run by CI)
+npm run release    # publish to npm (run by CI)
 ```
 
-Follow the interactive prompts to describe what changed and whether it's a patch / minor / major bump.
-
-**2. Apply versions (on the release branch / CI):**
-
-```bash
-npm run version
-```
-
-This bumps `package.json` versions and generates `CHANGELOG.md` files.
-
-**3. Publish to npm:**
-
-```bash
-npm run release
-```
-
-This builds all packages and publishes them to the npm registry.
+---
 
 ## License
 

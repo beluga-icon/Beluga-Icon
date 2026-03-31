@@ -18,9 +18,17 @@
   "scripts": {
     "build": "tsup src/index.ts --format esm,cjs --dts --clean --external react",
     "dev": "tsup src/index.ts --format esm,cjs --dts --watch --external react",
+    "size": "size-limit",
     "prepack": "npm run build",
     "test": "echo 'Tests run from monorepo root: npm test'"
   },
+  "size-limit": [
+    {
+      "name": "full bundle (minified + brotli)",
+      "path": "./dist/index.js",
+      "limit": "500 kB"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/power-puff-icon/power-puff-icon",

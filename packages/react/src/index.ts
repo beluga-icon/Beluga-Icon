@@ -1,3 +1,7 @@
 export { Icon } from './components/Icon'
 export type { IconProps } from './components/Icon'
+export { createIcon } from './createIcon'
+export type { CreateIconOptions } from './createIcon'
+export { IconProvider, useIconContext } from './IconProvider'
+export type { IconProviderProps, IconContextValue } from './IconProvider'
 export * from './icons'
