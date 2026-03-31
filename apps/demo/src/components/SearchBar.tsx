@@ -1,4 +1,4 @@
-import { SearchIcon } from '@power-puff/react'
+import { SearchIcon, XIcon } from '@power-puff/react'
 import { categories } from '../data/iconRegistry'
 
 interface SearchBarProps {
@@ -12,7 +12,9 @@ export function SearchBar({ query, category, onQueryChange, onCategoryChange }: 
   return (
     <div className="search-bar">
       <div className="search-input-wrap">
-        <SearchIcon size="sm" className="search-icon" aria-hidden />
+        <span className="search-icon">
+          <SearchIcon size="sm" aria-hidden />
+        </span>
         <input
           type="text"
           placeholder="Search icons…"
@@ -20,10 +22,15 @@ export function SearchBar({ query, category, onQueryChange, onCategoryChange }: 
           onChange={(e) => onQueryChange(e.target.value)}
           className="search-input"
           spellCheck={false}
+          autoComplete="off"
         />
         {query && (
-          <button className="search-clear" onClick={() => onQueryChange('')} aria-label="Clear search">
-            ×
+          <button
+            className="search-clear"
+            onClick={() => onQueryChange('')}
+            aria-label="Clear search"
+          >
+            <XIcon size="xs" aria-hidden />
           </button>
         )}
       </div>

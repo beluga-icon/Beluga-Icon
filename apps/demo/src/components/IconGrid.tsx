@@ -1,4 +1,5 @@
 import type { IconSize } from '@power-puff/core'
+import { SearchIcon } from '@power-puff/react'
 import type { IconEntry } from '../data/iconRegistry'
 import { IconCard } from './IconCard'
 
@@ -13,7 +14,10 @@ export function IconGrid({ icons, size, color, strokeWidth }: IconGridProps) {
   if (icons.length === 0) {
     return (
       <div className="empty-state">
-        <p>No icons found.</p>
+        <div className="empty-state-icon">
+          <SearchIcon size="xl" />
+        </div>
+        <p className="empty-title">No icons found</p>
         <p className="empty-hint">Try a different search term or category.</p>
       </div>
     )

@@ -57,7 +57,10 @@ export function PropControls({
       </div>
 
       <div className="prop-group">
-        <label className="prop-label">Stroke width — {strokeWidth}</label>
+        <label className="prop-label">
+          <span>Stroke</span>
+          <span className="prop-label-value">{strokeWidth}</span>
+        </label>
         <input
           type="range"
           min={0.5}
