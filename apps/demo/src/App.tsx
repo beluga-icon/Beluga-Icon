@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import type { IconSize } from '@power-puff/core'
-import { ZapIcon, SunIcon, MoonIcon } from '@power-puff/react'
+import { SunIcon, MoonIcon } from '@power-puff/react'
 import { SearchBar } from './components/SearchBar'
 import { PropControls } from './components/PropControls'
 import { IconGrid } from './components/IconGrid'
@@ -45,7 +45,7 @@ export function App() {
         <div className="header-inner">
           <div className="header-brand">
             <div className="header-logo-wrap">
-              <ZapIcon size="xs" />
+              <img src="/beluga-icon.svg" alt="Power Puff Icon logo" className="header-logo-img" />
             </div>
             <div>
               <h1 className="header-title">Power Puff Icon</h1>

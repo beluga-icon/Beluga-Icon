@@ -65,11 +65,12 @@ body {
 .header-brand { display: flex; align-items: center; gap: 10px; }
 .header-logo-wrap {
   display: flex; align-items: center; justify-content: center;
-  width: 30px; height: 30px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  color: var(--text);
+  width: 88px; height: 88px;
   flex-shrink: 0;
+}
+.header-logo-img {
+  width: 100%; height: 100%;
+  object-fit: contain;
 }
 .header-title {
   font-size: 14px; font-weight: 600; letter-spacing: -0.01em;
