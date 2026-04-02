@@ -1,16 +1,12 @@
 import { useState } from 'react'
-import type { IconSize } from '@power-puff/core'
 import { CheckIcon } from '@power-puff/react'
 import type { IconEntry } from '../data/iconRegistry'
 
 interface IconCardProps {
   entry: IconEntry
-  size: IconSize
-  color: string
-  strokeWidth: number
 }
 
-export function IconCard({ entry, size, color, strokeWidth }: IconCardProps) {
+export function IconCard({ entry }: IconCardProps) {
   const [copied, setCopied] = useState(false)
 
   const componentName = `${entry.meta.name
@@ -39,7 +35,7 @@ export function IconCard({ entry, size, color, strokeWidth }: IconCardProps) {
       title={`Copy import for ${componentName}`}
     >
       <div className="icon-card-preview">
-        <IconComponent size={size} color={color} strokeWidth={strokeWidth} />
+        <IconComponent size="2xl" />
       </div>
       <span className="icon-card-name">{componentName.replace('Icon', '')}</span>
       <span className="icon-card-category">{entry.meta.category}</span>

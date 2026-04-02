@@ -1,16 +1,12 @@
-import type { IconSize } from '@power-puff/core'
 import { FilterIcon } from '@power-puff/react'
 import type { IconEntry } from '../data/iconRegistry'
 import { IconCard } from './IconCard'
 
 interface IconGridProps {
   icons: IconEntry[]
-  size: IconSize
-  color: string
-  strokeWidth: number
 }
 
-export function IconGrid({ icons, size, color, strokeWidth }: IconGridProps) {
+export function IconGrid({ icons }: IconGridProps) {
   if (icons.length === 0) {
     return (
       <div className="empty-state">
@@ -29,9 +25,6 @@ export function IconGrid({ icons, size, color, strokeWidth }: IconGridProps) {
         <IconCard
           key={`${entry.meta.category}-${entry.meta.name}`}
           entry={entry}
-          size={size}
-          color={color}
-          strokeWidth={strokeWidth}
         />
       ))}
     </div>

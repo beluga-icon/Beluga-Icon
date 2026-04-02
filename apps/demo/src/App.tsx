@@ -1,12 +1,10 @@
-import { useState, useEffect } from 'react'
-import type { IconSize } from '@power-puff/core'
-import { SunIcon, MoonIcon, PackageIcon, Grid2x2Icon, WandIcon, HeartIcon } from '@power-puff/react'
+import { useState, useEffect, useMemo } from 'react'
+import { SunIcon, MoonIcon, PackageIcon, Grid2x2Icon, WandIcon, HeartIcon, SearchIcon, XIcon } from '@power-puff/react'
 import { SearchBar } from './components/SearchBar'
-import { PropControls } from './components/PropControls'
 import { IconGrid } from './components/IconGrid'
 import { Playground } from './components/Playground'
 import { useIconSearch } from './hooks/useIconSearch'
-import { icons } from './data/iconRegistry'
+import { icons, categories } from './data/iconRegistry'
 
 const CATEGORIES_COUNT = 24
 
@@ -22,9 +20,7 @@ export function App() {
   const [tab, setTab] = useState<Tab>('gallery')
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState('all')
-  const [size, setSize] = useState<IconSize>('lg')
-  const [color, setColor] = useState(() => (prefersDark() ? '#f0f0f0' : '#0c0c0c'))
-  const [strokeWidth, setStrokeWidth] = useState(2)
+  const [catSearch, setCatSearch] = useState('')
   const [dark, setDark] = useState(() => prefersDark())
 
   useEffect(() => {
@@ -33,11 +29,23 @@ export function App() {
 
   const results = useIconSearch(query, category)
 
-  const handleThemeToggle = () => {
-    const next = !dark
-    setDark(next)
-    setColor(next ? '#f0f0f0' : '#0c0c0c')
-  }
+  // Icon count per category
+  const categoryCounts = useMemo(() => {
+    const counts: Record<string, number> = {}
+    icons.forEach(i => {
+      counts[i.meta.category] = (counts[i.meta.category] || 0) + 1
+    })
+    return counts
+  }, [])
+
+  // Filtered sidebar category list
+  const filteredCategories = useMemo(() => {
+    const q = catSearch.trim().toLowerCase()
+    if (!q) return categories
+    return categories.filter(c => c.toLowerCase().includes(q))
+  }, [catSearch])
+
+  const handleThemeToggle = () => setDark(prev => !prev)
 
   return (
     <div className="app">
@@ -106,61 +114,65 @@ export function App() {
         <>
           <main className="main">
             <aside className="sidebar">
-              <div className="sidebar-section">
-                <span className="sidebar-section-title">Preview</span>
-                <PropControls
-                  size={size}
-                  color={color}
-                  strokeWidth={strokeWidth}
-                  onSizeChange={setSize}
-                  onColorChange={setColor}
-                  onStrokeWidthChange={setStrokeWidth}
-                />
-              </div>
 
-              <div className="sidebar-divider" />
-
+              {/* Category search */}
               <div className="sidebar-section">
-                <span className="sidebar-section-title">Usage</span>
-                <div className="install-box">
-                  <p className="install-label">Install</p>
-                  <code className="install-code">npm i @power-puff/react</code>
-                </div>
-                <div className="install-box">
-                  <p className="install-label">Import</p>
-                  <code className="install-code">
-                    {'import { SearchIcon }'}
-                    <br />
-                    {"from '@power-puff/react'"}
-                  </code>
+                <span className="sidebar-section-title">Categories</span>
+                <div className="sidebar-cat-search-wrap">
+                  <span className="sidebar-cat-search-icon">
+                    <SearchIcon size="xs" />
+                  </span>
+                  <input
+                    type="text"
+                    className="sidebar-cat-search-input"
+                    placeholder="Filter categories…"
+                    value={catSearch}
+                    onChange={e => setCatSearch(e.target.value)}
+                    spellCheck={false}
+                  />
+                  {catSearch && (
+                    <button className="sidebar-cat-search-clear" onClick={() => setCatSearch('')}>
+                      <XIcon size="xs" />
+                    </button>
+                  )}
                 </div>
               </div>
 
-              <div className="sidebar-divider" />
+              {/* Category list */}
+              <div className="sidebar-cat-list">
+                <button
+                  className={`sidebar-cat-item${category === 'all' ? ' active' : ''}`}
+                  onClick={() => setCategory('all')}
+                >
+                  <span className="sidebar-cat-name">All</span>
+                  <span className="sidebar-cat-count">{icons.length}</span>
+                </button>
+                {filteredCategories.map(cat => (
+                  <button
+                    key={cat}
+                    className={`sidebar-cat-item${category === cat ? ' active' : ''}`}
+                    onClick={() => setCategory(cat)}
+                  >
+                    <span className="sidebar-cat-name">{cat}</span>
+                    <span className="sidebar-cat-count">{categoryCounts[cat] ?? 0}</span>
+                  </button>
+                ))}
+                {filteredCategories.length === 0 && (
+                  <p className="sidebar-cat-empty">No categories found</p>
+                )}
+              </div>
 
-              <p className="install-hint">
-                Click any icon to copy its import statement.
-              </p>
             </aside>
 
             <section className="content">
-              <SearchBar
-                query={query}
-                category={category}
-                onQueryChange={setQuery}
-                onCategoryChange={setCategory}
-              />
+              <SearchBar query={query} onQueryChange={setQuery} />
 
               <p className="result-count">
                 {results.length} of {icons.length} icons
+                {category !== 'all' && <> in <strong>{category}</strong></>}
               </p>
 
-              <IconGrid
-                icons={results}
-                size={size}
-                color={color}
-                strokeWidth={strokeWidth}
-              />
+              <IconGrid icons={results} />
             </section>
           </main>
 
