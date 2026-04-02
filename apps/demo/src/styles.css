@@ -541,6 +541,32 @@ body {
   overflow-x: auto; white-space: pre;
 }
 
+/* ── Custom Scrollbar ─────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-2);
+  border-radius: 99px;
+  transition: background var(--transition);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-3);
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-2) transparent;
+}
+
 /* ── Responsive (playground) ──────────────────────────── */
 @media (max-width: 768px) {
   .playground { grid-template-columns: 1fr; }
