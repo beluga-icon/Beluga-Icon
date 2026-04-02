@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef } from 'react'
 import type { IconSize, IconFlip, IconVariant, AnimationSpeed, AnimationType } from '@power-puff/core'
-import { SearchIcon, CheckIcon } from '@power-puff/react'
+import { SearchIcon, CheckIcon, EyeIcon, PenToolIcon, MoveIcon, ZapIcon, RefreshIcon, CopyIcon } from '@power-puff/react'
 import { icons } from '../data/iconRegistry'
 import type { IconEntry } from '../data/iconRegistry'
 
@@ -205,259 +205,298 @@ export function Playground() {
           </div>
         </div>
 
-        {/* Controls */}
+        {/* Controls — 4 grouped sections */}
         <div className="pg-controls">
 
-          {/* Variant */}
-          <div className="pg-group">
-            <span className="pg-label">Variant</span>
-            <div className="pg-row">
-              {(['outline', 'bold', 'sharp'] as IconVariant[]).map(v => (
-                <button
-                  key={v}
-                  className={`pg-btn${(state.variant ?? 'outline') === v ? ' active' : ''}`}
-                  onClick={() => set('variant', v === 'outline' ? undefined : v)}
-                >{v}</button>
-              ))}
+          {/* ── Appearance ──────────────────────────── */}
+          <div className="pg-section">
+            <div className="pg-section-header">
+              <span className="pg-section-icon"><EyeIcon size="xs" /></span>
+              <span className="pg-section-title">Appearance</span>
+              <button className="pg-reset-btn" onClick={() => setState(DEFAULTS)}>
+                <RefreshIcon size="xs" /> Reset
+              </button>
             </div>
-          </div>
+            <div className="pg-section-grid">
 
-          {/* Size */}
-          <div className="pg-group">
-            <span className="pg-label">Size</span>
-            <div className="pg-row">
-              {SIZES.map(s => (
-                <button
-                  key={String(s)}
-                  className={`pg-btn${state.size === s ? ' active' : ''}`}
-                  onClick={() => set('size', s)}
-                >{s}</button>
-              ))}
-            </div>
-          </div>
-
-          {/* Color */}
-          <div className="pg-group">
-            <span className="pg-label">Color</span>
-            <div className="pg-color-row">
-              <input
-                type="color"
-                className="pg-color-swatch"
-                value={state.color === 'currentColor' ? '#000000' : state.color}
-                onChange={e => set('color', e.target.value)}
-              />
-              <input
-                type="text"
-                className="pg-color-text"
-                value={state.color}
-                onChange={e => set('color', e.target.value)}
-              />
-              <button
-                className={`pg-btn${state.color === 'currentColor' ? ' active' : ''}`}
-                onClick={() => set('color', 'currentColor')}
-              >inherit</button>
-            </div>
-          </div>
-
-          {/* Fill */}
-          <div className="pg-group">
-            <span className="pg-label">Fill</span>
-            <div className="pg-color-row">
-              <input
-                type="color"
-                className="pg-color-swatch"
-                style={{ opacity: state.fill === 'none' ? 0.4 : 1 }}
-                value={state.fill === 'none' ? '#ff4444' : state.fill}
-                onChange={e => set('fill', e.target.value)}
-              />
-              <input
-                type="text"
-                className="pg-color-text"
-                value={state.fill}
-                onChange={e => set('fill', e.target.value)}
-              />
-              <button
-                className={`pg-btn${state.fill === 'none' ? ' active' : ''}`}
-                onClick={() => set('fill', state.fill === 'none' ? '#ff4444' : 'none')}
-              >none</button>
-            </div>
-          </div>
-
-          {/* Stroke Width */}
-          <div className="pg-group">
-            <span className="pg-label">
-              Stroke Width <em className="pg-value">{state.strokeWidth}</em>
-            </span>
-            <input
-              type="range"
-              className="stroke-slider"
-              min={0.5} max={4} step={0.25}
-              value={state.strokeWidth}
-              onChange={e => set('strokeWidth', parseFloat(e.target.value))}
-            />
-          </div>
-
-          {/* Rotate */}
-          <div className="pg-group">
-            <span className="pg-label">
-              Rotate <em className="pg-value">{state.rotate}°</em>
-            </span>
-            <input
-              type="range"
-              className="stroke-slider"
-              min={0} max={359} step={1}
-              value={state.rotate}
-              onChange={e => set('rotate', parseInt(e.target.value, 10))}
-            />
-          </div>
-
-          {/* Linecap */}
-          <div className="pg-group">
-            <span className="pg-label">Linecap</span>
-            <div className="pg-row">
-              {(['round', 'butt', 'square'] as const).map(v => (
-                <button
-                  key={v}
-                  className={`pg-btn${state.strokeLinecap === v ? ' active' : ''}`}
-                  onClick={() => set('strokeLinecap', v)}
-                >{v}</button>
-              ))}
-            </div>
-          </div>
-
-          {/* Linejoin */}
-          <div className="pg-group">
-            <span className="pg-label">Linejoin</span>
-            <div className="pg-row">
-              {(['round', 'miter', 'bevel'] as const).map(v => (
-                <button
-                  key={v}
-                  className={`pg-btn${state.strokeLinejoin === v ? ' active' : ''}`}
-                  onClick={() => set('strokeLinejoin', v)}
-                >{v}</button>
-              ))}
-            </div>
-          </div>
-
-          {/* Flip */}
-          <div className="pg-group pg-group--full">
-            <span className="pg-label">Flip</span>
-            <div className="pg-row">
-              {(['none', 'horizontal', 'vertical', 'both'] as const).map(v => (
-                <button
-                  key={v}
-                  className={`pg-btn${(!state.flip && v === 'none') || state.flip === v ? ' active' : ''}`}
-                  onClick={() => set('flip', v === 'none' ? undefined : v as IconFlip)}
-                >{v}</button>
-              ))}
-            </div>
-          </div>
-
-          {/* Animation type */}
-          <div className="pg-group pg-group--full">
-            <span className="pg-label">Animation</span>
-            <div className="pg-row" style={{ flexWrap: 'wrap' }}>
-              {ANIM_TYPES.map(v => (
-                <button
-                  key={v}
-                  className={`pg-btn${state.animation === v ? ' active' : ''}`}
-                  onClick={() => set('animation', v as AnimationType | 'none')}
-                >{v}</button>
-              ))}
-            </div>
-          </div>
-
-          {state.animation !== 'none' && (
-            <>
-              {/* Speed — only shown when custom duration is not set */}
-              {!state.duration && (
-                <div className="pg-group">
-                  <span className="pg-label">Speed</span>
-                  <div className="pg-row">
-                    {(['slow', 'normal', 'fast'] as AnimationSpeed[]).map(v => (
-                      <button
-                        key={v}
-                        className={`pg-btn${state.speed === v ? ' active' : ''}`}
-                        onClick={() => set('speed', v)}
-                      >{v}</button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Duration */}
+              {/* Variant */}
               <div className="pg-group">
-                <span className="pg-label">
-                  Duration (ms) <em className="pg-value">{state.duration || '—'}</em>
-                </span>
-                <input
-                  type="number"
-                  className="pg-color-text"
-                  min={0}
-                  step={100}
-                  placeholder="e.g. 800"
-                  value={state.duration}
-                  onChange={e => set('duration', e.target.value)}
-                />
-              </div>
-
-              {/* Delay */}
-              <div className="pg-group">
-                <span className="pg-label">
-                  Delay (ms) <em className="pg-value">{state.delay || '0'}</em>
-                </span>
-                <input
-                  type="number"
-                  className="pg-color-text"
-                  min={0}
-                  step={100}
-                  placeholder="e.g. 200"
-                  value={state.delay}
-                  onChange={e => set('delay', e.target.value)}
-                />
-              </div>
-
-              {/* Iterations */}
-              <div className="pg-group">
-                <span className="pg-label">Iterations</span>
+                <span className="pg-label">Variant</span>
                 <div className="pg-row">
-                  {(['infinite', '1', '2', '3'] as const).map(v => (
+                  {(['outline', 'bold', 'sharp'] as IconVariant[]).map(v => (
                     <button
                       key={v}
-                      className={`pg-btn${state.iterationCount === v ? ' active' : ''}`}
-                      onClick={() => set('iterationCount', v)}
+                      className={`pg-btn${(state.variant ?? 'outline') === v ? ' active' : ''}`}
+                      onClick={() => set('variant', v === 'outline' ? undefined : v)}
                     >{v}</button>
                   ))}
                 </div>
               </div>
-            </>
-          )}
 
-          {/* Opacity */}
-          <div className="pg-group">
-            <span className="pg-label">
-              Opacity <em className="pg-value">{state.opacity}</em>
-            </span>
-            <input
-              type="range"
-              className="stroke-slider"
-              min={0} max={1} step={0.05}
-              value={state.opacity}
-              onChange={e => set('opacity', parseFloat(e.target.value))}
-            />
+              {/* Size */}
+              <div className="pg-group">
+                <span className="pg-label">Size</span>
+                <div className="pg-row">
+                  {SIZES.map(s => (
+                    <button
+                      key={String(s)}
+                      className={`pg-btn${state.size === s ? ' active' : ''}`}
+                      onClick={() => set('size', s)}
+                    >{s}</button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Color */}
+              <div className="pg-group pg-section-grid--full">
+                <span className="pg-label">Color <em style={{ fontSize: 10, fontStyle: 'normal', color: 'var(--text-3)' }}>(stroke)</em></span>
+                <div className="pg-color-row">
+                  <input
+                    type="color"
+                    className="pg-color-swatch"
+                    value={state.color === 'currentColor' ? '#000000' : state.color}
+                    onChange={e => set('color', e.target.value)}
+                  />
+                  <input
+                    type="text"
+                    className="pg-color-text"
+                    value={state.color}
+                    onChange={e => set('color', e.target.value)}
+                  />
+                  <button
+                    className={`pg-btn${state.color === 'currentColor' ? ' active' : ''}`}
+                    onClick={() => set('color', 'currentColor')}
+                  >inherit</button>
+                </div>
+              </div>
+
+              {/* Fill */}
+              <div className="pg-group pg-section-grid--full">
+                <span className="pg-label">Fill <em style={{ fontSize: 10, fontStyle: 'normal', color: 'var(--text-3)' }}>(inside)</em></span>
+                <div className="pg-color-row">
+                  <input
+                    type="color"
+                    className="pg-color-swatch"
+                    style={{ opacity: state.fill === 'none' ? 0.4 : 1 }}
+                    value={state.fill === 'none' ? '#ff4444' : state.fill}
+                    onChange={e => set('fill', e.target.value)}
+                  />
+                  <input
+                    type="text"
+                    className="pg-color-text"
+                    value={state.fill}
+                    onChange={e => set('fill', e.target.value)}
+                  />
+                  <button
+                    className={`pg-btn${state.fill === 'none' ? ' active' : ''}`}
+                    onClick={() => set('fill', state.fill === 'none' ? '#ff4444' : 'none')}
+                  >none</button>
+                </div>
+              </div>
+
+              {/* Opacity */}
+              <div className="pg-group pg-section-grid--full">
+                <span className="pg-label">
+                  Opacity <em className="pg-value">{state.opacity}</em>
+                </span>
+                <input
+                  type="range"
+                  className="stroke-slider"
+                  min={0} max={1} step={0.05}
+                  value={state.opacity}
+                  onChange={e => set('opacity', parseFloat(e.target.value))}
+                />
+              </div>
+
+            </div>
           </div>
 
-          {/* Shadow */}
-          <div className="pg-group">
-            <span className="pg-label">Shadow</span>
-            <div className="pg-row">
-              <button
-                className={`pg-toggle${state.shadow ? ' active' : ''}`}
-                onClick={() => set('shadow', !state.shadow)}
-              >
-                <span className="pg-toggle-track"><span className="pg-toggle-thumb" /></span>
-                Drop shadow
-              </button>
+          {/* ── Stroke ──────────────────────────────── */}
+          <div className="pg-section">
+            <div className="pg-section-header">
+              <span className="pg-section-icon"><PenToolIcon size="xs" /></span>
+              <span className="pg-section-title">Stroke</span>
+            </div>
+            <div className="pg-section-grid">
+
+              {/* Stroke Width */}
+              <div className="pg-group pg-section-grid--full">
+                <span className="pg-label">
+                  Stroke Width <em className="pg-value">{state.strokeWidth}</em>
+                </span>
+                <input
+                  type="range"
+                  className="stroke-slider"
+                  min={0.5} max={4} step={0.25}
+                  value={state.strokeWidth}
+                  onChange={e => set('strokeWidth', parseFloat(e.target.value))}
+                />
+              </div>
+
+              {/* Linecap */}
+              <div className="pg-group">
+                <span className="pg-label">Linecap</span>
+                <div className="pg-row">
+                  {(['round', 'butt', 'square'] as const).map(v => (
+                    <button
+                      key={v}
+                      className={`pg-btn${state.strokeLinecap === v ? ' active' : ''}`}
+                      onClick={() => set('strokeLinecap', v)}
+                    >{v}</button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Linejoin */}
+              <div className="pg-group">
+                <span className="pg-label">Linejoin</span>
+                <div className="pg-row">
+                  {(['round', 'miter', 'bevel'] as const).map(v => (
+                    <button
+                      key={v}
+                      className={`pg-btn${state.strokeLinejoin === v ? ' active' : ''}`}
+                      onClick={() => set('strokeLinejoin', v)}
+                    >{v}</button>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          {/* ── Transform ───────────────────────────── */}
+          <div className="pg-section">
+            <div className="pg-section-header">
+              <span className="pg-section-icon"><MoveIcon size="xs" /></span>
+              <span className="pg-section-title">Transform</span>
+            </div>
+            <div className="pg-section-grid">
+
+              {/* Rotate */}
+              <div className="pg-group pg-section-grid--full">
+                <span className="pg-label">
+                  Rotate <em className="pg-value">{state.rotate}°</em>
+                </span>
+                <input
+                  type="range"
+                  className="stroke-slider"
+                  min={0} max={359} step={1}
+                  value={state.rotate}
+                  onChange={e => set('rotate', parseInt(e.target.value, 10))}
+                />
+              </div>
+
+              {/* Flip */}
+              <div className="pg-group pg-section-grid--full">
+                <span className="pg-label">Flip</span>
+                <div className="pg-row">
+                  {(['none', 'horizontal', 'vertical', 'both'] as const).map(v => (
+                    <button
+                      key={v}
+                      className={`pg-btn${(!state.flip && v === 'none') || state.flip === v ? ' active' : ''}`}
+                      onClick={() => set('flip', v === 'none' ? undefined : v as IconFlip)}
+                    >{v}</button>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          {/* ── Animation & Effects ─────────────────── */}
+          <div className="pg-section">
+            <div className="pg-section-header">
+              <span className="pg-section-icon"><ZapIcon size="xs" /></span>
+              <span className="pg-section-title">Animation & Effects</span>
+            </div>
+            <div className="pg-section-grid">
+
+              {/* Animation type */}
+              <div className="pg-group pg-section-grid--full">
+                <span className="pg-label">Animation</span>
+                <div className="pg-row" style={{ flexWrap: 'wrap' }}>
+                  {ANIM_TYPES.map(v => (
+                    <button
+                      key={v}
+                      className={`pg-btn${state.animation === v ? ' active' : ''}`}
+                      onClick={() => set('animation', v as AnimationType | 'none')}
+                    >{v}</button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Animation sub-controls */}
+              {state.animation !== 'none' && (
+                <div className="pg-anim-sub">
+                  {!state.duration && (
+                    <div className="pg-group">
+                      <span className="pg-label">Speed</span>
+                      <div className="pg-row">
+                        {(['slow', 'normal', 'fast'] as AnimationSpeed[]).map(v => (
+                          <button
+                            key={v}
+                            className={`pg-btn${state.speed === v ? ' active' : ''}`}
+                            onClick={() => set('speed', v)}
+                          >{v}</button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  <div className="pg-group">
+                    <span className="pg-label">
+                      Duration (ms) <em className="pg-value">{state.duration || '—'}</em>
+                    </span>
+                    <input
+                      type="number"
+                      className="pg-color-text"
+                      min={0} step={100}
+                      placeholder="e.g. 800"
+                      value={state.duration}
+                      onChange={e => set('duration', e.target.value)}
+                    />
+                  </div>
+                  <div className="pg-group">
+                    <span className="pg-label">
+                      Delay (ms) <em className="pg-value">{state.delay || '0'}</em>
+                    </span>
+                    <input
+                      type="number"
+                      className="pg-color-text"
+                      min={0} step={100}
+                      placeholder="e.g. 200"
+                      value={state.delay}
+                      onChange={e => set('delay', e.target.value)}
+                    />
+                  </div>
+                  <div className="pg-group">
+                    <span className="pg-label">Iterations</span>
+                    <div className="pg-row">
+                      {(['infinite', '1', '2', '3'] as const).map(v => (
+                        <button
+                          key={v}
+                          className={`pg-btn${state.iterationCount === v ? ' active' : ''}`}
+                          onClick={() => set('iterationCount', v)}
+                        >{v}</button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Shadow */}
+              <div className="pg-group pg-section-grid--full">
+                <span className="pg-label">Shadow</span>
+                <div className="pg-row">
+                  <button
+                    className={`pg-toggle${state.shadow ? ' active' : ''}`}
+                    onClick={() => set('shadow', !state.shadow)}
+                  >
+                    <span className="pg-toggle-track"><span className="pg-toggle-thumb" /></span>
+                    Drop shadow
+                  </button>
+                </div>
+              </div>
+
             </div>
           </div>
 
@@ -468,7 +507,7 @@ export function Playground() {
           <div className="pg-code-header">
             <span className="pg-code-label">JSX</span>
             <button className="pg-copy-btn" onClick={handleCopy}>
-              {copied && <CheckIcon size="xs" />}
+              {copied ? <CheckIcon size="xs" /> : <CopyIcon size="xs" />}
               {copied ? 'Copied!' : 'Copy'}
             </button>
           </div>

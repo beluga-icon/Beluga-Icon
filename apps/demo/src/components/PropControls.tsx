@@ -1,4 +1,5 @@
 import type { IconSize } from '@power-puff/core'
+import { SlidersIcon, PaletteIcon, PenToolIcon } from '@power-puff/react'
 
 const SIZES: IconSize[] = ['xs', 'sm', 'md', 'lg', 'xl', '2xl']
 
@@ -22,7 +23,7 @@ export function PropControls({
   return (
     <div className="prop-controls">
       <div className="prop-group">
-        <label className="prop-label">Size</label>
+        <label className="prop-label"><SlidersIcon size="xs" /> Size</label>
         <div className="size-buttons">
           {SIZES.map((s) => (
             <button
@@ -37,7 +38,7 @@ export function PropControls({
       </div>
 
       <div className="prop-group">
-        <label className="prop-label">Color</label>
+        <label className="prop-label"><PaletteIcon size="xs" /> Color</label>
         <div className="color-row">
           <input
             type="color"
@@ -58,7 +59,7 @@ export function PropControls({
 
       <div className="prop-group">
         <label className="prop-label">
-          <span>Stroke</span>
+          <PenToolIcon size="xs" /><span>Stroke</span>
           <span className="prop-label-value">{strokeWidth}</span>
         </label>
         <input

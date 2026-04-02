@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import type { IconSize } from '@power-puff/core'
-import { SunIcon, MoonIcon } from '@power-puff/react'
+import { SunIcon, MoonIcon, PackageIcon, Grid2x2Icon, WandIcon, HeartIcon } from '@power-puff/react'
 import { SearchBar } from './components/SearchBar'
 import { PropControls } from './components/PropControls'
 import { IconGrid } from './components/IconGrid'
@@ -62,7 +62,10 @@ export function App() {
               target="_blank"
               rel="noreferrer"
             >
-              npm
+              <span className="header-npm-inner">
+                <PackageIcon size="xs" />
+                npm
+              </span>
             </a>
             <button
               className="theme-toggle"
@@ -82,13 +85,19 @@ export function App() {
             className={`nav-tab${tab === 'gallery' ? ' active' : ''}`}
             onClick={() => setTab('gallery')}
           >
-            Gallery
+            <span className="nav-tab-inner">
+              <Grid2x2Icon size="xs" />
+              Gallery
+            </span>
           </button>
           <button
             className={`nav-tab${tab === 'playground' ? ' active' : ''}`}
             onClick={() => setTab('playground')}
           >
-            Playground
+            <span className="nav-tab-inner">
+              <WandIcon size="xs" />
+              Playground
+            </span>
           </button>
         </div>
       </nav>
@@ -156,8 +165,10 @@ export function App() {
           </main>
 
           <footer className="footer">
-            <p className="footer-text">
-              Power Puff Icon — {icons.length} open source icons for React
+            <p className="footer-text" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+              Power Puff Icon — {icons.length} open source icons
+              <HeartIcon size="xs" />
+              for React
             </p>
           </footer>
         </>
