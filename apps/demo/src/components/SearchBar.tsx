@@ -1,4 +1,4 @@
-import { SearchIcon, XIcon } from '@power-puff/react'
+import { SearchIcon, XIcon } from '@beluga-icon/react'
 
 interface SearchBarProps {
   query: string

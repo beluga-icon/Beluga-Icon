@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { CheckIcon } from '@power-puff/react'
+import { CheckIcon } from '@beluga-icon/react'
 import type { IconEntry } from '../data/iconRegistry'
 
 interface IconCardProps {
@@ -17,7 +17,7 @@ export function IconCard({ entry }: IconCardProps) {
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(
-        `import { ${componentName} } from '@power-puff/react'`
+        `import { ${componentName} } from '@beluga-icon/react'`
       )
       setCopied(true)
       setTimeout(() => setCopied(false), 1400)

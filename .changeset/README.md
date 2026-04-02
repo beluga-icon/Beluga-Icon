@@ -11,7 +11,7 @@ npm run changeset
 ```
 
 Follow the prompts:
-1. Select which packages changed (`@power-puff/react`, `@power-puff/core`)
+1. Select which packages changed (`@beluga-icon/react`, `@beluga-icon/core`)
 2. Choose the bump type (`patch` / `minor` / `major`)
 3. Write a summary of the change
 

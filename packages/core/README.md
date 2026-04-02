@@ -1,9 +1,9 @@
-# @power-puff/core
+# @beluga-icon/core
 
-Shared types and utilities for the Power Puff Icon library.
+Shared types and utilities for the Beluga Icon library.
 
 > **This package is not intended for direct installation.**
-> It is an internal dependency used by framework adapter packages such as `@power-puff/react`.
+> It is an internal dependency used by framework adapter packages such as `@beluga-icon/react`.
 
 ## Exports
 
@@ -24,4 +24,4 @@ Shared types and utilities for the Power Puff Icon library.
 
 ## License
 
-MIT © Power Puff Icon Contributors
+MIT © Beluga Icon Contributors

@@ -1,4 +1,4 @@
-import { FilterIcon } from '@power-puff/react'
+import { FilterIcon } from '@beluga-icon/react'
 import type { IconEntry } from '../data/iconRegistry'
 import { IconCard } from './IconCard'
 

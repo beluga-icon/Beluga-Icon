@@ -1,4 +1,4 @@
-# Contributing to Power Puff Icon
+# Contributing to Beluga Icon
 
 ## Dev Setup
 
@@ -102,7 +102,7 @@ docs: update README with createIcon example
 
 ## Changeset Process
 
-Every user-facing change to `@power-puff/react` or `@power-puff/core` needs a changeset.
+Every user-facing change to `@beluga-icon/react` or `@beluga-icon/core` needs a changeset.
 
 ```bash
 # 1. Make your changes

@@ -1,6 +1,6 @@
-import type { IconMeta } from '@power-puff/core'
+import type { IconMeta } from '@beluga-icon/core'
 import type { ComponentType } from 'react'
-import type { IconProps } from '@power-puff/react'
+import type { IconProps } from '@beluga-icon/react'
 
 import {
   // food (faz7)
@@ -544,7 +544,7 @@ import {
   XIcon, XMeta,
   ZoomInIcon, ZoomInMeta,
   ZoomOutIcon, ZoomOutMeta,
-} from '@power-puff/react'
+} from '@beluga-icon/react'
 
 export interface IconEntry {
   component: ComponentType<IconProps>

@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react'
 import type { ReactNode } from 'react'
-import type { IconSize, IconFlip, IconVariant, AnimationSpeed } from '@power-puff/core'
+import type { IconSize, IconFlip, IconVariant, AnimationSpeed } from '@beluga-icon/core'
 
 /**
  * Subset of IconBaseProps that can be set as global defaults.
@@ -43,7 +43,7 @@ export interface IconContextValue {
 }
 
 export interface IconProviderProps {
-  /** Global default props for all Power Puff icons nested within this provider */
+  /** Global default props for all Beluga icons nested within this provider */
   value: IconContextValue
   children: ReactNode
 }
@@ -51,7 +51,7 @@ export interface IconProviderProps {
 const IconContext = createContext<IconContextValue>({})
 
 /**
- * Provides global default props to all Power Puff Icon components nested within it.
+ * Provides global default props to all Beluga Icon components nested within it.
  * Explicit props on individual icons always take precedence over provider defaults.
  *
  * @example

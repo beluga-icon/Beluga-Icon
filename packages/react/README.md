@@ -1,11 +1,11 @@
-# @power-puff/react
+# @beluga-icon/react
 
-React icon components for the Power Puff Icon library. Stroke-based SVG icons built for accessibility, tree-shaking, and full TypeScript support.
+React icon components for the Beluga Icon library. Stroke-based SVG icons built for accessibility, tree-shaking, and full TypeScript support.
 
 ## Install
 
 ```bash
-npm install @power-puff/react
+npm install @beluga-icon/react
 ```
 
 **Peer dependency:** React ≥ 17
@@ -13,7 +13,7 @@ npm install @power-puff/react
 ## Quick Start
 
 ```tsx
-import { SearchIcon, HeartIcon, ArrowUpIcon } from '@power-puff/react'
+import { SearchIcon, HeartIcon, ArrowUpIcon } from '@beluga-icon/react'
 
 function App() {
   return (
@@ -78,10 +78,10 @@ All exports are named and `sideEffects: false` is set in `package.json`. Only th
 
 ```tsx
 // ✅ Only SearchIcon ends up in the bundle
-import { SearchIcon } from '@power-puff/react'
+import { SearchIcon } from '@beluga-icon/react'
 
 // ✅ Multiple named imports are individually tree-shaken
-import { SearchIcon, HeartIcon, BellIcon } from '@power-puff/react'
+import { SearchIcon, HeartIcon, BellIcon } from '@beluga-icon/react'
 ```
 
 ## Icon Categories
@@ -99,7 +99,7 @@ import { SearchIcon, HeartIcon, BellIcon } from '@power-puff/react'
 
 ## All Icons
 
-[→ Browse all icons in the demo](https://github.com/power-puff-icon/power-puff-icon)
+[→ Browse all icons in the demo](https://github.com/beluga-icon/beluga-icon)
 
 ## Contributing
 
@@ -107,4 +107,4 @@ See [CONTRIBUTING.md](../../CONTRIBUTING.md) in the root of the repository.
 
 ## License
 
-MIT © Power Puff Icon Contributors
+MIT © Beluga Icon Contributors

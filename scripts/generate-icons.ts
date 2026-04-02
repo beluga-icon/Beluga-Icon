@@ -164,7 +164,7 @@ function generateReactComponent(entry: SvgEntry, jsxInner: string): string {
   return `// This file is auto-generated. Do not edit manually.
 // Source: svgs/${entry.category === 'general' ? '' : entry.category + '/'}${entry.file}
 import { forwardRef } from 'react'
-import type { IconMeta } from '@power-puff/core'
+import type { IconMeta } from '@beluga-icon/core'
 import { Icon } from '../../components/Icon'
 import type { IconProps } from '../../components/Icon'
 

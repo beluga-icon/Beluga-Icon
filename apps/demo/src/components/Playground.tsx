@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef } from 'react'
-import type { IconSize, IconFlip, IconVariant, AnimationSpeed, AnimationType } from '@power-puff/core'
-import { SearchIcon, CheckIcon, EyeIcon, PenToolIcon, MoveIcon, ZapIcon, RefreshIcon, CopyIcon } from '@power-puff/react'
+import type { IconSize, IconFlip, IconVariant, AnimationSpeed, AnimationType } from '@beluga-icon/core'
+import { SearchIcon, CheckIcon, EyeIcon, PenToolIcon, MoveIcon, ZapIcon, RefreshIcon, CopyIcon } from '@beluga-icon/react'
 import { icons } from '../data/iconRegistry'
 import type { IconEntry } from '../data/iconRegistry'
 

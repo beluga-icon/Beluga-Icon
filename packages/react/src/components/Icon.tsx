@@ -1,5 +1,5 @@
-import { resolveSize } from '@power-puff/core'
-import type { IconBaseProps, IconFlip } from '@power-puff/core'
+import { resolveSize } from '@beluga-icon/core'
+import type { IconBaseProps, IconFlip } from '@beluga-icon/core'
 import { forwardRef, type SVGProps } from 'react'
 import { useIconContext } from '../IconProvider'
 

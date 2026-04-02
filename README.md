@@ -1,8 +1,8 @@
-# Power Puff Icon
+# Beluga Icon
 
 [![CI](https://github.com/fatihserhatturan/Power-Puff-Icon/actions/workflows/ci.yml/badge.svg)](https://github.com/fatihserhatturan/Power-Puff-Icon/actions/workflows/ci.yml)
-[![npm version](https://img.shields.io/npm/v/@power-puff/react)](https://www.npmjs.com/package/@power-puff/react)
-[![Bundle size](https://img.shields.io/bundlephobia/minzip/@power-puff/react)](https://bundlephobia.com/package/@power-puff/react)
+[![npm version](https://img.shields.io/npm/v/@beluga-icon/react)](https://www.npmjs.com/package/@beluga-icon/react)
+[![Bundle size](https://img.shields.io/bundlephobia/minzip/@beluga-icon/react)](https://bundlephobia.com/package/@beluga-icon/react)
 [![License: MIT](https://img.shields.io/badge/License-MIT-black.svg)](LICENSE)
 
 **500 icons · 24 categories · React · TypeScript · Tree-shakeable**
@@ -15,15 +15,15 @@ Stroke-based SVG icons with React support, full TypeScript types, and tree-shaki
 
 | Package | Description |
 |---------|-------------|
-| [`@power-puff/react`](./packages/react) | React icon components |
-| [`@power-puff/core`](./packages/core) | Shared types & utilities |
+| [`@beluga-icon/react`](./packages/react) | React icon components |
+| [`@beluga-icon/core`](./packages/core) | Shared types & utilities |
 
 ---
 
 ## Installation
 
 ```bash
-npm install @power-puff/react
+npm install @beluga-icon/react
 ```
 
 ---
@@ -31,7 +31,7 @@ npm install @power-puff/react
 ## Usage
 
 ```tsx
-import { SearchIcon, HeartIcon, ArrowUpIcon } from '@power-puff/react'
+import { SearchIcon, HeartIcon, ArrowUpIcon } from '@beluga-icon/react'
 
 // Basic usage
 <SearchIcon />
@@ -69,7 +69,7 @@ const ref = useRef<SVGSVGElement>(null)
 Set default props for all icons in a subtree. Explicit props on individual icons always win.
 
 ```tsx
-import { IconProvider } from '@power-puff/react'
+import { IconProvider } from '@beluga-icon/react'
 
 // Global defaults for the whole app
 <IconProvider value={{ size: 'lg', color: '#333', strokeWidth: 1.5 }}>
@@ -99,7 +99,7 @@ import { IconProvider } from '@power-puff/react'
 Create custom icons with identical behavior and API to library icons, including ref forwarding, `IconProvider` support, and full TypeScript types.
 
 ```tsx
-import { createIcon } from '@power-puff/react'
+import { createIcon } from '@beluga-icon/react'
 
 const MyBrandIcon = createIcon({
   displayName: 'MyBrandIcon',
@@ -151,12 +151,12 @@ npm run generate     # regenerate icons from svgs/
 ## Project Structure
 
 ```
-power-puff-icon/
+beluga-icon/
 ├── .github/workflows/    CI + release automation
 ├── apps/demo/            Vite + React icon browser
 ├── packages/
-│   ├── core/             @power-puff/core — shared types
-│   └── react/            @power-puff/react — React components
+│   ├── core/             @beluga-icon/core — shared types
+│   └── react/            @beluga-icon/react — React components
 ├── scripts/
 │   └── generate-icons.ts SVG → TSX generator
 └── svgs/                 Source SVG files (24 category dirs)
@@ -178,4 +178,4 @@ npm run release    # publish to npm (run by CI)
 
 ## License
 
-MIT © Power Puff Icon Contributors
+MIT © Beluga Icon Contributors

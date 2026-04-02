@@ -1,5 +1,5 @@
-import type { IconSize } from '@power-puff/core'
-import { SlidersIcon, PaletteIcon, PenToolIcon } from '@power-puff/react'
+import type { IconSize } from '@beluga-icon/core'
+import { SlidersIcon, PaletteIcon, PenToolIcon } from '@beluga-icon/react'
 
 const SIZES: IconSize[] = ['xs', 'sm', 'md', 'lg', 'xl', '2xl']
 

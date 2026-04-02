@@ -1,7 +1,7 @@
 {
-  "name": "@power-puff/react",
+  "name": "@beluga-icon/react",
   "version": "0.1.0",
-  "description": "React icon components for Power Puff Icon",
+  "description": "React icon components for Beluga Icon",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -31,15 +31,15 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/power-puff-icon/power-puff-icon",
+    "url": "https://github.com/beluga-icon/beluga-icon",
     "directory": "packages/react"
   },
-  "homepage": "https://github.com/power-puff-icon/power-puff-icon#readme",
+  "homepage": "https://github.com/beluga-icon/beluga-icon#readme",
   "peerDependencies": {
     "react": ">=17.0.0"
   },
   "dependencies": {
-    "@power-puff/core": "*"
+    "@beluga-icon/core": "*"
   },
   "devDependencies": {
     "@types/react": "^18.3.0",
@@ -56,7 +56,7 @@
     "react-icons",
     "stroke-icons",
     "typescript",
-    "power-puff"
+    "beluga-icon"
   ],
   "license": "MIT"
 }

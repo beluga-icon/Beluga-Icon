@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { SunIcon, MoonIcon, PackageIcon, Grid2x2Icon, WandIcon, HeartIcon, SearchIcon, XIcon } from '@power-puff/react'
+import { SunIcon, MoonIcon, PackageIcon, Grid2x2Icon, WandIcon, HeartIcon, SearchIcon, XIcon } from '@beluga-icon/react'
 import { SearchBar } from './components/SearchBar'
 import { IconGrid } from './components/IconGrid'
 import { Playground } from './components/Playground'
@@ -53,7 +53,7 @@ export function App() {
         <div className="header-inner">
           <div className="header-brand">
             <div className="header-logo-wrap">
-              <img src="/beluga-icon.svg" alt="Power Puff Icon logo" className="header-logo-img" />
+              <img src="/beluga-icon.svg" alt="Beluga Icon logo" className="header-logo-img" />
             </div>
             <div>
               <h1 className="header-title">Beluga Icon</h1>
@@ -62,7 +62,7 @@ export function App() {
 
           <div className="header-actions">
             <a
-              href="https://www.npmjs.com/package/@power-puff/react"
+              href="https://www.npmjs.com/package/@beluga-icon/react"
               className="header-npm"
               target="_blank"
               rel="noreferrer"
@@ -175,7 +175,7 @@ export function App() {
 
           <footer className="footer">
             <p className="footer-text" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-              Power Puff Icon — {icons.length} open source icons
+              Beluga Icon — {icons.length} open source icons
               <HeartIcon size="xs" />
               for React
             </p>

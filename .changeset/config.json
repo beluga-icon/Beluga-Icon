@@ -2,9 +2,9 @@
   "$schema": "https://unpkg.com/@changesets/config/schema.json",
   "changelog": "@changesets/cli/changelog",
   "commit": false,
-  "linked": [["@power-puff/core", "@power-puff/react"]],
+  "linked": [["@beluga-icon/core", "@beluga-icon/react"]],
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@power-puff/demo"]
+  "ignore": ["@beluga-icon/demo"]
 }
