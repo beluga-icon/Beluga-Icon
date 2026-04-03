@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react'
 import type { ReactNode } from 'react'
-import type { IconSize, IconFlip, IconVariant, AnimationSpeed } from '@beluga-icon/core'
+import type { IconSize, IconFlip, IconVariant, AnimationSpeed, AnimationTrigger } from '@beluga-icon/core'
 
 /**
  * Subset of IconBaseProps that can be set as global defaults.
@@ -41,6 +41,12 @@ export interface IconContextValue {
   flipX?: boolean
   /** Slow ambient opacity breathing */
   breathe?: boolean
+  /** SVG draw (sketch) animation — strokes revealed as if hand-drawn */
+  draw?: boolean
+  /** Controls when the animation starts playing */
+  trigger?: AnimationTrigger
+  /** When true, the animation plays only once and then stops */
+  playOnce?: boolean
   speed?: AnimationSpeed
   duration?: number
   delay?: number

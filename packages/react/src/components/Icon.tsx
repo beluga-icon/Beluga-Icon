@@ -1,6 +1,6 @@
 import { resolveSize } from '@beluga-icon/core'
 import type { IconBaseProps, IconFlip } from '@beluga-icon/core'
-import { forwardRef, type SVGProps } from 'react'
+import { forwardRef, useEffect, useRef, type SVGProps } from 'react'
 import { useIconContext } from '../IconProvider'
 
 export interface IconProps
@@ -171,6 +171,58 @@ function resolveAnimDuration(animType: string, speed: string, duration?: number)
   return SPEED_DURATION[animType]?.[speed] ?? '1s'
 }
 
+// Named spring/elastic easing presets — resolved to CSS cubic-bezier values
+const SPRING_EASINGS: Record<string, string> = {
+  'spring-soft':   'cubic-bezier(0.34, 1.56, 0.64, 1)',
+  'spring-medium': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+  'spring-stiff':  'cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+  'bounce-soft':   'cubic-bezier(0.36, 0.07, 0.19, 0.97)',
+  'elastic':       'cubic-bezier(0.68, -0.6, 0.32, 1.6)',
+}
+
+function resolveEasing(easing?: string): string | undefined {
+  if (!easing) return undefined
+  return SPRING_EASINGS[easing] ?? easing
+}
+
+// ---------------------------------------------------------------------------
+// Draw animation styles (injected once, separately from main anim styles)
+// ---------------------------------------------------------------------------
+
+const DRAW_STYLE_ID = 'ppi-draw-styles'
+
+function ensureDrawStyles() {
+  if (typeof document === 'undefined') return
+  if (document.getElementById(DRAW_STYLE_ID)) return
+  const el = document.createElement('style')
+  el.id = DRAW_STYLE_ID
+  el.textContent = `
+    @keyframes ppi-draw {
+      from { stroke-dashoffset: var(--ppi-draw-len, 100); }
+      to   { stroke-dashoffset: 0; }
+    }
+    .ppi-draw path,
+    .ppi-draw circle,
+    .ppi-draw line,
+    .ppi-draw polyline,
+    .ppi-draw rect,
+    .ppi-draw ellipse {
+      stroke-dasharray: var(--ppi-draw-len, 100);
+      stroke-dashoffset: var(--ppi-draw-len, 100);
+      animation: ppi-draw var(--ppi-dur, 1s) ease-out var(--ppi-delay, 0s) var(--ppi-count, 1) forwards;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .ppi-draw path, .ppi-draw circle, .ppi-draw line,
+      .ppi-draw polyline, .ppi-draw rect, .ppi-draw ellipse {
+        animation: none;
+        stroke-dasharray: unset;
+        stroke-dashoffset: unset;
+      }
+    }
+  `
+  document.head.appendChild(el)
+}
+
 function buildBaseTransform(rotate?: number, flip?: IconFlip): string {
   const parts: string[] = []
   if (rotate != null && rotate !== 0) parts.push(`rotate(${rotate}deg)`)
@@ -209,6 +261,7 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
       size, color, className, label, strokeWidth, style, children,
       rotate, flip, spin, pulse, bounce, shake, wiggle, ping, blink, float,
       heartbeat, flash, tada, jello, swing, rubberBand, flipX, breathe,
+      draw, trigger, playOnce,
       speed, duration, delay, iterationCount, easing,
       fill, strokeLinecap, strokeLinejoin, variant,
       opacity, shadow,
@@ -218,6 +271,14 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
   ) {
     const ctx = useIconContext()
     const { classNamePrefix, classNameSuffix } = ctx
+
+    // Internal ref for draw/trigger effects; also merges the forwarded ref
+    const svgRef = useRef<SVGSVGElement>(null)
+    const setRef = (el: SVGSVGElement | null) => {
+      (svgRef as React.MutableRefObject<SVGSVGElement | null>).current = el
+      if (typeof ref === 'function') ref(el)
+      else if (ref) (ref as React.MutableRefObject<SVGSVGElement | null>).current = el
+    }
 
     // --- Size & color ---
     // ?? (nullish coalescing) is intentional over ||:
@@ -270,11 +331,18 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
     const resolvedFlipX      = flipX      ?? ctx.flipX      ?? false
     const resolvedBreathe    = breathe    ?? ctx.breathe    ?? false
 
+    // Advanced animation controls
+    const resolvedDraw     = draw     ?? ctx.draw     ?? false
+    const resolvedTrigger  = trigger  ?? ctx.trigger  ?? 'auto'
+    const resolvedPlayOnce = playOnce ?? ctx.playOnce ?? false
+
     // Fine-tuning
     const resolvedDuration      = duration      ?? ctx.duration
     const resolvedDelay         = delay         ?? ctx.delay
-    const resolvedIterationCount = iterationCount ?? ctx.iterationCount
-    const resolvedEasing        = easing        ?? ctx.easing
+    // playOnce forces a single iteration regardless of iterationCount
+    const resolvedIterationCount = resolvedPlayOnce ? 1 : (iterationCount ?? ctx.iterationCount)
+    // Named spring presets are resolved to their cubic-bezier equivalents
+    const resolvedEasing        = resolveEasing(easing ?? ctx.easing)
 
     // Style enhancements
     const resolvedOpacity = opacity ?? ctx.opacity
@@ -292,6 +360,7 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
     const isAnimating = activeAnim !== null
 
     if (isAnimating) ensureAnimStyles()
+    if (resolvedDraw) ensureDrawStyles()
 
     const baseTransform = buildBaseTransform(resolvedRotate, resolvedFlip)
 
@@ -306,14 +375,21 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
       computedStyle.transform = baseTransform
     }
 
-    // Animation timing custom properties
-    if (activeAnim) {
-      computedStyle['--ppi-dur']   = resolveAnimDuration(activeAnim, resolvedSpeed, resolvedDuration)
+    // Animation timing custom properties (shared by both regular anims and draw)
+    if (activeAnim || resolvedDraw) {
+      const durSource = activeAnim ?? 'draw'
+      computedStyle['--ppi-dur']   = resolveAnimDuration(durSource, resolvedSpeed, resolvedDuration)
       computedStyle['--ppi-delay'] = resolvedDelay != null ? `${resolvedDelay}ms` : '0s'
-      computedStyle['--ppi-count'] = String(resolvedIterationCount ?? 'infinite')
+      // draw defaults to 1 iteration; regular anims default to infinite
+      const defaultCount = resolvedDraw && !activeAnim ? 1 : 'infinite'
+      computedStyle['--ppi-count'] = String(resolvedIterationCount ?? defaultCount)
       if (resolvedEasing != null) {
         computedStyle['--ppi-ease'] = resolvedEasing
       }
+    }
+    // Draw speed preset (1s normal, reuses SPEED_DURATION fallback)
+    if (resolvedDraw && !activeAnim && !resolvedDuration) {
+      computedStyle['--ppi-dur'] = { slow: '2s', normal: '1s', fast: '0.5s' }[resolvedSpeed] ?? '1s'
     }
 
     // Opacity
@@ -345,13 +421,97 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
     // --- className composition ---
     const animClasses: string[] = []
     if (activeAnim) animClasses.push(animClass(activeAnim))
+    if (resolvedDraw) animClasses.push('ppi-draw')
 
     const classParts = [classNamePrefix, className, ...animClasses, classNameSuffix].filter(Boolean)
     const finalClassName = classParts.length > 0 ? classParts.join(' ') : undefined
 
+    // --- Draw: compute per-element path lengths after mount/update ---
+    useEffect(() => {
+      if (!resolvedDraw || !svgRef.current) return
+      const elements = svgRef.current.querySelectorAll('path, circle, line, polyline, rect, ellipse')
+      elements.forEach(el => {
+        const len = typeof (el as SVGGeometryElement).getTotalLength === 'function'
+          ? (el as SVGGeometryElement).getTotalLength()
+          : 100
+        ;(el as SVGElement & { style: CSSStyleDeclaration }).style.setProperty('--ppi-draw-len', String(len))
+      })
+    }, [resolvedDraw])
+
+    // --- Trigger: control animation playback via event listeners / IntersectionObserver ---
+    useEffect(() => {
+      const el = svgRef.current
+      if (!el || resolvedTrigger === 'auto' || (!isAnimating && !resolvedDraw)) return
+
+      const setPlayState = (state: 'running' | 'paused') => {
+        el.style.animationPlayState = state
+        el.querySelectorAll('path, circle, line, polyline, rect, ellipse').forEach(child => {
+          ;(child as HTMLElement).style.animationPlayState = state
+        })
+      }
+
+      // Start paused — will be played by the trigger
+      setPlayState('paused')
+
+      let cleanup: () => void
+
+      if (resolvedTrigger === 'hover') {
+        let hasPlayed = false
+        const onEnter = () => {
+          if (resolvedPlayOnce && hasPlayed) return
+          hasPlayed = true
+          setPlayState('running')
+        }
+        const onLeave = () => setPlayState('paused')
+        el.addEventListener('mouseenter', onEnter)
+        el.addEventListener('mouseleave', onLeave)
+        cleanup = () => {
+          el.removeEventListener('mouseenter', onEnter)
+          el.removeEventListener('mouseleave', onLeave)
+        }
+      } else if (resolvedTrigger === 'click') {
+        let hasPlayed = false
+        const onClick = () => {
+          if (resolvedPlayOnce && hasPlayed) return
+          hasPlayed = true
+          // Restart: pause, force reflow via getBoundingClientRect, then play
+          setPlayState('paused')
+          void el.getBoundingClientRect()
+          setPlayState('running')
+        }
+        el.addEventListener('click', onClick)
+        cleanup = () => el.removeEventListener('click', onClick)
+      } else {
+        // 'visible'
+        const observer = new IntersectionObserver(
+          ([entry]) => {
+            if (entry.isIntersecting) {
+              setPlayState('running')
+              if (resolvedPlayOnce) observer.disconnect()
+            } else if (!resolvedPlayOnce) {
+              setPlayState('paused')
+            }
+          },
+          { threshold: 0.1 },
+        )
+        observer.observe(el)
+        cleanup = () => observer.disconnect()
+      }
+
+      return () => {
+        cleanup()
+        if (el) {
+          el.style.animationPlayState = ''
+          el.querySelectorAll('path, circle, line, polyline, rect, ellipse').forEach(child => {
+            ;(child as HTMLElement).style.animationPlayState = ''
+          })
+        }
+      }
+    }, [resolvedTrigger, resolvedPlayOnce, isAnimating, resolvedDraw])
+
     return (
       <svg
-        ref={ref}
+        ref={setRef}
         xmlns="http://www.w3.org/2000/svg"
         width={px}
         height={px}

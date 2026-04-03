@@ -1,5 +1,5 @@
 import { useState, useMemo, useRef } from 'react'
-import type { IconSize, IconFlip, IconVariant, AnimationSpeed, AnimationType } from '@beluga-icon/core'
+import type { IconSize, IconFlip, IconVariant, AnimationSpeed, AnimationType, AnimationTrigger } from '@beluga-icon/core'
 import { SearchIcon, CheckIcon, EyeIcon, PenToolIcon, MoveIcon, ZapIcon, RefreshIcon, CopyIcon } from '@beluga-icon/react'
 import { icons } from '../data/iconRegistry'
 import type { IconEntry } from '../data/iconRegistry'
@@ -27,9 +27,21 @@ interface PropState {
   duration: string
   delay: string
   iterationCount: string
+  easing: string
+  trigger: AnimationTrigger
+  draw: boolean
   opacity: number
   shadow: boolean
 }
+
+const SPRING_EASING_PRESETS = [
+  { label: 'default', value: '' },
+  { label: 'spring-soft', value: 'spring-soft' },
+  { label: 'spring-medium', value: 'spring-medium' },
+  { label: 'spring-stiff', value: 'spring-stiff' },
+  { label: 'bounce-soft', value: 'bounce-soft' },
+  { label: 'elastic', value: 'elastic' },
+] as const
 
 const DEFAULTS: PropState = {
   variant: undefined,
@@ -46,6 +58,9 @@ const DEFAULTS: PropState = {
   duration: '',
   delay: '',
   iterationCount: 'infinite',
+  easing: '',
+  trigger: 'auto',
+  draw: false,
   opacity: 1,
   shadow: false,
 }
@@ -62,6 +77,7 @@ function buildSnippet(name: string, s: PropState): string {
   if (s.rotate !== 0) attrs.push(`rotate={${s.rotate}}`)
   if (s.flip) attrs.push(`flip="${s.flip}"`)
 
+  if (s.draw) attrs.push('draw')
   if (s.animation !== 'none') {
     attrs.push(s.animation)
     const durNum = s.duration ? parseInt(s.duration, 10) : null
@@ -70,6 +86,8 @@ function buildSnippet(name: string, s: PropState): string {
     if (durNum != null) attrs.push(`duration={${durNum}}`)
     if (delNum != null && delNum > 0) attrs.push(`delay={${delNum}}`)
     if (s.iterationCount !== 'infinite') attrs.push(`iterationCount={${s.iterationCount}}`)
+    if (s.easing) attrs.push(`easing="${s.easing}"`)
+    if (s.trigger !== 'auto') attrs.push(`trigger="${s.trigger}"`)
   }
   if (s.opacity !== 1) attrs.push(`opacity={${s.opacity}}`)
   if (s.shadow) attrs.push('shadow')
@@ -437,8 +455,45 @@ export function Playground() {
                         ))}
                       </div>
                     </div>
+                    <div className="pg-group">
+                      <span className="pg-label">Trigger</span>
+                      <div className="pg-row">
+                        {(['auto', 'hover', 'click', 'visible'] as AnimationTrigger[]).map(v => (
+                          <button
+                            key={v}
+                            className={`pg-btn${state.trigger === v ? ' active' : ''}`}
+                            onClick={() => set('trigger', v)}
+                          >{v}</button>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="pg-group">
+                      <span className="pg-label">Easing Preset</span>
+                      <div className="pg-row" style={{ flexWrap: 'wrap' }}>
+                        {SPRING_EASING_PRESETS.map(p => (
+                          <button
+                            key={p.value}
+                            className={`pg-btn${state.easing === p.value ? ' active' : ''}`}
+                            onClick={() => set('easing', p.value)}
+                          >{p.label}</button>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 )}
+
+                <div className="pg-group pg-section-grid--full">
+                  <span className="pg-label">Draw</span>
+                  <div className="pg-row">
+                    <button
+                      className={`pg-toggle${state.draw ? ' active' : ''}`}
+                      onClick={() => set('draw', !state.draw)}
+                    >
+                      <span className="pg-toggle-track"><span className="pg-toggle-thumb" /></span>
+                      Stroke draw effect
+                    </button>
+                  </div>
+                </div>
 
                 <div className="pg-group pg-section-grid--full">
                   <span className="pg-label">Shadow</span>
@@ -490,10 +545,13 @@ export function Playground() {
                 rubberBand={state.animation === 'rubberBand' || undefined}
                 flipX={state.animation === 'flipX' || undefined}
                 breathe={state.animation === 'breathe' || undefined}
+                draw={state.draw || undefined}
+                trigger={state.trigger !== 'auto' ? state.trigger : undefined}
                 speed={state.speed}
                 duration={durNum}
                 delay={delNum}
                 iterationCount={iterCount}
+                easing={state.easing || undefined}
                 opacity={state.opacity !== 1 ? state.opacity : undefined}
                 shadow={state.shadow || undefined}
               />

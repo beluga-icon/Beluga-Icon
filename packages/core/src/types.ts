@@ -13,6 +13,15 @@ export type IconVariant = 'outline' | 'bold' | 'sharp'
 /** Animation speed */
 export type AnimationSpeed = 'slow' | 'normal' | 'fast'
 
+/**
+ * Controls when an animation starts playing.
+ * - `'auto'`    — starts immediately on render (default, existing behaviour)
+ * - `'hover'`   — plays while the cursor is over the icon, pauses on mouse-leave
+ * - `'click'`   — plays once each time the icon is clicked
+ * - `'visible'` — plays when the icon enters the viewport (IntersectionObserver)
+ */
+export type AnimationTrigger = 'auto' | 'hover' | 'click' | 'visible'
+
 /** All available animation types */
 export type AnimationType =
   'spin' | 'pulse' | 'bounce' | 'shake' | 'wiggle' | 'ping' | 'blink' | 'float'
@@ -71,6 +80,25 @@ export interface IconBaseProps {
   flipX?: boolean
   /** Slow ambient opacity breathing */
   breathe?: boolean
+  /**
+   * SVG draw (sketch) animation — strokes are revealed as if hand-drawn.
+   * Works best with stroke-based icons. Plays once by default (iterationCount=1).
+   */
+  draw?: boolean
+  /**
+   * Controls when the animation starts.
+   * - `'auto'`    — starts immediately on render (default)
+   * - `'hover'`   — plays on mouse-enter, pauses on mouse-leave
+   * - `'click'`   — plays once on each click
+   * - `'visible'` — plays when the icon enters the viewport
+   */
+  trigger?: AnimationTrigger
+  /**
+   * When true, the animation plays only once and then stops.
+   * Applies to all trigger modes. For `trigger='hover'` it means
+   * the animation won't replay on the next hover.
+   */
+  playOnce?: boolean
   /** Animation speed (default: 'normal') */
   speed?: AnimationSpeed
   /** Custom animation duration in milliseconds — overrides speed preset */
