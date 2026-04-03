@@ -27,6 +27,7 @@ export type AnimationType =
   'spin' | 'pulse' | 'bounce' | 'shake' | 'wiggle' | 'ping' | 'blink' | 'float'
   | 'heartbeat' | 'flash' | 'tada' | 'jello' | 'swing' | 'rubberBand' | 'flipX' | 'breathe'
   | 'erase' | 'trace' | 'neon' | 'glitch' | 'wobble' | 'roll' | 'zoomIn' | 'fadeUp'
+  | 'flicker' | 'hologram' | 'electric' | 'ghost' | 'levitate' | 'burst' | 'heat' | 'crystal'
 
 /**
  * Base props shared across all framework adapters.
@@ -102,6 +103,22 @@ export interface IconBaseProps {
   zoomIn?: boolean
   /** Fade-up entrance: translateY(-16px) → 0 with opacity. Plays once by default. */
   fadeUp?: boolean
+  /** Erratic dying-neon flicker: irregular brightness/opacity spikes */
+  flicker?: boolean
+  /** Holographic projection: 360° hue-rotate + skewX oscillation + opacity dip */
+  hologram?: boolean
+  /** Electric shock: burst jitter + cyan hue-rotate + brightness spikes */
+  electric?: boolean
+  /** Spectral blur wave + opacity oscillation + upward drift */
+  ghost?: boolean
+  /** 3D perspective lift with deepening drop-shadow */
+  levitate?: boolean
+  /** Explosive scale pop with blur (plays once by default) */
+  burst?: boolean
+  /** Heat shimmer: micro scaleX/Y oscillation + blur wave */
+  heat?: boolean
+  /** Crystal light catch: brightness/contrast/saturate cycle */
+  crystal?: boolean
   /**
    * Controls when the animation starts.
    * - `'auto'`    — starts immediately on render (default)

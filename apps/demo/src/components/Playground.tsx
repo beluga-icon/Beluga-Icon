@@ -102,6 +102,7 @@ const ANIM_TYPES = [
   'none', 'spin', 'pulse', 'bounce', 'shake', 'wiggle', 'ping', 'blink', 'float',
   'heartbeat', 'flash', 'tada', 'jello', 'swing', 'rubberBand', 'flipX', 'breathe',
   'neon', 'glitch', 'wobble', 'roll', 'zoomIn', 'fadeUp', 'erase', 'trace',
+  'flicker', 'hologram', 'electric', 'ghost', 'levitate', 'burst', 'heat', 'crystal',
 ] as const
 
 // ---------------------------------------------------------------------------
@@ -554,6 +555,14 @@ export function Playground() {
                 fadeUp={state.animation === 'fadeUp' || undefined}
                 erase={state.animation === 'erase' || undefined}
                 trace={state.animation === 'trace' || undefined}
+                flicker={state.animation === 'flicker' || undefined}
+                hologram={state.animation === 'hologram' || undefined}
+                electric={state.animation === 'electric' || undefined}
+                ghost={state.animation === 'ghost' || undefined}
+                levitate={state.animation === 'levitate' || undefined}
+                burst={state.animation === 'burst' || undefined}
+                heat={state.animation === 'heat' || undefined}
+                crystal={state.animation === 'crystal' || undefined}
                 draw={state.draw || undefined}
                 trigger={state.trigger !== 'auto' ? state.trigger : undefined}
                 speed={state.speed}

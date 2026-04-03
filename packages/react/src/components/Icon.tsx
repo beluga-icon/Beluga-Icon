@@ -181,12 +181,88 @@ function ensureAnimStyles() {
     .ppi-roll    { animation: ppi-roll    var(--ppi-dur, 0.8s) ease-out    var(--ppi-delay, 0s) var(--ppi-count, 1) both; }
     .ppi-zoom-in { animation: ppi-zoom-in var(--ppi-dur, 0.5s) ease-out    var(--ppi-delay, 0s) var(--ppi-count, 1) both; }
     .ppi-fade-up { animation: ppi-fade-up var(--ppi-dur, 0.5s) ease-out    var(--ppi-delay, 0s) var(--ppi-count, 1) both; }
+    @keyframes ppi-flicker {
+      0%,100% { opacity:1;    filter:brightness(1); }
+      5%      { opacity:0.85; filter:brightness(0.8); }
+      10%     { opacity:1;    filter:brightness(1.2); }
+      15%     { opacity:0.2;  filter:brightness(0.4); }
+      20%     { opacity:1;    filter:brightness(1.3); }
+      25%     { opacity:0.7;  filter:brightness(0.7); }
+      30%     { opacity:1;    filter:brightness(1); }
+      68%     { opacity:1;    filter:brightness(1); }
+      70%     { opacity:0.15; filter:brightness(0.3); }
+      72%     { opacity:1;    filter:brightness(1.4); }
+      74%     { opacity:0.6;  filter:brightness(0.6); }
+      76%     { opacity:1;    filter:brightness(1.1); }
+      78%     { opacity:0.3;  filter:brightness(0.5); }
+      80%     { opacity:1;    filter:brightness(1); }
+    }
+    @keyframes ppi-hologram {
+      0%   { filter:hue-rotate(0deg)   brightness(1);   opacity:0.9;  transform:var(--ppi-bt,) skewX(0deg); }
+      25%  { filter:hue-rotate(90deg)  brightness(1.2); opacity:0.65; transform:var(--ppi-bt,) skewX(1deg); }
+      50%  { filter:hue-rotate(180deg) brightness(0.8); opacity:1;    transform:var(--ppi-bt,) skewX(-1deg); }
+      75%  { filter:hue-rotate(270deg) brightness(1.3); opacity:0.6;  transform:var(--ppi-bt,) skewX(0.5deg); }
+      100% { filter:hue-rotate(360deg) brightness(1);   opacity:0.9;  transform:var(--ppi-bt,) skewX(0deg); }
+    }
+    @keyframes ppi-electric {
+      0%,100% { transform:var(--ppi-bt,) translate(0,0);      filter:brightness(1)   hue-rotate(0deg); }
+      5%      { transform:var(--ppi-bt,) translate(-2px,1px); filter:brightness(2.5) hue-rotate(185deg) saturate(4); }
+      10%     { transform:var(--ppi-bt,) translate(2px,-1px); filter:brightness(1.8) hue-rotate(195deg); }
+      15%     { transform:var(--ppi-bt,) translate(-1px,2px); filter:brightness(3)   hue-rotate(210deg) saturate(5); }
+      20%     { transform:var(--ppi-bt,) translate(0,0);      filter:brightness(1)   hue-rotate(0deg); }
+      78%     { transform:var(--ppi-bt,) translate(0,0);      filter:brightness(1); }
+      80%     { transform:var(--ppi-bt,) translate(2px,-2px); filter:brightness(2.2) hue-rotate(190deg) saturate(3); }
+      83%     { transform:var(--ppi-bt,) translate(-2px,1px); filter:brightness(3.5) hue-rotate(200deg); }
+      86%     { transform:var(--ppi-bt,) translate(1px,-1px); filter:brightness(1.5) hue-rotate(185deg); }
+      89%     { transform:var(--ppi-bt,) translate(0,0);      filter:brightness(1); }
+    }
+    @keyframes ppi-ghost {
+      0%,100% { opacity:1;    filter:blur(0px)   brightness(1);   transform:var(--ppi-bt,) translateY(0); }
+      25%     { opacity:0.35; filter:blur(1.5px) brightness(1.2); transform:var(--ppi-bt,) translateY(-3px); }
+      50%     { opacity:0.75; filter:blur(0.5px) brightness(0.9); transform:var(--ppi-bt,) translateY(-1px); }
+      75%     { opacity:0.25; filter:blur(2px)   brightness(1.1); transform:var(--ppi-bt,) translateY(-4px); }
+    }
+    @keyframes ppi-levitate {
+      0%,100% { transform:var(--ppi-bt,) perspective(160px) translateY(0)    rotateX(0deg); filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+      50%     { transform:var(--ppi-bt,) perspective(160px) translateY(-7px) rotateX(8deg); filter:drop-shadow(0 10px 14px rgba(0,0,0,0.12)); }
+    }
+    @keyframes ppi-burst {
+      0%   { transform:var(--ppi-bt,) scale(1);    filter:brightness(1)   saturate(1)   blur(0px); opacity:1; }
+      12%  { transform:var(--ppi-bt,) scale(1.35); filter:brightness(2)   saturate(2.5) blur(1px); opacity:0.85; }
+      28%  { transform:var(--ppi-bt,) scale(0.92); filter:brightness(1.1) saturate(1.2) blur(0px); opacity:1; }
+      42%  { transform:var(--ppi-bt,) scale(1.06); filter:brightness(1.2); }
+      100% { transform:var(--ppi-bt,) scale(1);    filter:brightness(1)   saturate(1); opacity:1; }
+    }
+    @keyframes ppi-heat {
+      0%,100% { transform:var(--ppi-bt,) scaleX(1)    scaleY(1);    filter:blur(0px)    brightness(1); }
+      20%     { transform:var(--ppi-bt,) scaleX(1.02) scaleY(0.99); filter:blur(0.3px)  brightness(1.05); }
+      40%     { transform:var(--ppi-bt,) scaleX(0.99) scaleY(1.01); filter:blur(0.5px)  brightness(0.97); }
+      60%     { transform:var(--ppi-bt,) scaleX(1.01) scaleY(0.98); filter:blur(0.25px) brightness(1.03); }
+      80%     { transform:var(--ppi-bt,) scaleX(0.98) scaleY(1.02); filter:blur(0.4px)  brightness(1.01); }
+    }
+    @keyframes ppi-crystal {
+      0%,100% { filter: brightness(1)   drop-shadow(0 0 0px transparent); }
+      20%     { filter: brightness(1.4) drop-shadow(-2px 0 4px #ff6b6b) drop-shadow(2px 0 4px #6bc5ff); }
+      40%     { filter: brightness(1.6) drop-shadow(0 -2px 6px #a8ff6b) drop-shadow(0 2px 6px #e06bff); }
+      60%     { filter: brightness(1.3) drop-shadow(2px 0 4px #ffed6b) drop-shadow(-2px 0 4px #6bffed); }
+      80%     { filter: brightness(1.5) drop-shadow(0 2px 5px #6b8fff) drop-shadow(0 -2px 5px #ff6b8f); }
+    }
+    .ppi-flicker  { animation: ppi-flicker  var(--ppi-dur, 3s)   linear      var(--ppi-delay, 0s) var(--ppi-count, infinite); }
+    .ppi-hologram { animation: ppi-hologram var(--ppi-dur, 4s)   linear      var(--ppi-delay, 0s) var(--ppi-count, infinite); }
+    .ppi-electric { animation: ppi-electric var(--ppi-dur, 0.5s) linear      var(--ppi-delay, 0s) var(--ppi-count, infinite); }
+    .ppi-ghost    { animation: ppi-ghost    var(--ppi-dur, 3s)   ease-in-out var(--ppi-delay, 0s) var(--ppi-count, infinite); }
+    .ppi-levitate { animation: ppi-levitate var(--ppi-dur, 3s)   ease-in-out var(--ppi-delay, 0s) var(--ppi-count, infinite); }
+    .ppi-burst    { animation: ppi-burst    var(--ppi-dur, 0.6s) ease-out    var(--ppi-delay, 0s) var(--ppi-count, 1)        both; }
+    .ppi-heat     { animation: ppi-heat     var(--ppi-dur, 2s)   ease-in-out var(--ppi-delay, 0s) var(--ppi-count, infinite); }
+    .ppi-crystal  { animation: ppi-crystal  var(--ppi-dur, 3s)   ease-in-out var(--ppi-delay, 0s) var(--ppi-count, infinite); }
     @media (prefers-reduced-motion: reduce) {
       .ppi-spin, .ppi-pulse, .ppi-bounce, .ppi-shake,
       .ppi-wiggle, .ppi-ping, .ppi-blink, .ppi-float,
       .ppi-heartbeat, .ppi-flash, .ppi-tada, .ppi-jello,
       .ppi-swing, .ppi-rubber-band, .ppi-flip-x, .ppi-breathe,
-      .ppi-neon, .ppi-glitch, .ppi-wobble, .ppi-roll, .ppi-zoom-in, .ppi-fade-up {
+      .ppi-neon, .ppi-glitch, .ppi-wobble, .ppi-roll, .ppi-zoom-in, .ppi-fade-up,
+      .ppi-flicker, .ppi-hologram, .ppi-electric, .ppi-ghost,
+      .ppi-levitate, .ppi-burst, .ppi-heat, .ppi-crystal {
         animation: none;
       }
     }
@@ -220,6 +296,14 @@ const SPEED_DURATION: Record<string, Record<string, string>> = {
   roll:       { slow: '1.4s', normal: '0.8s',  fast: '0.4s'  },
   zoomIn:     { slow: '0.8s', normal: '0.5s',  fast: '0.25s' },
   fadeUp:     { slow: '0.8s', normal: '0.5s',  fast: '0.25s' },
+  flicker:    { slow: '5s',   normal: '3s',    fast: '1.5s'  },
+  hologram:   { slow: '8s',   normal: '4s',    fast: '2s'    },
+  electric:   { slow: '1s',   normal: '0.5s',  fast: '0.25s' },
+  ghost:      { slow: '5s',   normal: '3s',    fast: '1.5s'  },
+  levitate:   { slow: '5s',   normal: '3s',    fast: '1.5s'  },
+  burst:      { slow: '1s',   normal: '0.6s',  fast: '0.3s'  },
+  heat:       { slow: '3.5s', normal: '2s',    fast: '1s'    },
+  crystal:    { slow: '5s',   normal: '3s',    fast: '1.5s'  },
 }
 
 function resolveAnimDuration(animType: string, speed: string, duration?: number): string {
@@ -319,10 +403,12 @@ function buildBaseTransform(rotate?: number, flip?: IconFlip): string {
 type AnimKey = 'spin' | 'pulse' | 'bounce' | 'shake' | 'wiggle' | 'ping' | 'blink' | 'float'
              | 'heartbeat' | 'flash' | 'tada' | 'jello' | 'swing' | 'rubberBand' | 'flipX' | 'breathe'
              | 'erase' | 'trace' | 'neon' | 'glitch' | 'wobble' | 'roll' | 'zoomIn' | 'fadeUp'
+             | 'flicker' | 'hologram' | 'electric' | 'ghost' | 'levitate' | 'burst' | 'heat' | 'crystal'
 const ANIM_PRIORITY: AnimKey[] = [
   'spin', 'pulse', 'bounce', 'shake', 'wiggle', 'ping', 'blink', 'float',
   'heartbeat', 'flash', 'tada', 'jello', 'swing', 'rubberBand', 'flipX', 'breathe',
   'neon', 'glitch', 'trace', 'wobble', 'erase', 'roll', 'zoomIn', 'fadeUp',
+  'flicker', 'hologram', 'electric', 'ghost', 'levitate', 'heat', 'crystal', 'burst',
 ]
 const ANIM_CLASS: Partial<Record<AnimKey, string>> = {
   rubberBand: 'ppi-rubber-band',
@@ -346,6 +432,7 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
       rotate, flip, spin, pulse, bounce, shake, wiggle, ping, blink, float,
       heartbeat, flash, tada, jello, swing, rubberBand, flipX, breathe,
       draw, erase, trace, neon, glitch, wobble, roll, zoomIn, fadeUp,
+      flicker, hologram, electric, ghost, levitate, burst, heat, crystal,
       trigger, playOnce,
       speed, duration, delay, iterationCount, easing,
       fill, strokeLinecap, strokeLinejoin, variant,
@@ -426,6 +513,14 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
     const resolvedRoll     = roll     ?? ctx.roll     ?? false
     const resolvedZoomIn   = zoomIn   ?? ctx.zoomIn   ?? false
     const resolvedFadeUp   = fadeUp   ?? ctx.fadeUp   ?? false
+    const resolvedFlicker  = flicker  ?? ctx.flicker  ?? false
+    const resolvedHologram = hologram ?? ctx.hologram ?? false
+    const resolvedElectric = electric ?? ctx.electric ?? false
+    const resolvedGhost    = ghost    ?? ctx.ghost    ?? false
+    const resolvedLevitate = levitate ?? ctx.levitate ?? false
+    const resolvedBurst    = burst    ?? ctx.burst    ?? false
+    const resolvedHeat     = heat     ?? ctx.heat     ?? false
+    const resolvedCrystal  = crystal  ?? ctx.crystal  ?? false
     const resolvedTrigger  = trigger  ?? ctx.trigger  ?? 'auto'
     const resolvedPlayOnce = playOnce ?? ctx.playOnce ?? false
 
@@ -452,6 +547,10 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
       neon: resolvedNeon, glitch: resolvedGlitch,
       wobble: resolvedWobble, roll: resolvedRoll,
       zoomIn: resolvedZoomIn, fadeUp: resolvedFadeUp,
+      flicker: resolvedFlicker, hologram: resolvedHologram,
+      electric: resolvedElectric, ghost: resolvedGhost,
+      levitate: resolvedLevitate, burst: resolvedBurst,
+      heat: resolvedHeat, crystal: resolvedCrystal,
     }
     const activeAnim = ANIM_PRIORITY.find(k => animFlags[k]) ?? null
     const isAnimating = activeAnim !== null
@@ -480,7 +579,7 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
       computedStyle['--ppi-delay'] = resolvedDelay != null ? `${resolvedDelay}ms` : '0s'
       // entrance & erase animations default to 1 iteration; looping anims default to infinite
       const isOnceByDefault = (drawFamilyActive && !resolvedTrace && !activeAnim)
-        || ['erase', 'roll', 'zoomIn', 'fadeUp'].includes(activeAnim ?? '')
+        || ['erase', 'roll', 'zoomIn', 'fadeUp', 'burst'].includes(activeAnim ?? '')
       const defaultCount = isOnceByDefault ? 1 : 'infinite'
       computedStyle['--ppi-count'] = String(resolvedIterationCount ?? defaultCount)
       if (resolvedEasing != null) {

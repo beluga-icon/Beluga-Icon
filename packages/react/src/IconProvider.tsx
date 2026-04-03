@@ -59,6 +59,22 @@ export interface IconContextValue {
   zoomIn?: boolean
   /** Fade-up entrance: translateY(-16px) → 0 with opacity */
   fadeUp?: boolean
+  /** Erratic dying-neon flicker */
+  flicker?: boolean
+  /** Holographic hue-rotate + skew projection */
+  hologram?: boolean
+  /** Electric shock jitter + cyan brightness bursts */
+  electric?: boolean
+  /** Spectral blur wave + opacity + upward drift */
+  ghost?: boolean
+  /** 3D perspective lift with deepening drop-shadow */
+  levitate?: boolean
+  /** Explosive scale pop with blur (plays once) */
+  burst?: boolean
+  /** Heat shimmer: micro scaleX/Y + blur oscillation */
+  heat?: boolean
+  /** Crystal light catch: brightness/contrast/saturate cycle */
+  crystal?: boolean
   /** Controls when the animation starts playing */
   trigger?: AnimationTrigger
   /** When true, the animation plays only once and then stops */

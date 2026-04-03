@@ -590,3 +590,124 @@ describe('Icon — advanced animations (wave 3)', () => {
     expect(svg.style.getPropertyValue('--ppi-count')).toBe('infinite')
   })
 })
+
+describe('Icon — advanced animations (wave 4)', () => {
+  // --- Class application tests ---
+  it('flicker prop adds ppi-flicker class', () => {
+    const { container } = render(<Icon flicker><circle /></Icon>)
+    expect(container.querySelector('svg')!.classList.contains('ppi-flicker')).toBe(true)
+  })
+
+  it('hologram prop adds ppi-hologram class', () => {
+    const { container } = render(<Icon hologram><circle /></Icon>)
+    expect(container.querySelector('svg')!.classList.contains('ppi-hologram')).toBe(true)
+  })
+
+  it('electric prop adds ppi-electric class', () => {
+    const { container } = render(<Icon electric><circle /></Icon>)
+    expect(container.querySelector('svg')!.classList.contains('ppi-electric')).toBe(true)
+  })
+
+  it('ghost prop adds ppi-ghost class', () => {
+    const { container } = render(<Icon ghost><circle /></Icon>)
+    expect(container.querySelector('svg')!.classList.contains('ppi-ghost')).toBe(true)
+  })
+
+  it('levitate prop adds ppi-levitate class', () => {
+    const { container } = render(<Icon levitate><circle /></Icon>)
+    expect(container.querySelector('svg')!.classList.contains('ppi-levitate')).toBe(true)
+  })
+
+  it('burst prop adds ppi-burst class', () => {
+    const { container } = render(<Icon burst><circle /></Icon>)
+    expect(container.querySelector('svg')!.classList.contains('ppi-burst')).toBe(true)
+  })
+
+  it('heat prop adds ppi-heat class', () => {
+    const { container } = render(<Icon heat><circle /></Icon>)
+    expect(container.querySelector('svg')!.classList.contains('ppi-heat')).toBe(true)
+  })
+
+  it('crystal prop adds ppi-crystal class', () => {
+    const { container } = render(<Icon crystal><circle /></Icon>)
+    expect(container.querySelector('svg')!.classList.contains('ppi-crystal')).toBe(true)
+  })
+
+  // --- Priority tests ---
+  it('spin wins over burst (higher priority)', () => {
+    const { container } = render(<Icon spin burst><circle /></Icon>)
+    const svg = container.querySelector('svg')!
+    expect(svg.classList.contains('ppi-spin')).toBe(true)
+    expect(svg.classList.contains('ppi-burst')).toBe(false)
+  })
+
+  it('flicker wins over crystal (higher priority)', () => {
+    const { container } = render(<Icon flicker crystal><circle /></Icon>)
+    const svg = container.querySelector('svg')!
+    expect(svg.classList.contains('ppi-flicker')).toBe(true)
+    expect(svg.classList.contains('ppi-crystal')).toBe(false)
+  })
+
+  // --- Speed preset tests ---
+  it('flicker normal speed sets --ppi-dur to 3s', () => {
+    const { container } = render(<Icon flicker speed="normal"><circle /></Icon>)
+    expect(container.querySelector('svg')!.style.getPropertyValue('--ppi-dur')).toBe('3s')
+  })
+
+  it('hologram slow speed sets --ppi-dur to 8s', () => {
+    const { container } = render(<Icon hologram speed="slow"><circle /></Icon>)
+    expect(container.querySelector('svg')!.style.getPropertyValue('--ppi-dur')).toBe('8s')
+  })
+
+  it('electric fast speed sets --ppi-dur to 0.25s', () => {
+    const { container } = render(<Icon electric speed="fast"><circle /></Icon>)
+    expect(container.querySelector('svg')!.style.getPropertyValue('--ppi-dur')).toBe('0.25s')
+  })
+
+  it('ghost normal speed sets --ppi-dur to 3s', () => {
+    const { container } = render(<Icon ghost speed="normal"><circle /></Icon>)
+    expect(container.querySelector('svg')!.style.getPropertyValue('--ppi-dur')).toBe('3s')
+  })
+
+  // --- Default iterationCount: burst plays once ---
+  it('burst defaults to iterationCount 1', () => {
+    const { container } = render(<Icon burst><circle /></Icon>)
+    expect(container.querySelector('svg')!.style.getPropertyValue('--ppi-count')).toBe('1')
+  })
+
+  // --- Default iterationCount: others loop infinitely ---
+  it('flicker defaults to iterationCount infinite', () => {
+    const { container } = render(<Icon flicker><circle /></Icon>)
+    expect(container.querySelector('svg')!.style.getPropertyValue('--ppi-count')).toBe('infinite')
+  })
+
+  it('hologram defaults to iterationCount infinite', () => {
+    const { container } = render(<Icon hologram><circle /></Icon>)
+    expect(container.querySelector('svg')!.style.getPropertyValue('--ppi-count')).toBe('infinite')
+  })
+
+  it('electric defaults to iterationCount infinite', () => {
+    const { container } = render(<Icon electric><circle /></Icon>)
+    expect(container.querySelector('svg')!.style.getPropertyValue('--ppi-count')).toBe('infinite')
+  })
+
+  it('ghost defaults to iterationCount infinite', () => {
+    const { container } = render(<Icon ghost><circle /></Icon>)
+    expect(container.querySelector('svg')!.style.getPropertyValue('--ppi-count')).toBe('infinite')
+  })
+
+  it('levitate defaults to iterationCount infinite', () => {
+    const { container } = render(<Icon levitate><circle /></Icon>)
+    expect(container.querySelector('svg')!.style.getPropertyValue('--ppi-count')).toBe('infinite')
+  })
+
+  it('heat defaults to iterationCount infinite', () => {
+    const { container } = render(<Icon heat><circle /></Icon>)
+    expect(container.querySelector('svg')!.style.getPropertyValue('--ppi-count')).toBe('infinite')
+  })
+
+  it('crystal defaults to iterationCount infinite', () => {
+    const { container } = render(<Icon crystal><circle /></Icon>)
+    expect(container.querySelector('svg')!.style.getPropertyValue('--ppi-count')).toBe('infinite')
+  })
+})
