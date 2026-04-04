@@ -14,7 +14,11 @@
     }
   },
   "sideEffects": false,
-  "files": ["dist", "LICENSE", "README.md"],
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsup src/index.ts --format esm,cjs --dts --clean --external react",
     "dev": "tsup src/index.ts --format esm,cjs --dts --watch --external react",
@@ -58,5 +62,8 @@
     "typescript",
     "beluga-icon"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
 }

@@ -1,0 +1,60 @@
+version: 2
+updates:
+  # npm bağımlılıkları - monorepo kökü
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '09:00'
+      timezone: 'UTC'
+    open-pull-requests-limit: 10
+    groups:
+      typescript-toolchain:
+        patterns:
+          - 'typescript*'
+          - '@typescript-eslint*'
+          - 'typescript-eslint'
+        update-types:
+          - 'minor'
+          - 'patch'
+      testing:
+        patterns:
+          - 'vitest'
+          - '@vitest/*'
+          - '@testing-library/*'
+        update-types:
+          - 'minor'
+          - 'patch'
+      build-tools:
+        patterns:
+          - 'tsup'
+          - 'size-limit'
+          - '@size-limit/*'
+          - 'tsx'
+        update-types:
+          - 'minor'
+          - 'patch'
+    labels:
+      - 'dependencies'
+      - 'automated'
+    commit-message:
+      prefix: 'chore'
+      prefix-development: 'chore'
+      include: 'scope'
+
+  # GitHub Actions - action versiyonlarını otomatik güncelle
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '09:00'
+      timezone: 'UTC'
+    open-pull-requests-limit: 5
+    labels:
+      - 'dependencies'
+      - 'github-actions'
+      - 'automated'
+    commit-message:
+      prefix: 'chore(ci)'

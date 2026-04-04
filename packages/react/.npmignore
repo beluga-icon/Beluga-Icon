@@ -1,0 +1,18 @@
+# Source files — dist/ yayınlanır, src/ yayınlanmaz
+src/
+tsconfig*.json
+*.config.ts
+*.config.js
+
+# Test dosyaları
+**/__tests__/
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.ts
+**/*.spec.tsx
+
+# Build artifacts (dist/ yayınlanır ama bunlar yayınlanmaz)
+*.tsbuildinfo
+
+# Geliştirme araçları
+node_modules/
