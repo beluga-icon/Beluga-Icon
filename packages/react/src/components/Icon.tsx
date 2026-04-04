@@ -303,7 +303,12 @@ const SPEED_DURATION: Record<string, Record<string, string>> = {
   levitate:   { slow: '5s',   normal: '3s',    fast: '1.5s'  },
   burst:      { slow: '1s',   normal: '0.6s',  fast: '0.3s'  },
   heat:       { slow: '3.5s', normal: '2s',    fast: '1s'    },
-  crystal:    { slow: '5s',   normal: '3s',    fast: '1.5s'  },
+  crystal:      { slow: '5s',   normal: '3s',    fast: '1.5s'  },
+  springPop:    { slow: '1.2s', normal: '0.7s',  fast: '0.4s'  },
+  decay:        { slow: '2s',   normal: '1.2s',  fast: '0.6s'  },
+  magnetPulse:  { slow: '2s',   normal: '1.2s',  fast: '0.6s'  },
+  slingshot:    { slow: '1.2s', normal: '0.7s',  fast: '0.35s' },
+  wobbleSpring: { slow: '2.5s', normal: '1.5s',  fast: '0.8s'  },
 }
 
 function resolveAnimDuration(animType: string, speed: string, duration?: number): string {
@@ -323,6 +328,75 @@ const SPRING_EASINGS: Record<string, string> = {
 function resolveEasing(easing?: string): string | undefined {
   if (!easing) return undefined
   return SPRING_EASINGS[easing] ?? easing
+}
+
+// ---------------------------------------------------------------------------
+// WAAPI physics helpers — zero dependencies, pure math
+// ---------------------------------------------------------------------------
+
+/** Numerically integrate a spring ODE (Hooke's law + damping).
+ *  Returns {offset, value} pairs where value is the animated property (scale or degrees). */
+function simulateSpring(
+  stiffness: number, damping: number, mass: number,
+  from: number, to: number, frames: number,
+): Array<{ offset: number; value: number }> {
+  const dt = 1 / frames
+  let x = from - to, v = 0
+  return Array.from({ length: frames + 1 }, (_, i) => {
+    const F = -stiffness * x - damping * v
+    v += (F / mass) * dt
+    x += v * dt
+    return { offset: i / frames, value: to + x }
+  })
+}
+
+/** Exponentially-decaying cosine oscillation — for rotational damping effects. */
+function dampedOscillation(
+  amplitude: number, frequency: number, damping: number, frames: number,
+): Array<{ offset: number; value: number }> {
+  return Array.from({ length: frames + 1 }, (_, i) => {
+    const t = i / frames
+    return { offset: t, value: amplitude * Math.exp(-damping * t) * Math.cos(2 * Math.PI * frequency * t) }
+  })
+}
+
+/** WAAPI animation keys — these skip CSS class injection and are driven by el.animate() */
+const WAAPI_ANIMS = new Set<string>(['springPop', 'decay', 'magnetPulse', 'slingshot', 'wobbleSpring'])
+
+function buildWaapiKeyframes(key: string, baseTransform: string): Keyframe[] {
+  const bt = baseTransform ? baseTransform + ' ' : ''
+  switch (key) {
+    case 'springPop': {
+      const kf = simulateSpring(280, 18, 1, 0, 1, 40)
+      return kf.map(f => ({ offset: f.offset, transform: `${bt}scale(${f.value.toFixed(4)})` }))
+    }
+    case 'decay': {
+      const kf = dampedOscillation(18, 2.5, 5, 50)
+      return kf.map(f => ({ offset: f.offset, transform: `${bt}rotate(${f.value.toFixed(2)}deg)` }))
+    }
+    case 'magnetPulse': {
+      const half = simulateSpring(200, 14, 1, 1, 1.18, 20)
+      const back = simulateSpring(200, 14, 1, 1.18, 1, 20)
+      return [
+        ...half.map(f => ({ offset: f.offset * 0.5, transform: `${bt}scale(${f.value.toFixed(4)})` })),
+        ...back.slice(1).map(f => ({ offset: 0.5 + f.offset * 0.5, transform: `${bt}scale(${f.value.toFixed(4)})` })),
+      ]
+    }
+    case 'slingshot': {
+      const compress = simulateSpring(400, 30, 1, 1, 0.6, 10)
+      const release  = simulateSpring(300, 16, 1, 0.6, 1, 30)
+      return [
+        ...compress.map(f => ({ offset: f.offset * 0.25, transform: `${bt}scaleY(${f.value.toFixed(4)})` })),
+        ...release.slice(1).map(f => ({ offset: 0.25 + f.offset * 0.75, transform: `${bt}scaleY(${f.value.toFixed(4)})` })),
+      ]
+    }
+    case 'wobbleSpring': {
+      const kf = dampedOscillation(12, 1.8, 3.5, 50)
+      return kf.map(f => ({ offset: f.offset, transform: `${bt}rotate(${f.value.toFixed(2)}deg)` }))
+    }
+    default:
+      return []
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -404,11 +478,13 @@ type AnimKey = 'spin' | 'pulse' | 'bounce' | 'shake' | 'wiggle' | 'ping' | 'blin
              | 'heartbeat' | 'flash' | 'tada' | 'jello' | 'swing' | 'rubberBand' | 'flipX' | 'breathe'
              | 'erase' | 'trace' | 'neon' | 'glitch' | 'wobble' | 'roll' | 'zoomIn' | 'fadeUp'
              | 'flicker' | 'hologram' | 'electric' | 'ghost' | 'levitate' | 'burst' | 'heat' | 'crystal'
+             | 'springPop' | 'decay' | 'magnetPulse' | 'slingshot' | 'wobbleSpring'
 const ANIM_PRIORITY: AnimKey[] = [
   'spin', 'pulse', 'bounce', 'shake', 'wiggle', 'ping', 'blink', 'float',
   'heartbeat', 'flash', 'tada', 'jello', 'swing', 'rubberBand', 'flipX', 'breathe',
   'neon', 'glitch', 'trace', 'wobble', 'erase', 'roll', 'zoomIn', 'fadeUp',
   'flicker', 'hologram', 'electric', 'ghost', 'levitate', 'heat', 'crystal', 'burst',
+  'springPop', 'decay', 'magnetPulse', 'slingshot', 'wobbleSpring',
 ]
 const ANIM_CLASS: Partial<Record<AnimKey, string>> = {
   rubberBand: 'ppi-rubber-band',
@@ -433,6 +509,7 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
       heartbeat, flash, tada, jello, swing, rubberBand, flipX, breathe,
       draw, erase, trace, neon, glitch, wobble, roll, zoomIn, fadeUp,
       flicker, hologram, electric, ghost, levitate, burst, heat, crystal,
+      springPop, decay, magnetPulse, slingshot, wobbleSpring,
       trigger, playOnce,
       speed, duration, delay, iterationCount, easing,
       fill, strokeLinecap, strokeLinejoin, variant,
@@ -520,8 +597,13 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
     const resolvedLevitate = levitate ?? ctx.levitate ?? false
     const resolvedBurst    = burst    ?? ctx.burst    ?? false
     const resolvedHeat     = heat     ?? ctx.heat     ?? false
-    const resolvedCrystal  = crystal  ?? ctx.crystal  ?? false
-    const resolvedTrigger  = trigger  ?? ctx.trigger  ?? 'auto'
+    const resolvedCrystal      = crystal      ?? ctx.crystal      ?? false
+    const resolvedSpringPop    = springPop    ?? ctx.springPop    ?? false
+    const resolvedDecay        = decay        ?? ctx.decay        ?? false
+    const resolvedMagnetPulse  = magnetPulse  ?? ctx.magnetPulse  ?? false
+    const resolvedSlingshot    = slingshot    ?? ctx.slingshot    ?? false
+    const resolvedWobbleSpring = wobbleSpring ?? ctx.wobbleSpring ?? false
+    const resolvedTrigger      = trigger      ?? ctx.trigger      ?? 'auto'
     const resolvedPlayOnce = playOnce ?? ctx.playOnce ?? false
 
     // Fine-tuning
@@ -551,6 +633,9 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
       electric: resolvedElectric, ghost: resolvedGhost,
       levitate: resolvedLevitate, burst: resolvedBurst,
       heat: resolvedHeat, crystal: resolvedCrystal,
+      springPop: resolvedSpringPop, decay: resolvedDecay,
+      magnetPulse: resolvedMagnetPulse, slingshot: resolvedSlingshot,
+      wobbleSpring: resolvedWobbleSpring,
     }
     const activeAnim = ANIM_PRIORITY.find(k => animFlags[k]) ?? null
     const isAnimating = activeAnim !== null
@@ -579,7 +664,7 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
       computedStyle['--ppi-delay'] = resolvedDelay != null ? `${resolvedDelay}ms` : '0s'
       // entrance & erase animations default to 1 iteration; looping anims default to infinite
       const isOnceByDefault = (drawFamilyActive && !resolvedTrace && !activeAnim)
-        || ['erase', 'roll', 'zoomIn', 'fadeUp', 'burst'].includes(activeAnim ?? '')
+        || ['erase', 'roll', 'zoomIn', 'fadeUp', 'burst', 'springPop', 'decay', 'slingshot'].includes(activeAnim ?? '')
       const defaultCount = isOnceByDefault ? 1 : 'infinite'
       computedStyle['--ppi-count'] = String(resolvedIterationCount ?? defaultCount)
       if (resolvedEasing != null) {
@@ -619,7 +704,7 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
 
     // --- className composition ---
     const animClasses: string[] = []
-    if (activeAnim) animClasses.push(animClass(activeAnim))
+    if (activeAnim && !WAAPI_ANIMS.has(activeAnim)) animClasses.push(animClass(activeAnim))
     if (resolvedDraw) animClasses.push('ppi-draw')
 
     const classParts = [classNamePrefix, className, ...animClasses, classNameSuffix].filter(Boolean)
@@ -641,6 +726,41 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
       })
     }, [resolvedDraw, resolvedErase, resolvedTrace])
 
+    // --- WAAPI physics animations — driven by el.animate(), no CSS class ---
+    const waapiAnimRef = useRef<Animation | null>(null)
+
+    useEffect(() => {
+      const el = svgRef.current
+      if (!el || !activeAnim || !WAAPI_ANIMS.has(activeAnim)) {
+        waapiAnimRef.current?.cancel()
+        waapiAnimRef.current = null
+        return
+      }
+
+      const durMs = parseFloat(resolveAnimDuration(activeAnim, resolvedSpeed, resolvedDuration)) * 1000
+      const delayMs = resolvedDelay ?? 0
+      const isOnce = ['springPop', 'decay', 'slingshot'].includes(activeAnim) || resolvedPlayOnce
+      const iterations =
+        resolvedIterationCount != null
+          ? resolvedIterationCount === 'infinite' ? Infinity : Number(resolvedIterationCount)
+          : isOnce ? 1 : Infinity
+
+      const keyframes = buildWaapiKeyframes(activeAnim, baseTransform ?? '')
+      const anim = el.animate(keyframes, {
+        duration: durMs,
+        delay: delayMs,
+        iterations,
+        fill: isOnce ? 'forwards' : 'none',
+        easing: 'linear', // physics is baked into keyframe values
+      })
+
+      if (resolvedTrigger !== 'auto') anim.pause()
+
+      waapiAnimRef.current = anim
+      return () => { anim.cancel(); waapiAnimRef.current = null }
+    }, [activeAnim, resolvedSpeed, resolvedDuration, resolvedDelay,
+        resolvedTrigger, resolvedPlayOnce, resolvedIterationCount, baseTransform])
+
     // --- Trigger: control animation playback via event listeners / IntersectionObserver ---
     useEffect(() => {
       const el = svgRef.current
@@ -651,6 +771,9 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
         el.querySelectorAll('path, circle, line, polyline, rect, ellipse').forEach(child => {
           ;(child as HTMLElement).style.animationPlayState = state
         })
+        // Also control WAAPI animation if active
+        if (state === 'running') waapiAnimRef.current?.play()
+        else waapiAnimRef.current?.pause()
       }
 
       // Start paused — will be played by the trigger

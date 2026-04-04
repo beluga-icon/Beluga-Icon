@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { createRef } from 'react'
 import { Icon } from '../components/Icon'
@@ -709,5 +709,106 @@ describe('Icon — advanced animations (wave 4)', () => {
   it('crystal defaults to iterationCount infinite', () => {
     const { container } = render(<Icon crystal><circle /></Icon>)
     expect(container.querySelector('svg')!.style.getPropertyValue('--ppi-count')).toBe('infinite')
+  })
+})
+
+const mockAnimReturn = () => ({
+  play: vi.fn(), pause: vi.fn(), cancel: vi.fn(),
+  finished: Promise.resolve({} as Animation),
+} as unknown as Animation)
+
+describe('Icon — WAAPI animations (wave 5)', () => {
+  beforeEach(() => {
+    // jsdom doesn't implement animate — define it first, then spy
+    if (!Element.prototype.animate) {
+      Element.prototype.animate = () => mockAnimReturn()
+    }
+    vi.spyOn(Element.prototype, 'animate').mockImplementation(() => mockAnimReturn())
+  })
+  afterEach(() => { vi.restoreAllMocks() })
+
+  // WAAPI anims must NOT get a CSS class
+  it('springPop does not add a CSS class', () => {
+    const { container } = render(<Icon springPop><circle /></Icon>)
+    expect(container.querySelector('svg')!.getAttribute('class') ?? '').not.toContain('ppi-spring')
+  })
+
+  it('decay does not add a CSS class', () => {
+    const { container } = render(<Icon decay><circle /></Icon>)
+    expect(container.querySelector('svg')!.getAttribute('class') ?? '').not.toContain('ppi-decay')
+  })
+
+  it('magnetPulse does not add a CSS class', () => {
+    const { container } = render(<Icon magnetPulse><circle /></Icon>)
+    expect(container.querySelector('svg')!.getAttribute('class') ?? '').not.toContain('ppi-magnet')
+  })
+
+  it('slingshot does not add a CSS class', () => {
+    const { container } = render(<Icon slingshot><circle /></Icon>)
+    expect(container.querySelector('svg')!.getAttribute('class') ?? '').not.toContain('ppi-sling')
+  })
+
+  it('wobbleSpring does not add a CSS class', () => {
+    const { container } = render(<Icon wobbleSpring><circle /></Icon>)
+    expect(container.querySelector('svg')!.getAttribute('class') ?? '').not.toContain('ppi-wobble-spring')
+  })
+
+  // Timing CSS custom properties still set correctly
+  it('springPop normal speed sets --ppi-dur to 0.7s', () => {
+    const { container } = render(<Icon springPop speed="normal"><circle /></Icon>)
+    expect(container.querySelector('svg')!.style.getPropertyValue('--ppi-dur')).toBe('0.7s')
+  })
+
+  it('decay slow speed sets --ppi-dur to 2s', () => {
+    const { container } = render(<Icon decay speed="slow"><circle /></Icon>)
+    expect(container.querySelector('svg')!.style.getPropertyValue('--ppi-dur')).toBe('2s')
+  })
+
+  it('magnetPulse fast speed sets --ppi-dur to 0.6s', () => {
+    const { container } = render(<Icon magnetPulse speed="fast"><circle /></Icon>)
+    expect(container.querySelector('svg')!.style.getPropertyValue('--ppi-dur')).toBe('0.6s')
+  })
+
+  // Default iteration counts
+  it('springPop defaults to iterationCount 1', () => {
+    const { container } = render(<Icon springPop><circle /></Icon>)
+    expect(container.querySelector('svg')!.style.getPropertyValue('--ppi-count')).toBe('1')
+  })
+
+  it('decay defaults to iterationCount 1', () => {
+    const { container } = render(<Icon decay><circle /></Icon>)
+    expect(container.querySelector('svg')!.style.getPropertyValue('--ppi-count')).toBe('1')
+  })
+
+  it('slingshot defaults to iterationCount 1', () => {
+    const { container } = render(<Icon slingshot><circle /></Icon>)
+    expect(container.querySelector('svg')!.style.getPropertyValue('--ppi-count')).toBe('1')
+  })
+
+  it('magnetPulse defaults to iterationCount infinite', () => {
+    const { container } = render(<Icon magnetPulse><circle /></Icon>)
+    expect(container.querySelector('svg')!.style.getPropertyValue('--ppi-count')).toBe('infinite')
+  })
+
+  it('wobbleSpring defaults to iterationCount infinite', () => {
+    const { container } = render(<Icon wobbleSpring><circle /></Icon>)
+    expect(container.querySelector('svg')!.style.getPropertyValue('--ppi-count')).toBe('infinite')
+  })
+
+  // CSS anims still get their class (regression guard)
+  it('spin still gets ppi-spin CSS class', () => {
+    const { container } = render(<Icon spin><circle /></Icon>)
+    expect(container.querySelector('svg')!.classList.contains('ppi-spin')).toBe(true)
+  })
+
+  // el.animate called for WAAPI anims
+  it('springPop calls el.animate', () => {
+    render(<Icon springPop><circle /></Icon>)
+    expect(Element.prototype.animate).toHaveBeenCalled()
+  })
+
+  it('wobbleSpring calls el.animate', () => {
+    render(<Icon wobbleSpring><circle /></Icon>)
+    expect(Element.prototype.animate).toHaveBeenCalled()
   })
 })

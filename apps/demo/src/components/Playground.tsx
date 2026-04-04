@@ -103,6 +103,7 @@ const ANIM_TYPES = [
   'heartbeat', 'flash', 'tada', 'jello', 'swing', 'rubberBand', 'flipX', 'breathe',
   'neon', 'glitch', 'wobble', 'roll', 'zoomIn', 'fadeUp', 'erase', 'trace',
   'flicker', 'hologram', 'electric', 'ghost', 'levitate', 'burst', 'heat', 'crystal',
+  'springPop', 'decay', 'magnetPulse', 'slingshot', 'wobbleSpring',
 ] as const
 
 // ---------------------------------------------------------------------------
@@ -563,6 +564,11 @@ export function Playground() {
                 burst={state.animation === 'burst' || undefined}
                 heat={state.animation === 'heat' || undefined}
                 crystal={state.animation === 'crystal' || undefined}
+                springPop={state.animation === 'springPop' || undefined}
+                decay={state.animation === 'decay' || undefined}
+                magnetPulse={state.animation === 'magnetPulse' || undefined}
+                slingshot={state.animation === 'slingshot' || undefined}
+                wobbleSpring={state.animation === 'wobbleSpring' || undefined}
                 draw={state.draw || undefined}
                 trigger={state.trigger !== 'auto' ? state.trigger : undefined}
                 speed={state.speed}

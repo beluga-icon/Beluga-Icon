@@ -75,6 +75,16 @@ export interface IconContextValue {
   heat?: boolean
   /** Crystal light catch: brightness/contrast/saturate cycle */
   crystal?: boolean
+  /** True spring physics scale pop with overshoot (plays once) */
+  springPop?: boolean
+  /** Damped rotational oscillation after impact (plays once) */
+  decay?: boolean
+  /** Living spring-based scale breathe */
+  magnetPulse?: boolean
+  /** Compress scaleY then spring-release (plays once) */
+  slingshot?: boolean
+  /** Physically accurate spring wobble rotation */
+  wobbleSpring?: boolean
   /** Controls when the animation starts playing */
   trigger?: AnimationTrigger
   /** When true, the animation plays only once and then stops */
