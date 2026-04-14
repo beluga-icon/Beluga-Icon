@@ -81,8 +81,6 @@ export interface IconContextValue {
   decay?: boolean
   /** Living spring-based scale breathe */
   magnetPulse?: boolean
-  /** Compress scaleY then spring-release (plays once) */
-  slingshot?: boolean
   /** Physically accurate spring wobble rotation */
   wobbleSpring?: boolean
   /** Controls when the animation starts playing */
@@ -99,7 +97,6 @@ export interface IconContextValue {
   strokeLinejoin?: 'miter' | 'round' | 'bevel'
   variant?: IconVariant
   opacity?: number
-  shadow?: boolean
   /** CSS class prepended to every icon's className in this subtree */
   classNamePrefix?: string
   /** CSS class appended to every icon's className in this subtree */

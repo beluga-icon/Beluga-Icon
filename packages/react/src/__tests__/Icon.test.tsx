@@ -209,22 +209,6 @@ describe('Icon — style enhancement props', () => {
     const svg = container.querySelector('svg')!
     expect(svg.style.opacity).toBe('0.5')
   })
-
-  it('applies drop-shadow filter when shadow=true', () => {
-    const { container } = render(<Icon shadow><circle /></Icon>)
-    const svg = container.querySelector('svg')!
-    expect(svg.style.filter).toContain('drop-shadow')
-  })
-
-  it('composes shadow with existing style.filter', () => {
-    const { container } = render(
-      <Icon shadow style={{ filter: 'blur(2px)' }}><circle /></Icon>
-    )
-    const svg = container.querySelector('svg')!
-    const filter = svg.style.filter
-    expect(filter).toContain('blur(2px)')
-    expect(filter).toContain('drop-shadow')
-  })
 })
 
 describe('Icon — new animations (wave 2)', () => {
@@ -336,11 +320,11 @@ describe('Icon — draw animation', () => {
     expect(svg.style.getPropertyValue('--ppi-count')).toBe('1')
   })
 
-  it('can combine draw with a regular animation', () => {
+  it('when draw and a higher-priority animation both set, higher-priority wins', () => {
     const { container } = render(<Icon draw spin><circle /></Icon>)
     const svg = container.querySelector('svg')!
-    expect(svg).toHaveClass('ppi-draw')
     expect(svg).toHaveClass('ppi-spin')
+    expect(svg).not.toHaveClass('ppi-draw')
   })
 })
 
@@ -743,11 +727,6 @@ describe('Icon — WAAPI animations (wave 5)', () => {
     expect(container.querySelector('svg')!.getAttribute('class') ?? '').not.toContain('ppi-magnet')
   })
 
-  it('slingshot does not add a CSS class', () => {
-    const { container } = render(<Icon slingshot><circle /></Icon>)
-    expect(container.querySelector('svg')!.getAttribute('class') ?? '').not.toContain('ppi-sling')
-  })
-
   it('wobbleSpring does not add a CSS class', () => {
     const { container } = render(<Icon wobbleSpring><circle /></Icon>)
     expect(container.querySelector('svg')!.getAttribute('class') ?? '').not.toContain('ppi-wobble-spring')
@@ -777,11 +756,6 @@ describe('Icon — WAAPI animations (wave 5)', () => {
 
   it('decay defaults to iterationCount 1', () => {
     const { container } = render(<Icon decay><circle /></Icon>)
-    expect(container.querySelector('svg')!.style.getPropertyValue('--ppi-count')).toBe('1')
-  })
-
-  it('slingshot defaults to iterationCount 1', () => {
-    const { container } = render(<Icon slingshot><circle /></Icon>)
     expect(container.querySelector('svg')!.style.getPropertyValue('--ppi-count')).toBe('1')
   })
 

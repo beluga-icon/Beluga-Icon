@@ -631,7 +631,7 @@ html.dark .icon-card-preview { color: #ffffff; }
   transition: all var(--transition);
 }
 .pg-btn:hover { border-color: var(--border-2); color: var(--text); }
-.pg-btn.active { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+.pg-btn.active { background: transparent; color: var(--accent); border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
 
 /* Color row */
 .pg-color-row { display: flex; align-items: center; gap: 8px; }
@@ -648,7 +648,29 @@ html.dark .icon-card-preview { color: #ffffff; }
   background: var(--surface); color: var(--text);
   outline: none; transition: border-color var(--transition);
 }
-.pg-color-text:focus { border-color: var(--border-2); }
+.pg-color-text:focus { border-color: var(--accent); }
+
+/* Number input — custom spinner */
+.pg-color-text[type="number"] { appearance: none; -moz-appearance: textfield; padding-right: 0; }
+.pg-color-text[type="number"]::-webkit-inner-spin-button,
+.pg-color-text[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; appearance: none; margin: 0; }
+.pg-number-wrap { position: relative; display: flex; flex: 1; min-width: 0; }
+.pg-number-wrap .pg-color-text { width: 100%; padding-right: 22px; }
+.pg-number-spin {
+  position: absolute; right: 0; top: 0; bottom: 0; width: 22px;
+  display: flex; flex-direction: column;
+  border-left: 1px solid var(--border); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  overflow: hidden;
+}
+.pg-number-spin button {
+  flex: 1; width: 100%; padding: 0;
+  background: var(--surface); border: none;
+  color: var(--text-3); font-size: 8px; line-height: 1;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background var(--transition), color var(--transition);
+}
+.pg-number-spin button:first-child { border-bottom: 1px solid var(--border); }
+.pg-number-spin button:hover { background: var(--accent); color: var(--accent-fg); }
 
 /* Animation row */
 .pg-anim-row { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
@@ -717,12 +739,13 @@ html.dark .icon-card-preview { color: #ffffff; }
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--border-2);
+  background: var(--accent);
   border-radius: 99px;
   transition: background var(--transition);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--text-3);
+  background: var(--accent);
+  opacity: 0.8;
 }
 ::-webkit-scrollbar-corner {
   background: transparent;
@@ -731,7 +754,7 @@ html.dark .icon-card-preview { color: #ffffff; }
 /* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--border-2) transparent;
+  scrollbar-color: var(--accent) transparent;
 }
 
 /* ── Responsive (playground) ──────────────────────────── */

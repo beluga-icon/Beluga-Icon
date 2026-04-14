@@ -26,9 +26,9 @@ export type AnimationTrigger = 'auto' | 'hover' | 'click' | 'visible'
 export type AnimationType =
   'spin' | 'pulse' | 'bounce' | 'shake' | 'wiggle' | 'ping' | 'blink' | 'float'
   | 'heartbeat' | 'flash' | 'tada' | 'jello' | 'swing' | 'rubberBand' | 'flipX' | 'breathe'
-  | 'erase' | 'trace' | 'neon' | 'glitch' | 'wobble' | 'roll' | 'zoomIn' | 'fadeUp'
+  | 'draw' | 'erase' | 'trace' | 'neon' | 'glitch' | 'wobble' | 'roll' | 'zoomIn' | 'fadeUp'
   | 'flicker' | 'hologram' | 'electric' | 'ghost' | 'levitate' | 'burst' | 'heat' | 'crystal'
-  | 'springPop' | 'decay' | 'magnetPulse' | 'slingshot' | 'wobbleSpring'
+  | 'springPop' | 'decay' | 'magnetPulse' | 'wobbleSpring'
 
 /**
  * Base props shared across all framework adapters.
@@ -126,8 +126,6 @@ export interface IconBaseProps {
   decay?: boolean
   /** Living spring-based scale breathe */
   magnetPulse?: boolean
-  /** Compress scaleY then spring-release (plays once) */
-  slingshot?: boolean
   /** Physically accurate spring wobble rotation */
   wobbleSpring?: boolean
   /**
@@ -164,8 +162,6 @@ export interface IconBaseProps {
   variant?: IconVariant
   /** Icon opacity (0–1) */
   opacity?: number
-  /** Adds a CSS drop-shadow filter (SVG-compatible) */
-  shadow?: boolean
 }
 
 /**

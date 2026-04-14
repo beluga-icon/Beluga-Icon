@@ -288,6 +288,7 @@ const SPEED_DURATION: Record<string, Record<string, string>> = {
   rubberBand: { slow: '1.6s', normal: '0.9s',  fast: '0.45s' },
   flipX:      { slow: '1.8s', normal: '1s',    fast: '0.5s'  },
   breathe:    { slow: '6s',   normal: '4s',    fast: '2s'    },
+  draw:       { slow: '2s',   normal: '1s',    fast: '0.5s'  },
   erase:      { slow: '2s',   normal: '1s',    fast: '0.5s'  },
   trace:      { slow: '4s',   normal: '2s',    fast: '1s'    },
   neon:       { slow: '3s',   normal: '2s',    fast: '0.8s'  },
@@ -307,7 +308,6 @@ const SPEED_DURATION: Record<string, Record<string, string>> = {
   springPop:    { slow: '1.2s', normal: '0.7s',  fast: '0.4s'  },
   decay:        { slow: '2s',   normal: '1.2s',  fast: '0.6s'  },
   magnetPulse:  { slow: '2s',   normal: '1.2s',  fast: '0.6s'  },
-  slingshot:    { slow: '1.2s', normal: '0.7s',  fast: '0.35s' },
   wobbleSpring: { slow: '2.5s', normal: '1.5s',  fast: '0.8s'  },
 }
 
@@ -361,7 +361,7 @@ function dampedOscillation(
 }
 
 /** WAAPI animation keys — these skip CSS class injection and are driven by el.animate() */
-const WAAPI_ANIMS = new Set<string>(['springPop', 'decay', 'magnetPulse', 'slingshot', 'wobbleSpring'])
+const WAAPI_ANIMS = new Set<string>(['springPop', 'decay', 'magnetPulse', 'wobbleSpring'])
 
 function buildWaapiKeyframes(key: string, baseTransform: string): Keyframe[] {
   const bt = baseTransform ? baseTransform + ' ' : ''
@@ -380,14 +380,6 @@ function buildWaapiKeyframes(key: string, baseTransform: string): Keyframe[] {
       return [
         ...half.map(f => ({ offset: f.offset * 0.5, transform: `${bt}scale(${f.value.toFixed(4)})` })),
         ...back.slice(1).map(f => ({ offset: 0.5 + f.offset * 0.5, transform: `${bt}scale(${f.value.toFixed(4)})` })),
-      ]
-    }
-    case 'slingshot': {
-      const compress = simulateSpring(400, 30, 1, 1, 0.6, 10)
-      const release  = simulateSpring(300, 16, 1, 0.6, 1, 30)
-      return [
-        ...compress.map(f => ({ offset: f.offset * 0.25, transform: `${bt}scaleY(${f.value.toFixed(4)})` })),
-        ...release.slice(1).map(f => ({ offset: 0.25 + f.offset * 0.75, transform: `${bt}scaleY(${f.value.toFixed(4)})` })),
       ]
     }
     case 'wobbleSpring': {
@@ -476,15 +468,15 @@ function buildBaseTransform(rotate?: number, flip?: IconFlip): string {
 
 type AnimKey = 'spin' | 'pulse' | 'bounce' | 'shake' | 'wiggle' | 'ping' | 'blink' | 'float'
              | 'heartbeat' | 'flash' | 'tada' | 'jello' | 'swing' | 'rubberBand' | 'flipX' | 'breathe'
-             | 'erase' | 'trace' | 'neon' | 'glitch' | 'wobble' | 'roll' | 'zoomIn' | 'fadeUp'
+             | 'draw' | 'erase' | 'trace' | 'neon' | 'glitch' | 'wobble' | 'roll' | 'zoomIn' | 'fadeUp'
              | 'flicker' | 'hologram' | 'electric' | 'ghost' | 'levitate' | 'burst' | 'heat' | 'crystal'
-             | 'springPop' | 'decay' | 'magnetPulse' | 'slingshot' | 'wobbleSpring'
+             | 'springPop' | 'decay' | 'magnetPulse' | 'wobbleSpring'
 const ANIM_PRIORITY: AnimKey[] = [
   'spin', 'pulse', 'bounce', 'shake', 'wiggle', 'ping', 'blink', 'float',
   'heartbeat', 'flash', 'tada', 'jello', 'swing', 'rubberBand', 'flipX', 'breathe',
-  'neon', 'glitch', 'trace', 'wobble', 'erase', 'roll', 'zoomIn', 'fadeUp',
+  'draw', 'neon', 'glitch', 'trace', 'wobble', 'erase', 'roll', 'zoomIn', 'fadeUp',
   'flicker', 'hologram', 'electric', 'ghost', 'levitate', 'heat', 'crystal', 'burst',
-  'springPop', 'decay', 'magnetPulse', 'slingshot', 'wobbleSpring',
+  'springPop', 'decay', 'magnetPulse', 'wobbleSpring',
 ]
 const ANIM_CLASS: Partial<Record<AnimKey, string>> = {
   rubberBand: 'ppi-rubber-band',
@@ -509,11 +501,11 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
       heartbeat, flash, tada, jello, swing, rubberBand, flipX, breathe,
       draw, erase, trace, neon, glitch, wobble, roll, zoomIn, fadeUp,
       flicker, hologram, electric, ghost, levitate, burst, heat, crystal,
-      springPop, decay, magnetPulse, slingshot, wobbleSpring,
+      springPop, decay, magnetPulse, wobbleSpring,
       trigger, playOnce,
       speed, duration, delay, iterationCount, easing,
       fill, strokeLinecap, strokeLinejoin, variant,
-      opacity, shadow,
+      opacity,
       ...rest
     },
     ref,
@@ -601,7 +593,6 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
     const resolvedSpringPop    = springPop    ?? ctx.springPop    ?? false
     const resolvedDecay        = decay        ?? ctx.decay        ?? false
     const resolvedMagnetPulse  = magnetPulse  ?? ctx.magnetPulse  ?? false
-    const resolvedSlingshot    = slingshot    ?? ctx.slingshot    ?? false
     const resolvedWobbleSpring = wobbleSpring ?? ctx.wobbleSpring ?? false
     const resolvedTrigger      = trigger      ?? ctx.trigger      ?? 'auto'
     const resolvedPlayOnce = playOnce ?? ctx.playOnce ?? false
@@ -616,7 +607,6 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
 
     // Style enhancements
     const resolvedOpacity = opacity ?? ctx.opacity
-    const resolvedShadow  = shadow  ?? ctx.shadow  ?? false
 
     const animFlags: Record<AnimKey, boolean> = {
       spin: resolvedSpin, pulse: resolvedPulse, bounce: resolvedBounce,
@@ -625,7 +615,7 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
       heartbeat: resolvedHeartbeat, flash: resolvedFlash, tada: resolvedTada,
       jello: resolvedJello, swing: resolvedSwing, rubberBand: resolvedRubberBand,
       flipX: resolvedFlipX, breathe: resolvedBreathe,
-      erase: resolvedErase, trace: resolvedTrace,
+      draw: resolvedDraw, erase: resolvedErase, trace: resolvedTrace,
       neon: resolvedNeon, glitch: resolvedGlitch,
       wobble: resolvedWobble, roll: resolvedRoll,
       zoomIn: resolvedZoomIn, fadeUp: resolvedFadeUp,
@@ -634,7 +624,7 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
       levitate: resolvedLevitate, burst: resolvedBurst,
       heat: resolvedHeat, crystal: resolvedCrystal,
       springPop: resolvedSpringPop, decay: resolvedDecay,
-      magnetPulse: resolvedMagnetPulse, slingshot: resolvedSlingshot,
+      magnetPulse: resolvedMagnetPulse,
       wobbleSpring: resolvedWobbleSpring,
     }
     const activeAnim = ANIM_PRIORITY.find(k => animFlags[k]) ?? null
@@ -664,38 +654,19 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
       computedStyle['--ppi-delay'] = resolvedDelay != null ? `${resolvedDelay}ms` : '0s'
       // entrance & erase animations default to 1 iteration; looping anims default to infinite
       const isOnceByDefault = (drawFamilyActive && !resolvedTrace && !activeAnim)
-        || ['erase', 'roll', 'zoomIn', 'fadeUp', 'burst', 'springPop', 'decay', 'slingshot'].includes(activeAnim ?? '')
+        || ['draw', 'erase', 'roll', 'zoomIn', 'fadeUp', 'burst', 'springPop', 'decay'].includes(activeAnim ?? '')
       const defaultCount = isOnceByDefault ? 1 : 'infinite'
       computedStyle['--ppi-count'] = String(resolvedIterationCount ?? defaultCount)
       if (resolvedEasing != null) {
         computedStyle['--ppi-ease'] = resolvedEasing
       }
     }
-    // draw-only speed preset (no activeAnim, no custom duration)
-    if (resolvedDraw && !activeAnim && !resolvedErase && !resolvedTrace && !resolvedDuration) {
-      computedStyle['--ppi-dur'] = { slow: '2s', normal: '1s', fast: '0.5s' }[resolvedSpeed] ?? '1s'
-    }
-
     // Opacity
     if (resolvedOpacity != null) {
       computedStyle.opacity = resolvedOpacity
     }
 
-    // Shadow — compose with any existing user filter (drop-shadow works with SVGs unlike box-shadow)
-    if (resolvedShadow) {
-      const shadowVal = 'drop-shadow(0 1px 3px rgba(0,0,0,0.25))'
-      const userStyle = style as Record<string, string | number> | undefined
-      const existingFilter = userStyle?.filter
-      computedStyle.filter = existingFilter ? `${existingFilter} ${shadowVal}` : shadowVal
-    }
-
-    // Merge computed styles with user styles. If shadow was composed, omit filter from user style
-    // to avoid double-applying it.
-    let styleForMerge = style
-    if (resolvedShadow && (style as Record<string, string | number> | undefined)?.filter) {
-      const { filter: _f, ...rest } = style as Record<string, string | number>
-      styleForMerge = rest
-    }
+    const styleForMerge = style
 
     const finalStyle =
       Object.keys(computedStyle).length > 0
@@ -705,7 +676,6 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
     // --- className composition ---
     const animClasses: string[] = []
     if (activeAnim && !WAAPI_ANIMS.has(activeAnim)) animClasses.push(animClass(activeAnim))
-    if (resolvedDraw) animClasses.push('ppi-draw')
 
     const classParts = [classNamePrefix, className, ...animClasses, classNameSuffix].filter(Boolean)
     const finalClassName = classParts.length > 0 ? classParts.join(' ') : undefined
@@ -739,7 +709,7 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
 
       const durMs = parseFloat(resolveAnimDuration(activeAnim, resolvedSpeed, resolvedDuration)) * 1000
       const delayMs = resolvedDelay ?? 0
-      const isOnce = ['springPop', 'decay', 'slingshot'].includes(activeAnim) || resolvedPlayOnce
+      const isOnce = ['springPop', 'decay'].includes(activeAnim) || resolvedPlayOnce
       const iterations =
         resolvedIterationCount != null
           ? resolvedIterationCount === 'infinite' ? Infinity : Number(resolvedIterationCount)

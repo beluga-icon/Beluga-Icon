@@ -29,9 +29,7 @@ interface PropState {
   iterationCount: string
   easing: string
   trigger: AnimationTrigger
-  draw: boolean
   opacity: number
-  shadow: boolean
 }
 
 const SPRING_EASING_PRESETS = [
@@ -60,9 +58,8 @@ const DEFAULTS: PropState = {
   iterationCount: 'infinite',
   easing: '',
   trigger: 'auto',
-  draw: false,
   opacity: 1,
-  shadow: false,
+
 }
 
 function buildSnippet(name: string, s: PropState): string {
@@ -77,7 +74,6 @@ function buildSnippet(name: string, s: PropState): string {
   if (s.rotate !== 0) attrs.push(`rotate={${s.rotate}}`)
   if (s.flip) attrs.push(`flip="${s.flip}"`)
 
-  if (s.draw) attrs.push('draw')
   if (s.animation !== 'none') {
     attrs.push(s.animation)
     const durNum = s.duration ? parseInt(s.duration, 10) : null
@@ -90,7 +86,6 @@ function buildSnippet(name: string, s: PropState): string {
     if (s.trigger !== 'auto') attrs.push(`trigger="${s.trigger}"`)
   }
   if (s.opacity !== 1) attrs.push(`opacity={${s.opacity}}`)
-  if (s.shadow) attrs.push('shadow')
 
   if (attrs.length === 0) return `<${name} />`
   if (attrs.length <= 2) return `<${name} ${attrs.join(' ')} />`
@@ -101,9 +96,9 @@ const SIZES: IconSize[] = ['xs', 'sm', 'md', 'lg', 'xl', '2xl']
 const ANIM_TYPES = [
   'none', 'spin', 'pulse', 'bounce', 'shake', 'wiggle', 'ping', 'blink', 'float',
   'heartbeat', 'flash', 'tada', 'jello', 'swing', 'rubberBand', 'flipX', 'breathe',
-  'neon', 'glitch', 'wobble', 'roll', 'zoomIn', 'fadeUp', 'erase', 'trace',
+  'draw', 'neon', 'glitch', 'wobble', 'roll', 'zoomIn', 'fadeUp', 'erase', 'trace',
   'flicker', 'hologram', 'electric', 'ghost', 'levitate', 'burst', 'heat', 'crystal',
-  'springPop', 'decay', 'magnetPulse', 'slingshot', 'wobbleSpring',
+  'springPop', 'decay', 'magnetPulse', 'wobbleSpring',
 ] as const
 
 // ---------------------------------------------------------------------------
@@ -424,27 +419,39 @@ export function Playground() {
                       <span className="pg-label">
                         Duration (ms) <em className="pg-value">{state.duration || '—'}</em>
                       </span>
-                      <input
-                        type="number"
-                        className="pg-color-text"
-                        min={0} step={100}
-                        placeholder="e.g. 800"
-                        value={state.duration}
-                        onChange={e => set('duration', e.target.value)}
-                      />
+                      <div className="pg-number-wrap">
+                        <input
+                          type="number"
+                          className="pg-color-text"
+                          min={0} step={100}
+                          placeholder="e.g. 800"
+                          value={state.duration}
+                          onChange={e => set('duration', e.target.value)}
+                        />
+                        <div className="pg-number-spin">
+                          <button onClick={() => set('duration', String(Math.max(0, (parseInt(state.duration || '0') || 0) + 100)))}>▲</button>
+                          <button onClick={() => set('duration', String(Math.max(0, (parseInt(state.duration || '0') || 0) - 100)))}>▼</button>
+                        </div>
+                      </div>
                     </div>
                     <div className="pg-group">
                       <span className="pg-label">
                         Delay (ms) <em className="pg-value">{state.delay || '0'}</em>
                       </span>
-                      <input
-                        type="number"
-                        className="pg-color-text"
-                        min={0} step={100}
-                        placeholder="e.g. 200"
-                        value={state.delay}
-                        onChange={e => set('delay', e.target.value)}
-                      />
+                      <div className="pg-number-wrap">
+                        <input
+                          type="number"
+                          className="pg-color-text"
+                          min={0} step={100}
+                          placeholder="e.g. 200"
+                          value={state.delay}
+                          onChange={e => set('delay', e.target.value)}
+                        />
+                        <div className="pg-number-spin">
+                          <button onClick={() => set('delay', String(Math.max(0, (parseInt(state.delay || '0') || 0) + 100)))}>▲</button>
+                          <button onClick={() => set('delay', String(Math.max(0, (parseInt(state.delay || '0') || 0) - 100)))}>▼</button>
+                        </div>
+                      </div>
                     </div>
                     <div className="pg-group">
                       <span className="pg-label">Iterations</span>
@@ -484,32 +491,6 @@ export function Playground() {
                     </div>
                   </div>
                 )}
-
-                <div className="pg-group pg-section-grid--full">
-                  <span className="pg-label">Draw</span>
-                  <div className="pg-row">
-                    <button
-                      className={`pg-toggle${state.draw ? ' active' : ''}`}
-                      onClick={() => set('draw', !state.draw)}
-                    >
-                      <span className="pg-toggle-track"><span className="pg-toggle-thumb" /></span>
-                      Stroke draw effect
-                    </button>
-                  </div>
-                </div>
-
-                <div className="pg-group pg-section-grid--full">
-                  <span className="pg-label">Shadow</span>
-                  <div className="pg-row">
-                    <button
-                      className={`pg-toggle${state.shadow ? ' active' : ''}`}
-                      onClick={() => set('shadow', !state.shadow)}
-                    >
-                      <span className="pg-toggle-track"><span className="pg-toggle-thumb" /></span>
-                      Drop shadow
-                    </button>
-                  </div>
-                </div>
 
               </div>
             </div>
@@ -567,9 +548,8 @@ export function Playground() {
                 springPop={state.animation === 'springPop' || undefined}
                 decay={state.animation === 'decay' || undefined}
                 magnetPulse={state.animation === 'magnetPulse' || undefined}
-                slingshot={state.animation === 'slingshot' || undefined}
                 wobbleSpring={state.animation === 'wobbleSpring' || undefined}
-                draw={state.draw || undefined}
+                draw={state.animation === 'draw' || undefined}
                 trigger={state.trigger !== 'auto' ? state.trigger : undefined}
                 speed={state.speed}
                 duration={durNum}
@@ -577,7 +557,6 @@ export function Playground() {
                 iterationCount={iterCount}
                 easing={state.easing || undefined}
                 opacity={state.opacity !== 1 ? state.opacity : undefined}
-                shadow={state.shadow || undefined}
               />
             </div>
             <div className="pg-preview-meta">
