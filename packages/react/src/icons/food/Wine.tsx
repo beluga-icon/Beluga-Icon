@@ -16,8 +16,8 @@ export const WineIcon = forwardRef<SVGSVGElement, IconProps>(function WineIcon(p
   return (
     <Icon ref={ref} {...props}>
       <path d="M8 22h8"/>
-  <path d="M7 11 12 2l5 9c0 2.76-2.24 5-5 5s-5-2.24-5-5Z"/>
-  <path d="M12 17v5"/>
+  <path d="M12 16v6"/>
+  <path d="M7 3C6 7 8 13 10 16h4c2-3 4-9 3-13Z"/>
     </Icon>
   )
 })

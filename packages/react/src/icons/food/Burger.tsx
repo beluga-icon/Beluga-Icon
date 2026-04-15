@@ -15,11 +15,10 @@ export const BurgerMeta: IconMeta = {
 export const BurgerIcon = forwardRef<SVGSVGElement, IconProps>(function BurgerIcon(props, ref) {
   return (
     <Icon ref={ref} {...props}>
-      <path d="M12 2a9 9 0 0 1 9 9"/>
-  <path d="M3 12h18"/>
-  <path d="M3 15h18"/>
-  <path d="M6 19H3a1 1 0 0 1-1-1v-1a1 1 0 0 1 1-1h18a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1h-3"/>
-  <path d="M12 2a9 9 0 0 0-9 9"/>
+      <path d="M3 11a9 9 0 0 1 18 0Z"/>
+  <path d="M3 14h18"/>
+  <path d="M3 17h18"/>
+  <path d="M4 19h16a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-1a1 1 0 0 1 1-1Z"/>
     </Icon>
   )
 })
