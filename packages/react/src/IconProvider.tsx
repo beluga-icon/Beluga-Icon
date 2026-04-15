@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react'
 import type { ReactNode } from 'react'
-import type { IconSize, IconFlip, IconVariant, AnimationSpeed, AnimationTrigger } from '@beluga-icon/core'
+import type { IconSize, IconFlip, IconVariant, AnimationSpeed, AnimationTrigger, AnimationType, AnimConfig } from '@beluga-icon/core'
 
 /**
  * Subset of IconBaseProps that can be set as global defaults.
@@ -12,6 +12,12 @@ import type { IconSize, IconFlip, IconVariant, AnimationSpeed, AnimationTrigger 
  * injecting CSS classes around every icon's own className in the subtree.
  */
 export interface IconContextValue {
+  /**
+   * Unified animation default — applies to all icons in the subtree unless
+   * an individual icon overrides it with its own `animate` prop or a boolean flag.
+   */
+  animate?: AnimationType | AnimConfig
+
   size?: IconSize
   color?: string
   strokeWidth?: number

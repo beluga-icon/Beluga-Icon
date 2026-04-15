@@ -31,10 +31,48 @@ export type AnimationType =
   | 'springPop' | 'decay' | 'magnetPulse' | 'wobbleSpring'
 
 /**
+ * Object form of the `animate` prop — lets you pass animation type together
+ * with timing options in a single, self-describing value.
+ *
+ * @example
+ * <HeartIcon animate={{ type: 'springPop', trigger: 'hover' }} />
+ */
+export interface AnimConfig {
+  /** The animation to play */
+  type: AnimationType
+  /** Animation speed preset (overridden by `duration`) */
+  speed?: AnimationSpeed
+  /** Custom duration in milliseconds — takes precedence over `speed` */
+  duration?: number
+  /** Start delay in milliseconds */
+  delay?: number
+  /** How many times to run (or 'infinite') */
+  iterationCount?: number | 'infinite'
+  /** CSS easing or a named spring preset (e.g. 'spring-soft') */
+  easing?: string
+  /** When to start playing */
+  trigger?: AnimationTrigger
+  /** Play only once, then stop */
+  playOnce?: boolean
+}
+
+/**
  * Base props shared across all framework adapters.
  * Each framework package (React, Vue, Svelte…) maps these to its own prop types.
  */
 export interface IconBaseProps {
+  /**
+   * Unified animation prop — the recommended way to animate an icon.
+   * Accepts an animation name string or a full config object.
+   *
+   * Takes priority over the individual boolean animation props when both are set.
+   *
+   * @example
+   * <HeartIcon animate="spin" />
+   * <HeartIcon animate={{ type: 'heartbeat', trigger: 'hover', speed: 'fast' }} />
+   */
+  animate?: AnimationType | AnimConfig
+
   /** Icon size — named variant or pixel value */
   size?: IconSize
   /** Stroke/fill color — any valid CSS color */

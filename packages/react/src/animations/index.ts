@@ -1,0 +1,5 @@
+export type { AnimKey } from './types'
+export { ANIM_PRIORITY, ONCE_BY_DEFAULT, WAAPI_ANIMS, DRAW_ANIMS, animClass } from './types'
+export { ensureAnimStyles, resolveAnimDuration, resolveEasing } from './css-animations'
+export { ensureDrawStyles } from './draw-animations'
+export { simulateSpring, dampedOscillation, buildWaapiKeyframes } from './waapi-animations'
