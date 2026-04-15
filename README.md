@@ -176,6 +176,24 @@ npm run release    # publish to npm (run by CI)
 
 ---
 
+---
+SVG Drawing Standarts : 
+
+Draw a [ICON_NAME] icon as SVG following these rules:
+- viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2", stroke-linecap="round", stroke-linejoin="round"
+- No width/height attributes on the SVG element
+- Use only <path>, <circle>, or <line> elements
+- No fill on any element, no hardcoded colors, no transforms, no groups
+- Stroke-only style (outline, not filled shapes)
+- All corners and line ends must be round
+- Icon should fill most of the 24x24 canvas with ~1-2px padding from edges
+- Keep it minimal and readable at 16px size
+- The icon must be immediately and unambiguously recognizable as the object it represents — this will be used in a real production icon library, so accuracy and visual clarity are critical
+
+---
+
+
+
 ## License
 
 MIT © Beluga Icon Contributors
