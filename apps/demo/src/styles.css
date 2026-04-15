@@ -40,6 +40,10 @@ html.dark {
 /* ── Base ────────────────────────────────────────────────── */
 html, body { height: 100%; }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background: var(--bg);
