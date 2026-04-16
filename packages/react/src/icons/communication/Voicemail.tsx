@@ -15,9 +15,9 @@ export const VoicemailMeta: IconMeta = {
 export const VoicemailIcon = forwardRef<SVGSVGElement, IconProps>(function VoicemailIcon(props, ref) {
   return (
     <Icon ref={ref} {...props}>
-      <circle cx="6" cy="12" r="4"/>
-  <circle cx="18" cy="12" r="4"/>
-  <line x1="6" y1="16" x2="18" y2="16"/>
+      <circle cx="6" cy="12" r="3.5"/>
+  <circle cx="18" cy="12" r="3.5"/>
+  <path d="M6 15.5 Q12 17 18 15.5"/>
     </Icon>
   )
 })

@@ -16,9 +16,9 @@ export const BabyIcon = forwardRef<SVGSVGElement, IconProps>(function BabyIcon(p
   return (
     <Icon ref={ref} {...props}>
       <circle cx="12" cy="7" r="4"/>
-  <path d="M8 15c-2.5 1-4 3-4 5h16c0-2-1.5-4-4-5"/>
-  <path d="M9 11c-1 1.5-1 3 0 4"/>
-  <path d="M15 11c1 1.5 1 3 0 4"/>
+  <path d="M9 11Q6 13 6 17Q6 21 12 21Q18 21 18 17Q18 13 15 11"/>
+  <path d="M7 13Q5 11 5 9"/>
+  <path d="M17 13Q19 11 19 9"/>
     </Icon>
   )
 })

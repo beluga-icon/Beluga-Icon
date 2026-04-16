@@ -15,10 +15,10 @@ export const MushroomMeta: IconMeta = {
 export const MushroomIcon = forwardRef<SVGSVGElement, IconProps>(function MushroomIcon(props, ref) {
   return (
     <Icon ref={ref} {...props}>
-      <path d="M3 14A9 9 0 0 1 21 14" />
-      <path d="M3 14C5 16 9 16 9 14" />
-      <path d="M21 14C19 16 15 16 15 14" />
-      <path d="M9 14v8h6v-8" />
+      <path d="M3 14A9 9 0 0 1 21 14"/>
+  <path d="M3 14C5 16 9 16 9 14"/>
+  <path d="M21 14C19 16 15 16 15 14"/>
+  <path d="M9 14v8h6v-8"/>
     </Icon>
   )
 })

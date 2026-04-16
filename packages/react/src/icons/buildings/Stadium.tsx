@@ -15,11 +15,10 @@ export const StadiumMeta: IconMeta = {
 export const StadiumIcon = forwardRef<SVGSVGElement, IconProps>(function StadiumIcon(props, ref) {
   return (
     <Icon ref={ref} {...props}>
-      <path d="M4 22V12C4 7 7.6 3 12 3s8 4 8 9v10"/>
-  <path d="M2 22h20"/>
-  <path d="M7 22v-3"/>
-  <path d="M17 22v-3"/>
-  <ellipse cx="12" cy="12" rx="4" ry="2"/>
+      <path d="M3 21Q3 4 12 4Q21 4 21 21"/>
+  <path d="M7 21Q7 9 12 9Q17 9 17 21"/>
+  <ellipse cx="12" cy="18" rx="3.5" ry="1.5"/>
+  <line x1="2" y1="21" x2="22" y2="21"/>
     </Icon>
   )
 })

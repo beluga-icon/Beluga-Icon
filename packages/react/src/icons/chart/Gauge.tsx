@@ -15,9 +15,9 @@ export const GaugeMeta: IconMeta = {
 export const GaugeIcon = forwardRef<SVGSVGElement, IconProps>(function GaugeIcon(props, ref) {
   return (
     <Icon ref={ref} {...props}>
-      <path d="M6 20A10 10 0 1 1 18 20" />
-      <circle cx="12" cy="12" r="2" />
-      <path d="M12 12L5 5" />
+      <path d="M6 20A10 10 0 1 1 18 20"/>
+  <circle cx="12" cy="12" r="2"/>
+  <path d="M12 12L5 5"/>
     </Icon>
   )
 })

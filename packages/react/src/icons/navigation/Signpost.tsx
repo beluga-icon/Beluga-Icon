@@ -15,9 +15,9 @@ export const SignpostMeta: IconMeta = {
 export const SignpostIcon = forwardRef<SVGSVGElement, IconProps>(function SignpostIcon(props, ref) {
   return (
     <Icon ref={ref} {...props}>
-      <path d="M12 2v20" />
-      <path d="M12 7H18L21 9 18 11H12Z" />
-      <path d="M12 13H6L3 15 6 17H12Z" />
+      <path d="M12 2v20"/>
+  <path d="M12 7H18L21 9 18 11H12Z"/>
+  <path d="M12 13H6L3 15 6 17H12Z"/>
     </Icon>
   )
 })

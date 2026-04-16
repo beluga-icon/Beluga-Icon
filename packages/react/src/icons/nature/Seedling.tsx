@@ -15,10 +15,10 @@ export const SeedlingMeta: IconMeta = {
 export const SeedlingIcon = forwardRef<SVGSVGElement, IconProps>(function SeedlingIcon(props, ref) {
   return (
     <Icon ref={ref} {...props}>
-      <path d="M12 22v-7" />
-      <path d="M12 15C9 14 6 11 7 9C8 7 12 10 12 15" />
-      <path d="M12 15C15 14 18 11 17 9C16 7 12 10 12 15" />
-      <path d="M9 22h6" />
+      <path d="M12 22v-7"/>
+  <path d="M12 15C9 14 6 11 7 9C8 7 12 10 12 15"/>
+  <path d="M12 15C15 14 18 11 17 9C16 7 12 10 12 15"/>
+  <path d="M9 22h6"/>
     </Icon>
   )
 })
