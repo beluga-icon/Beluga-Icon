@@ -15,11 +15,22 @@ export const BrainCircuitMeta: IconMeta = {
 export const BrainCircuitIcon = forwardRef<SVGSVGElement, IconProps>(function BrainCircuitIcon(props, ref) {
   return (
     <Icon ref={ref} {...props}>
-      <path d="M12 5a3 3 0 1 0-5.997.142 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/>
-  <path d="M12 5v13"/>
-  <path d="M12 9h6a2 2 0 0 1 0 4h-1"/>
-  <path d="M12 14h4a2 2 0 0 1 0 4"/>
-  <path d="M15 18h1a2 2 0 0 1 0 4"/>
+      <path d="M12 5a3 3 0 1 0-5.997.142 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 0 0 12 18"/>
+  
+  <path d="M12 5a3 3 0 1 1 5.997.142 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 0 1 12 18"/>
+  
+  <line x1="12" y1="5" x2="12" y2="18"/>
+  
+  <path d="M7 10h5"/>
+  <path d="M8 14h2v2"/>
+  
+  <path d="M17 10h-5"/>
+  <path d="M16 14h-2v2"/>
+  
+  <circle cx="7" cy="10" r="1" fill="currentColor" stroke="none"/>
+  <circle cx="17" cy="10" r="1" fill="currentColor" stroke="none"/>
+  <circle cx="10" cy="16" r="1" fill="currentColor" stroke="none"/>
+  <circle cx="14" cy="16" r="1" fill="currentColor" stroke="none"/>
     </Icon>
   )
 })

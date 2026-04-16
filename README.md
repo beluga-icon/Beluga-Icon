@@ -188,7 +188,6 @@ Draw a [ICON_NAME] icon as SVG following these rules:
 - All corners and line ends must be round
 - Icon should fill most of the 24x24 canvas with ~1-2px padding from edges
 - Keep it minimal and readable at 16px size
-- The icon must be immediately and unambiguously recognizable as the object it represents — this will be used in a real production icon library, so accuracy and visual clarity are critical
 
 ---
 

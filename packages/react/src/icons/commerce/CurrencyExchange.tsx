@@ -15,9 +15,10 @@ export const CurrencyExchangeMeta: IconMeta = {
 export const CurrencyExchangeIcon = forwardRef<SVGSVGElement, IconProps>(function CurrencyExchangeIcon(props, ref) {
   return (
     <Icon ref={ref} {...props}>
-      <path d="M3 7V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2"/>
-  <path d="m3 11 4-4-4-4"/>
-  <path d="M7 7H1"/>
+      <path d="M2 8h18"/>
+  <path d="M16 4l4 4-4 4"/>
+  <path d="M22 16H4"/>
+  <path d="M8 20l-4-4 4-4"/>
     </Icon>
   )
 })

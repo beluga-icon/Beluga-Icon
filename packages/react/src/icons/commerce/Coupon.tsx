@@ -15,10 +15,11 @@ export const CouponMeta: IconMeta = {
 export const CouponIcon = forwardRef<SVGSVGElement, IconProps>(function CouponIcon(props, ref) {
   return (
     <Icon ref={ref} {...props}>
-      <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18"/>
-  <circle cx="14" cy="10" r="2"/>
-  <path d="m10 14 4-4"/>
-  <circle cx="12" cy="14" r="2"/>
+      <path d="M4 5L7.5 5a1.5 1.5 0 0 0 3 0L20 5a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2L10.5 19a1.5 1.5 0 0 0-3 0L4 19a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/>
+  <line x1="9" y1="7.5" x2="9" y2="16.5" strokeDasharray="2 2"/>
+  <circle cx="14.5" cy="10" r="1.2"/>
+  <circle cx="18" cy="14" r="1.2"/>
+  <line x1="13.5" y1="15" x2="19" y2="9"/>
     </Icon>
   )
 })

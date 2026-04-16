@@ -15,10 +15,9 @@ export const ResizeHandleMeta: IconMeta = {
 export const ResizeHandleIcon = forwardRef<SVGSVGElement, IconProps>(function ResizeHandleIcon(props, ref) {
   return (
     <Icon ref={ref} {...props}>
-      <path d="M21 15v6h-6"/>
-  <path d="M21 21 9 9"/>
-  <path d="M21 9V3h-6"/>
-  <path d="M21 3 9 15"/>
+      <line x1="5" y1="19" x2="19" y2="5"/>
+  <polyline points="13,5 19,5 19,11"/>
+  <polyline points="11,19 5,19 5,13"/>
     </Icon>
   )
 })

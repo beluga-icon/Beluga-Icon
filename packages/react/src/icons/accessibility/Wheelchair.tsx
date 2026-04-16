@@ -15,11 +15,23 @@ export const WheelchairMeta: IconMeta = {
 export const WheelchairIcon = forwardRef<SVGSVGElement, IconProps>(function WheelchairIcon(props, ref) {
   return (
     <Icon ref={ref} {...props}>
-      <circle cx="12" cy="20" r="3"/>
-  <path d="M12 17V9"/>
-  <path d="m8 9 4-7 4 7"/>
-  <path d="M17 15h2a1 1 0 0 0 1-1v-3a2 2 0 0 0-2-2h-1"/>
-  <circle cx="8" cy="4" r="1"/>
+      <circle cx="11" cy="3" r="1"/>
+  
+  <path d="M11 4 L8 9"/>
+  
+  <path d="M10 7 L14 7"/>
+  
+  <path d="M8 9 L8 14"/>
+  
+  <path d="M8 14 L18 14"/>
+  
+  <path d="M18 14 L19 18"/>
+  
+  <path d="M16 18 L21 18"/>
+  
+  <circle cx="11" cy="19" r="5"/>
+  
+  <circle cx="20" cy="21" r="1.5"/>
     </Icon>
   )
 })

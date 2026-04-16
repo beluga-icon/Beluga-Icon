@@ -1,7 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M12 5a3 3 0 1 0-5.997.142 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/>
-  <path d="M12 5v13"/>
-  <path d="M12 9h6a2 2 0 0 1 0 4h-1"/>
-  <path d="M12 14h4a2 2 0 0 1 0 4"/>
-  <path d="M15 18h1a2 2 0 0 1 0 4"/>
+  <!-- Left brain lobe -->
+  <path d="M12 5a3 3 0 1 0-5.997.142 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 0 0 12 18"/>
+  <!-- Right brain lobe (mirrored) -->
+  <path d="M12 5a3 3 0 1 1 5.997.142 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 0 1 12 18"/>
+  <!-- Center spine -->
+  <line x1="12" y1="5" x2="12" y2="18"/>
+  <!-- Circuit traces - left -->
+  <path d="M7 10h5"/>
+  <path d="M8 14h2v2"/>
+  <!-- Circuit traces - right -->
+  <path d="M17 10h-5"/>
+  <path d="M16 14h-2v2"/>
+  <!-- Circuit nodes -->
+  <circle cx="7" cy="10" r="1" fill="currentColor" stroke="none"/>
+  <circle cx="17" cy="10" r="1" fill="currentColor" stroke="none"/>
+  <circle cx="10" cy="16" r="1" fill="currentColor" stroke="none"/>
+  <circle cx="14" cy="16" r="1" fill="currentColor" stroke="none"/>
 </svg>

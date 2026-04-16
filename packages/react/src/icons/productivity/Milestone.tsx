@@ -15,8 +15,8 @@ export const MilestoneMeta: IconMeta = {
 export const MilestoneIcon = forwardRef<SVGSVGElement, IconProps>(function MilestoneIcon(props, ref) {
   return (
     <Icon ref={ref} {...props}>
-      <path d="M12 2v20"/>
-  <path d="M12 7l8 5-8 5V7Z"/>
+      <path d="M5 21V3"/>
+  <path d="M5 3h13l3 6-3 6H5z"/>
     </Icon>
   )
 })
