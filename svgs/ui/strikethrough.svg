@@ -1,5 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M17.3 4.9c-2.3-.6-4.4-1-6.2-.9-2.7 0-5.3.7-5.3 3.6 0 1.5 1.8 3.3 6 3.9h.5"/>
-  <path d="M8.7 19.1c2.3.6 4.4 1 6.2.9 2.7 0 5.3-.7 5.3-3.6 0-1.5-1.8-3.3-6-3.9"/>
+  <!-- Letter S: upper bowl -->
+  <path d="M17 8C17 4 7 4 7 12"/>
+  <!-- Letter S: lower bowl -->
+  <path d="M17 12C17 20 7 20 7 16"/>
+  <!-- Strikethrough line -->
   <line x1="2" y1="12" x2="22" y2="12"/>
 </svg>
