@@ -15,7 +15,8 @@ export const CloudyMeta: IconMeta = {
 export const CloudyIcon = forwardRef<SVGSVGElement, IconProps>(function CloudyIcon(props, ref) {
   return (
     <Icon ref={ref} {...props}>
-      <path d="M17.5 21H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z" />
+      <path d="M17.5 12a1 1 0 1 1 0 9H9.006a7 7 0 1 1 6.702-9z" />
+      <path d="M21.832 9A3 3 0 0 0 19 7h-2.207a5.5 5.5 0 0 0-10.72.61" />
     </Icon>
   )
 })

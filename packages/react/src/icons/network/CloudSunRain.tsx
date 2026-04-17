@@ -21,9 +21,9 @@ export const CloudSunRainIcon = forwardRef<SVGSVGElement, IconProps>(
         <path d="M20 12h2" />
         <path d="m19.07 4.93-1.41 1.41" />
         <path d="M15.947 12.65a4 4 0 0 0-5.925-4.128" />
-        <path d="M7 19a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6" />
-        <line x1="8" y1="20" x2="8" y2="23" />
-        <line x1="12" y1="20" x2="12" y2="23" />
+        <path d="M3 20a5 5 0 1 1 8.9-4H13a3 3 0 0 1 2 5.24" />
+        <path d="M11 20v2" />
+        <path d="M7 19v2" />
       </Icon>
     )
   },

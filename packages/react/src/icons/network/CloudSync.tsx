@@ -16,11 +16,11 @@ export const CloudSyncIcon = forwardRef<SVGSVGElement, IconProps>(
   function CloudSyncIcon(props, ref) {
     return (
       <Icon ref={ref} {...props}>
-        <path d="M20 17.58A5 5 0 0 0 18 8h-1.26A8 8 0 1 0 4 16.25" />
-        <path d="M9 20a3 3 0 0 1 6 0" />
-        <path d="M15 20a3 3 0 0 1-6 0" />
-        <path d="M13.5 18.5 15 20 16.5 18.5" />
-        <path d="M7.5 21.5 9 20 10.5 21.5" />
+        <path d="m17 18-1.535 1.605a5 5 0 0 1-8-1.5" />
+        <path d="M17 22v-4h-4" />
+        <path d="M20.996 15.251A4.5 4.5 0 0 0 17.495 8h-1.79a7 7 0 1 0-12.709 5.607" />
+        <path d="M7 10v4h4" />
+        <path d="m7 14 1.535-1.605a5 5 0 0 1 8 1.5" />
       </Icon>
     )
   },
