@@ -12,12 +12,14 @@ export const ChevronLeftMeta: IconMeta = {
   version: '0.1.0',
 }
 
-export const ChevronLeftIcon = forwardRef<SVGSVGElement, IconProps>(function ChevronLeftIcon(props, ref) {
-  return (
-    <Icon ref={ref} {...props}>
-      <polyline points="15 18 9 12 15 6"/>
-    </Icon>
-  )
-})
+export const ChevronLeftIcon = forwardRef<SVGSVGElement, IconProps>(
+  function ChevronLeftIcon(props, ref) {
+    return (
+      <Icon ref={ref} {...props}>
+        <path d="m15 18-6-6 6-6" />
+      </Icon>
+    )
+  },
+)
 
 ChevronLeftIcon.displayName = 'ChevronLeftIcon'

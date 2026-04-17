@@ -18,9 +18,9 @@ export const ArrowUpWideNarrowIcon = forwardRef<SVGSVGElement, IconProps>(
       <Icon ref={ref} {...props}>
         <path d="m3 8 4-4 4 4" />
         <path d="M7 4v16" />
-        <path d="M11 12h10" />
-        <path d="M11 16h7" />
-        <path d="M11 20h4" />
+        <path d="M11 12h9" />
+        <path d="M11 16h6" />
+        <path d="M11 20h3" />
       </Icon>
     )
   },

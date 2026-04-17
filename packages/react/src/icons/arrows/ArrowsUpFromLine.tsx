@@ -17,9 +17,9 @@ export const ArrowsUpFromLineIcon = forwardRef<SVGSVGElement, IconProps>(
     return (
       <Icon ref={ref} {...props}>
         <path d="m4 6 3-3 3 3" />
-        <path d="M7 17V3" />
+        <path d="M7 16V3" />
         <path d="m14 6 3-3 3 3" />
-        <path d="M17 17V3" />
+        <path d="M17 16V3" />
         <path d="M4 21h16" />
       </Icon>
     )

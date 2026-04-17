@@ -15,8 +15,8 @@ export const ArrowUpMeta: IconMeta = {
 export const ArrowUpIcon = forwardRef<SVGSVGElement, IconProps>(function ArrowUpIcon(props, ref) {
   return (
     <Icon ref={ref} {...props}>
-      <line x1="12" y1="19" x2="12" y2="5"/>
-  <polyline points="5 12 12 5 19 12"/>
+      <path d="M12 19V5" />
+      <path d="m5 12 7-7 7 7" />
     </Icon>
   )
 })

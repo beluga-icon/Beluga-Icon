@@ -16,10 +16,10 @@ export const ArrowDownUpIcon = forwardRef<SVGSVGElement, IconProps>(
   function ArrowDownUpIcon(props, ref) {
     return (
       <Icon ref={ref} {...props}>
-        <path d="m3 16 4 4 4-4" />
-        <path d="M7 20V4" />
-        <path d="m21 8-4-4-4 4" />
-        <path d="M17 4v16" />
+        <path d="m3 17 4 4 4-4" />
+        <path d="M7 21V3" />
+        <path d="m21 7-4-4-4 4" />
+        <path d="M17 3v18" />
       </Icon>
     )
   },

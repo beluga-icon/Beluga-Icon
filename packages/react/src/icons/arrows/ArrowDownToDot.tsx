@@ -16,8 +16,8 @@ export const ArrowDownToDotIcon = forwardRef<SVGSVGElement, IconProps>(
   function ArrowDownToDotIcon(props, ref) {
     return (
       <Icon ref={ref} {...props}>
-        <path d="M12 2v14" />
-        <path d="m19 9-7 7-7-7" />
+        <path d="M12 2v13" />
+        <path d="m19 8-7 7-7-7" />
         <circle cx="12" cy="21" r="1" />
       </Icon>
     )

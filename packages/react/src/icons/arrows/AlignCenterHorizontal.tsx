@@ -17,10 +17,8 @@ export const AlignCenterHorizontalIcon = forwardRef<SVGSVGElement, IconProps>(
     return (
       <Icon ref={ref} {...props}>
         <path d="M2 12h20" />
-        <path d="M10 16v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-4" />
-        <path d="M10 8V4a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v4" />
-        <path d="M20 16v1a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-1" />
-        <path d="M14 8V7c0-1.1.9-2 2-2h2a2 2 0 0 1 2 2v1" />
+        <rect width="6" height="16" x="4" y="4" rx="2" />
+        <rect width="6" height="10" x="14" y="7" rx="2" />
       </Icon>
     )
   },

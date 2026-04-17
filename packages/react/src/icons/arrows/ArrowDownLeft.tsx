@@ -12,13 +12,15 @@ export const ArrowDownLeftMeta: IconMeta = {
   version: '0.1.0',
 }
 
-export const ArrowDownLeftIcon = forwardRef<SVGSVGElement, IconProps>(function ArrowDownLeftIcon(props, ref) {
-  return (
-    <Icon ref={ref} {...props}>
-      <line x1="17" y1="7" x2="7" y2="17"/>
-  <polyline points="17 17 7 17 7 7"/>
-    </Icon>
-  )
-})
+export const ArrowDownLeftIcon = forwardRef<SVGSVGElement, IconProps>(
+  function ArrowDownLeftIcon(props, ref) {
+    return (
+      <Icon ref={ref} {...props}>
+        <path d="M17 7 7 17" />
+        <path d="M17 17H7V7" />
+      </Icon>
+    )
+  },
+)
 
 ArrowDownLeftIcon.displayName = 'ArrowDownLeftIcon'

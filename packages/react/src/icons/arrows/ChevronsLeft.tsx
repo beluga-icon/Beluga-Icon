@@ -16,8 +16,8 @@ export const ChevronsLeftIcon = forwardRef<SVGSVGElement, IconProps>(
   function ChevronsLeftIcon(props, ref) {
     return (
       <Icon ref={ref} {...props}>
-        <path d="m11 17-5-5 5-5" />
-        <path d="m18 17-5-5 5-5" />
+        <path d="m10 17-5-5 5-5" />
+        <path d="m17 17-5-5 5-5" />
       </Icon>
     )
   },

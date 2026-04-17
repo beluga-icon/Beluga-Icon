@@ -16,7 +16,7 @@ export const AlignVerticalDistributeEndIcon = forwardRef<SVGSVGElement, IconProp
   function AlignVerticalDistributeEndIcon(props, ref) {
     return (
       <Icon ref={ref} {...props}>
-        <rect width="14" height="6" x="5" y="14" rx="2" />
+        <rect width="16" height="6" x="4" y="14" rx="2" />
         <rect width="10" height="6" x="7" y="4" rx="2" />
         <path d="M2 20h20" />
         <path d="M2 10h20" />

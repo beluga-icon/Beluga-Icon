@@ -16,8 +16,8 @@ export const AlignHorizontalJustifyStartIcon = forwardRef<SVGSVGElement, IconPro
   function AlignHorizontalJustifyStartIcon(props, ref) {
     return (
       <Icon ref={ref} {...props}>
-        <rect width="6" height="14" x="6" y="5" rx="2" />
-        <rect width="6" height="10" x="16" y="7" rx="2" />
+        <rect width="6" height="12" x="6" y="6" rx="2" />
+        <rect width="6" height="8" x="16" y="8" rx="2" />
         <path d="M2 2v20" />
       </Icon>
     )

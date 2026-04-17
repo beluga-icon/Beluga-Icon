@@ -17,7 +17,7 @@ export const BetweenVerticalEndIcon = forwardRef<SVGSVGElement, IconProps>(
     return (
       <Icon ref={ref} {...props}>
         <rect width="7" height="13" x="3" y="3" rx="1" />
-        <path d="m9 22 3-3 3 3" />
+        <path d="m8 22 4-4 4 4" />
         <rect width="7" height="13" x="14" y="3" rx="1" />
       </Icon>
     )

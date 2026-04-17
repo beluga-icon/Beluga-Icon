@@ -12,16 +12,17 @@ export const AccessibilityMeta: IconMeta = {
   version: '0.1.0',
 }
 
-export const AccessibilityIcon = forwardRef<SVGSVGElement, IconProps>(function AccessibilityIcon(props, ref) {
-  return (
-    <Icon ref={ref} {...props}>
-      <circle cx="16" cy="4" r="1"/>
-  <path d="m18 19 1-7-6 1"/>
-  <path d="m5 8 3-3 5.5 3-2.36 3.5"/>
-  <path d="M4.24 14.5a5 5 0 0 0 6.88 6"/>
-  <path d="M13.76 17.5a5 5 0 0 0-6.88-6"/>
-    </Icon>
-  )
-})
+export const AccessibilityIcon = forwardRef<SVGSVGElement, IconProps>(
+  function AccessibilityIcon(props, ref) {
+    return (
+      <Icon ref={ref} {...props}>
+        <circle cx="12" cy="4" r="1" />
+        <path d="M12 5v9" />
+        <path d="M7 9h10" />
+        <path d="M9 20l3-6 3 6" />
+      </Icon>
+    )
+  },
+)
 
 AccessibilityIcon.displayName = 'AccessibilityIcon'

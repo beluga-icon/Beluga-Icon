@@ -17,7 +17,7 @@ export const ArrowUpFromDotIcon = forwardRef<SVGSVGElement, IconProps>(
     return (
       <Icon ref={ref} {...props}>
         <path d="m5 9 7-7 7 7" />
-        <path d="M12 16V2" />
+        <path d="M12 15V2" />
         <circle cx="12" cy="21" r="1" />
       </Icon>
     )

@@ -12,14 +12,16 @@ export const ArrowsLeftRightMeta: IconMeta = {
   version: '0.1.0',
 }
 
-export const ArrowsLeftRightIcon = forwardRef<SVGSVGElement, IconProps>(function ArrowsLeftRightIcon(props, ref) {
-  return (
-    <Icon ref={ref} {...props}>
-      <polyline points="8 8 4 12 8 16"/>
-  <line x1="4" y1="12" x2="20" y2="12"/>
-  <polyline points="16 8 20 12 16 16"/>
-    </Icon>
-  )
-})
+export const ArrowsLeftRightIcon = forwardRef<SVGSVGElement, IconProps>(
+  function ArrowsLeftRightIcon(props, ref) {
+    return (
+      <Icon ref={ref} {...props}>
+        <path d="m8 8-4 4 4 4" />
+        <path d="M4 12h16" />
+        <path d="m16 8 4 4-4 4" />
+      </Icon>
+    )
+  },
+)
 
 ArrowsLeftRightIcon.displayName = 'ArrowsLeftRightIcon'

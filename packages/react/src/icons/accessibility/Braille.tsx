@@ -15,15 +15,12 @@ export const BrailleMeta: IconMeta = {
 export const BrailleIcon = forwardRef<SVGSVGElement, IconProps>(function BrailleIcon(props, ref) {
   return (
     <Icon ref={ref} {...props}>
-      <circle cx="7" cy="7" r="1.5" fill="currentColor"/>
-  <circle cx="12" cy="7" r="1.5"/>
-  <circle cx="17" cy="7" r="1.5" fill="currentColor"/>
-  <circle cx="7" cy="12" r="1.5" fill="currentColor"/>
-  <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
-  <circle cx="17" cy="12" r="1.5"/>
-  <circle cx="7" cy="17" r="1.5"/>
-  <circle cx="12" cy="17" r="1.5" fill="currentColor"/>
-  <circle cx="17" cy="17" r="1.5"/>
+      <circle cx="8" cy="7" r="1.5" fill="currentColor" />
+      <circle cx="16" cy="7" r="1.5" />
+      <circle cx="8" cy="12" r="1.5" fill="currentColor" />
+      <circle cx="16" cy="12" r="1.5" fill="currentColor" />
+      <circle cx="8" cy="17" r="1.5" />
+      <circle cx="16" cy="17" r="1.5" fill="currentColor" />
     </Icon>
   )
 })

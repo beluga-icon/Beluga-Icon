@@ -12,14 +12,16 @@ export const ArrowCircleUpMeta: IconMeta = {
   version: '0.1.0',
 }
 
-export const ArrowCircleUpIcon = forwardRef<SVGSVGElement, IconProps>(function ArrowCircleUpIcon(props, ref) {
-  return (
-    <Icon ref={ref} {...props}>
-      <circle cx="12" cy="12" r="10"/>
-  <polyline points="8 12 12 8 16 12"/>
-  <line x1="12" y1="16" x2="12" y2="8"/>
-    </Icon>
-  )
-})
+export const ArrowCircleUpIcon = forwardRef<SVGSVGElement, IconProps>(
+  function ArrowCircleUpIcon(props, ref) {
+    return (
+      <Icon ref={ref} {...props}>
+        <circle cx="12" cy="12" r="10" />
+        <path d="M12 16V8" />
+        <path d="m8 12 4-4 4 4" />
+      </Icon>
+    )
+  },
+)
 
 ArrowCircleUpIcon.displayName = 'ArrowCircleUpIcon'

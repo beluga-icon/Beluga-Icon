@@ -16,8 +16,8 @@ export const AlignHorizontalSpaceBetweenIcon = forwardRef<SVGSVGElement, IconPro
   function AlignHorizontalSpaceBetweenIcon(props, ref) {
     return (
       <Icon ref={ref} {...props}>
-        <rect width="6" height="14" x="3" y="5" rx="2" />
-        <rect width="6" height="10" x="15" y="7" rx="2" />
+        <rect width="6" height="12" x="3" y="6" rx="2" />
+        <rect width="6" height="8" x="15" y="8" rx="2" />
         <path d="M3 2v20" />
         <path d="M21 2v20" />
       </Icon>

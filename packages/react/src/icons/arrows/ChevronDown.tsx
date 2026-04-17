@@ -12,12 +12,14 @@ export const ChevronDownMeta: IconMeta = {
   version: '0.1.0',
 }
 
-export const ChevronDownIcon = forwardRef<SVGSVGElement, IconProps>(function ChevronDownIcon(props, ref) {
-  return (
-    <Icon ref={ref} {...props}>
-      <polyline points="6 9 12 15 18 9"/>
-    </Icon>
-  )
-})
+export const ChevronDownIcon = forwardRef<SVGSVGElement, IconProps>(
+  function ChevronDownIcon(props, ref) {
+    return (
+      <Icon ref={ref} {...props}>
+        <path d="m6 9 6 6 6-6" />
+      </Icon>
+    )
+  },
+)
 
 ChevronDownIcon.displayName = 'ChevronDownIcon'
