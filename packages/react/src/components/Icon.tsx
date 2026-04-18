@@ -110,6 +110,7 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
       variant,
       opacity,
       iconStyle,
+      styleColors,
       // ---- Legacy boolean animation props (still supported, animate takes priority) ----
       spin,
       pulse,
@@ -510,7 +511,17 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
     )
 
     if (iconStyle) {
-      return <span className={`ppi-style-wrap ppi-style-${iconStyle}`}>{svgEl}</span>
+      const colorVars = styleColors
+        ? Object.fromEntries(Object.entries(styleColors).map(([k, v]) => [`--ppi-c-${k}`, v]))
+        : undefined
+      return (
+        <span
+          className={`ppi-style-wrap ppi-style-${iconStyle}`}
+          style={colorVars as React.CSSProperties}
+        >
+          {svgEl}
+        </span>
+      )
     }
 
     return svgEl

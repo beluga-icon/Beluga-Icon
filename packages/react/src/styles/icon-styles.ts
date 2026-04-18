@@ -7,6 +7,18 @@ import * as liquid from './presets/liquid'
 import * as shadow from './presets/shadow'
 import * as outlineRing from './presets/outline-ring'
 import * as badge from './presets/badge'
+import * as flat from './presets/flat'
+import * as outline from './presets/outline'
+import * as ghost from './presets/ghost'
+import * as neumorphic from './presets/neumorphic'
+import * as emboss from './presets/emboss'
+import * as inset from './presets/inset'
+import * as glow from './presets/glow'
+import * as ios from './presets/ios'
+import * as fluent from './presets/fluent'
+import * as metallic from './presets/metallic'
+import * as duotone from './presets/duotone'
+import * as aurora from './presets/aurora'
 
 type StylePreset = { className: string; css: string }
 
@@ -20,6 +32,18 @@ const STYLE_PRESETS: Record<string, StylePreset> = {
   shadow,
   'outline-ring': outlineRing,
   badge,
+  flat,
+  outline,
+  ghost,
+  neumorphic,
+  emboss,
+  inset,
+  glow,
+  ios,
+  fluent,
+  metallic,
+  duotone,
+  aurora,
 }
 
 const STYLE_ID = 'ppi-icon-styles'

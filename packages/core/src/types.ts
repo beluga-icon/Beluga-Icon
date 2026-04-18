@@ -21,6 +21,18 @@ export type IconStyleType =
   | 'shadow'
   | 'outline-ring'
   | 'badge'
+  | 'flat'
+  | 'outline'
+  | 'ghost'
+  | 'neumorphic'
+  | 'emboss'
+  | 'inset'
+  | 'glow'
+  | 'ios'
+  | 'fluent'
+  | 'metallic'
+  | 'duotone'
+  | 'aurora'
 
 /** Animation speed */
 export type AnimationSpeed = 'slow' | 'normal' | 'fast'
@@ -251,6 +263,15 @@ export interface IconBaseProps {
   opacity?: number
   /** Decorative container style rendered around the icon */
   iconStyle?: IconStyleType
+  /**
+   * Color tokens injected as CSS custom properties onto the style wrapper.
+   * Each key becomes `--ppi-c-{key}` on the wrapper span.
+   *
+   * @example
+   * <HomeIcon iconStyle="gradient" styleColors={{ from: '#4f46e5', to: '#c026d3' }} />
+   * <HomeIcon iconStyle="aurora"   styleColors={{ a: '#06b6d4', b: '#8b5cf6', c: '#f43f5e' }} />
+   */
+  styleColors?: Record<string, string>
 }
 
 /**

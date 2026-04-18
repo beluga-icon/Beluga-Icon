@@ -5,9 +5,9 @@ export const css = `
   padding: 14px;
   background: linear-gradient(
     135deg,
-    #4f46e5 0%,
-    #7c3aed 45%,
-    #c026d3 100%
+    var(--ppi-c-from, #4f46e5) 0%,
+    var(--ppi-c-mid, #7c3aed) 45%,
+    var(--ppi-c-to, #c026d3) 100%
   );
   outline: 1.5px solid rgba(255,255,255,0.15);
   outline-offset: -2px;

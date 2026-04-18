@@ -32,18 +32,53 @@ function toPascalCase(str: string): string {
     .join('')
 }
 
-const ICON_STYLES: { value: IconStyleType | 'none'; label: string; desc: string }[] = [
-  { value: 'none', label: 'None', desc: 'Ham ikon' },
-  { value: 'circle', label: 'Circle', desc: 'Dairesel arka plan' },
-  { value: 'rounded', label: 'Rounded', desc: 'Yuvarlatılmış kare' },
-  { value: 'glass', label: 'Glass', desc: 'Glassmorphism' },
-  { value: 'neon', label: 'Neon Ring', desc: 'Neon ışıltı çerçeve' },
-  { value: 'gradient', label: 'Gradient', desc: 'Gradient arka plan' },
-  { value: 'liquid', label: 'Liquid', desc: 'Sıvı organik şekil' },
-  { value: 'shadow', label: 'Shadow', desc: 'Yumuşak gölge kart' },
-  { value: 'outline-ring', label: 'Outline', desc: 'Çizgi çerçeve' },
-  { value: 'badge', label: 'Badge', desc: 'Pill rozet' },
-]
+const ICON_STYLES: { value: IconStyleType | 'none'; label: string; desc: string; group: string }[] =
+  [
+    { value: 'none', label: 'None', desc: 'Ham ikon', group: 'Base' },
+    { value: 'circle', label: 'Circle', desc: 'Dairesel arka plan', group: 'Classic' },
+    { value: 'rounded', label: 'Rounded', desc: 'Yuvarlatılmış kare', group: 'Classic' },
+    { value: 'shadow', label: 'Shadow', desc: 'Yumuşak gölge kart', group: 'Classic' },
+    { value: 'outline-ring', label: 'Ring', desc: 'Çizgi çerçeve', group: 'Classic' },
+    { value: 'badge', label: 'Badge', desc: 'Pill rozet', group: 'Classic' },
+    { value: 'flat', label: 'Flat', desc: 'Solid fill, beyaz ikon', group: 'Minimal' },
+    { value: 'outline', label: 'Outline', desc: 'Sadece border', group: 'Minimal' },
+    { value: 'ghost', label: 'Ghost', desc: 'Ultra-hafif tint + hover', group: 'Minimal' },
+    { value: 'glass', label: 'Glass', desc: 'Glassmorphism', group: 'Effects' },
+    { value: 'liquid', label: 'Liquid', desc: 'Apple Liquid Glass', group: 'Effects' },
+    { value: 'neon', label: 'Neon', desc: 'Neon glow çerçeve', group: 'Effects' },
+    { value: 'glow', label: 'Glow', desc: 'Animasyonlu halo', group: 'Effects' },
+    { value: 'neumorphic', label: 'Neumorphic', desc: 'Soft UI çift gölge', group: 'Depth' },
+    { value: 'emboss', label: 'Emboss', desc: '3D kabartma', group: 'Depth' },
+    { value: 'inset', label: 'Inset', desc: 'Pressed / depressed', group: 'Depth' },
+    { value: 'ios', label: 'iOS', desc: 'Squircle App Store', group: 'Platform' },
+    { value: 'fluent', label: 'Fluent', desc: 'Windows Fluent acrylic', group: 'Platform' },
+    { value: 'gradient', label: 'Gradient', desc: 'Renk: from / mid / to', group: 'Color' },
+    { value: 'metallic', label: 'Metallic', desc: 'Renk: light / base / dark', group: 'Color' },
+    { value: 'duotone', label: 'Duotone', desc: 'Renk: a / b', group: 'Color' },
+    { value: 'aurora', label: 'Aurora', desc: 'Animasyonlu renk: a/b/c', group: 'Color' },
+  ]
+
+const COLOR_INJECTABLE: Record<string, { key: string; label: string; default: string }[]> = {
+  gradient: [
+    { key: 'from', label: 'From', default: '#4f46e5' },
+    { key: 'mid', label: 'Mid', default: '#7c3aed' },
+    { key: 'to', label: 'To', default: '#c026d3' },
+  ],
+  metallic: [
+    { key: 'light', label: 'Light', default: '#e2e8f0' },
+    { key: 'base', label: 'Base', default: '#94a3b8' },
+    { key: 'dark', label: 'Dark', default: '#475569' },
+  ],
+  duotone: [
+    { key: 'a', label: 'Color A', default: '#0ea5e9' },
+    { key: 'b', label: 'Color B', default: '#8b5cf6' },
+  ],
+  aurora: [
+    { key: 'a', label: 'Color A', default: '#06b6d4' },
+    { key: 'b', label: 'Color B', default: '#8b5cf6' },
+    { key: 'c', label: 'Color C', default: '#f43f5e' },
+  ],
+}
 
 interface PropState {
   variant?: IconVariant
@@ -64,6 +99,7 @@ interface PropState {
   trigger: AnimationTrigger
   opacity: number
   iconStyle: IconStyleType | 'none'
+  styleColors: Record<string, string>
 }
 
 const SPRING_EASING_PRESETS = [
@@ -94,6 +130,7 @@ const DEFAULTS: PropState = {
   trigger: 'auto',
   opacity: 1,
   iconStyle: 'none',
+  styleColors: {},
 }
 
 function buildSnippet(name: string, s: PropState): string {
@@ -121,6 +158,12 @@ function buildSnippet(name: string, s: PropState): string {
   }
   if (s.opacity !== 1) attrs.push(`opacity={${s.opacity}}`)
   if (s.iconStyle !== 'none') attrs.push(`iconStyle="${s.iconStyle}"`)
+  if (s.iconStyle !== 'none' && Object.keys(s.styleColors).length > 0) {
+    const pairs = Object.entries(s.styleColors)
+      .map(([k, v]) => `${k}: '${v}'`)
+      .join(', ')
+    attrs.push(`styleColors={{ ${pairs} }}`)
+  }
 
   if (attrs.length === 0) return `<${name} />`
   if (attrs.length <= 2) return `<${name} ${attrs.join(' ')} />`
@@ -489,26 +532,96 @@ export function Playground() {
                 </span>
                 <span className="pg-section-title">Icon Style</span>
                 {state.iconStyle !== 'none' && (
-                  <button className="pg-reset-btn" onClick={() => set('iconStyle', 'none')}>
+                  <button
+                    className="pg-reset-btn"
+                    onClick={() => {
+                      set('iconStyle', 'none')
+                      set('styleColors', {})
+                    }}
+                  >
                     <RefreshIcon size="xs" /> Reset
                   </button>
                 )}
               </div>
               <div className="pg-section-grid">
-                <div className="pg-group pg-section-grid--full">
-                  <div className="pg-row" style={{ flexWrap: 'wrap' }}>
-                    {ICON_STYLES.map(({ value, label, desc }) => (
-                      <button
-                        key={value}
-                        title={desc}
-                        className={`pg-btn${state.iconStyle === value ? ' active' : ''}`}
-                        onClick={() => set('iconStyle', value)}
+                {/* Group'lara göre ayrılmış preset butonları */}
+                {(
+                  ['Base', 'Classic', 'Minimal', 'Effects', 'Depth', 'Platform', 'Color'] as const
+                ).map((group) => {
+                  const items = ICON_STYLES.filter((s) => s.group === group)
+                  return (
+                    <div key={group} className="pg-group pg-section-grid--full">
+                      <span
+                        className="pg-label"
+                        style={{
+                          fontSize: 10,
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.08em',
+                          opacity: 0.5,
+                        }}
                       >
-                        {label}
-                      </button>
-                    ))}
+                        {group}
+                      </span>
+                      <div className="pg-row" style={{ flexWrap: 'wrap' }}>
+                        {items.map(({ value, label, desc }) => (
+                          <button
+                            key={value}
+                            title={desc}
+                            className={`pg-btn${state.iconStyle === value ? ' active' : ''}`}
+                            onClick={() => {
+                              set('iconStyle', value)
+                              // color-injectable preset seçilince default renkleri yükle
+                              const inj = COLOR_INJECTABLE[value as string]
+                              if (inj) {
+                                const defaults: Record<string, string> = {}
+                                inj.forEach(({ key, default: d }) => {
+                                  defaults[key] = d
+                                })
+                                set('styleColors', defaults)
+                              } else {
+                                set('styleColors', {})
+                              }
+                            }}
+                          >
+                            {label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )
+                })}
+
+                {/* Color injection UI — sadece renk destekli presetlerde göster */}
+                {COLOR_INJECTABLE[state.iconStyle as string] && (
+                  <div className="pg-group pg-section-grid--full">
+                    <span className="pg-label">Style Colors</span>
+                    <div className="pg-anim-sub">
+                      {COLOR_INJECTABLE[state.iconStyle as string].map(({ key, label }) => (
+                        <div key={key} className="pg-group">
+                          <span className="pg-label">{label}</span>
+                          <div className="pg-color-row">
+                            <input
+                              type="color"
+                              className="pg-color-swatch"
+                              value={state.styleColors[key] ?? '#000000'}
+                              onChange={(e) =>
+                                set('styleColors', { ...state.styleColors, [key]: e.target.value })
+                              }
+                            />
+                            <input
+                              type="text"
+                              className="pg-color-text"
+                              value={state.styleColors[key] ?? ''}
+                              onChange={(e) =>
+                                set('styleColors', { ...state.styleColors, [key]: e.target.value })
+                              }
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
 
@@ -694,6 +807,9 @@ export function Playground() {
                 flip={state.flip}
                 variant={state.variant}
                 iconStyle={state.iconStyle !== 'none' ? state.iconStyle : undefined}
+                styleColors={
+                  Object.keys(state.styleColors).length > 0 ? state.styleColors : undefined
+                }
                 spin={state.animation === 'spin' || undefined}
                 pulse={state.animation === 'pulse' || undefined}
                 bounce={state.animation === 'bounce' || undefined}
