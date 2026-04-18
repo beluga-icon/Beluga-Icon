@@ -1,20 +1,25 @@
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  type RefObject,
+  type SVGProps,
+} from 'react'
 import { resolveSize } from '@beluga-icon/core'
 import type { IconBaseProps, IconFlip, AnimConfig, AnimationType } from '@beluga-icon/core'
-import { ensureIconStyles } from '../styles/icon-styles'
-import { forwardRef, useEffect, useLayoutEffect, useRef, type SVGProps } from 'react'
-
-// useLayoutEffect fires synchronously after DOM mutations, before the browser paints.
-// This ensures path lengths are measured and CSS custom properties set before the first
-// animation frame — avoiding the default-value flash seen with useEffect.
-// Falls back to useEffect in SSR environments where the DOM is unavailable.
-const useDrawEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
 import { useIconContext } from '../IconProvider'
+import { ensureIconStyles } from '../styles/icon-styles'
+import { useTriggerAnimation } from '../hooks/useTriggerAnimation'
 import {
   type AnimKey,
   ANIM_PRIORITY,
   ONCE_BY_DEFAULT,
   WAAPI_ANIMS,
   DRAW_ANIMS,
+  ANIMATE_ONLY_KEYS,
+  SVG_GEOMETRY_SELECTOR,
   animClass,
   ensureAnimStyles,
   resolveAnimDuration,
@@ -22,6 +27,16 @@ import {
   ensureDrawStyles,
   buildWaapiKeyframes,
 } from '../animations'
+
+// useLayoutEffect fires synchronously after DOM mutations, before the browser paints,
+// ensuring path lengths are measured before the first animation frame.
+// Falls back to useEffect in SSR environments where the DOM is unavailable.
+const useDrawEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
+
+// Fraction of total path length used as the travelling segment in trace animation.
+const TRACE_SEGMENT_RATIO = 0.3
+// Minimum segment length so very short paths still produce a visible trace.
+const MIN_TRACE_LEN = 20
 
 export interface IconProps
   extends
@@ -156,13 +171,17 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
     const ctx = useIconContext()
     const { classNamePrefix, classNameSuffix } = ctx
 
-    // Internal ref for draw / WAAPI effects; merges the forwarded ref too.
+    // Internal refs: svgRef for DOM access, waapiAnimRef for WAAPI lifecycle.
     const svgRef = useRef<SVGSVGElement>(null)
-    const setRef = (el: SVGSVGElement | null) => {
-      ;(svgRef as React.MutableRefObject<SVGSVGElement | null>).current = el
-      if (typeof ref === 'function') ref(el)
-      else if (ref) (ref as React.MutableRefObject<SVGSVGElement | null>).current = el
-    }
+    const waapiAnimRef = useRef<Animation | null>(null)
+    const setRef = useCallback(
+      (el: SVGSVGElement | null) => {
+        ;(svgRef as RefObject<SVGSVGElement | null>).current = el
+        if (typeof ref === 'function') ref(el)
+        else if (ref) (ref as RefObject<SVGSVGElement | null>).current = el
+      },
+      [ref],
+    )
 
     // ---------------------------------------------------------------------------
     // Size & color
@@ -222,51 +241,54 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
     if (animConfig) {
       activeAnim = animConfig.type as AnimKey
     } else {
-      // Legacy boolean prop resolution via priority list
-      const animFlags: Record<AnimKey, boolean> = {
-        spin: spin ?? ctx.spin ?? false,
-        pulse: pulse ?? ctx.pulse ?? false,
-        bounce: bounce ?? ctx.bounce ?? false,
-        shake: shake ?? ctx.shake ?? false,
-        wiggle: wiggle ?? ctx.wiggle ?? false,
-        ping: ping ?? ctx.ping ?? false,
-        blink: blink ?? ctx.blink ?? false,
-        float: float ?? ctx.float ?? false,
-        heartbeat: heartbeat ?? ctx.heartbeat ?? false,
-        flash: flash ?? ctx.flash ?? false,
-        tada: tada ?? ctx.tada ?? false,
-        jello: jello ?? ctx.jello ?? false,
-        swing: swing ?? ctx.swing ?? false,
-        rubberBand: rubberBand ?? ctx.rubberBand ?? false,
-        flipX: flipX ?? ctx.flipX ?? false,
-        breathe: breathe ?? ctx.breathe ?? false,
-        draw: draw ?? ctx.draw ?? false,
-        erase: erase ?? ctx.erase ?? false,
-        trace: trace ?? ctx.trace ?? false,
-        neon: neon ?? ctx.neon ?? false,
-        glitch: glitch ?? ctx.glitch ?? false,
-        wobble: wobble ?? ctx.wobble ?? false,
-        roll: roll ?? ctx.roll ?? false,
-        zoomIn: zoomIn ?? ctx.zoomIn ?? false,
-        fadeUp: fadeUp ?? ctx.fadeUp ?? false,
-        flicker: flicker ?? ctx.flicker ?? false,
-        hologram: hologram ?? ctx.hologram ?? false,
-        electric: electric ?? ctx.electric ?? false,
-        ghost: ghost ?? ctx.ghost ?? false,
-        levitate: levitate ?? ctx.levitate ?? false,
-        burst: burst ?? ctx.burst ?? false,
-        heat: heat ?? ctx.heat ?? false,
-        crystal: crystal ?? ctx.crystal ?? false,
-        springPop: springPop ?? ctx.springPop ?? false,
-        decay: decay ?? ctx.decay ?? false,
-        magnetPulse: magnetPulse ?? ctx.magnetPulse ?? false,
-        wobbleSpring: wobbleSpring ?? ctx.wobbleSpring ?? false,
-        rgbSplit: false,
-        liquidMorph: false,
-        aurora: false,
-        shatter: false,
-        cinematic: false,
+      // Map each legacy boolean prop by its AnimKey for dynamic lookup.
+      // ANIMATE_ONLY_KEYS have no boolean shorthand — always false here.
+      const legacyProps: Partial<Record<AnimKey, boolean | undefined>> = {
+        spin,
+        pulse,
+        bounce,
+        shake,
+        wiggle,
+        ping,
+        blink,
+        float,
+        heartbeat,
+        flash,
+        tada,
+        jello,
+        swing,
+        rubberBand,
+        flipX,
+        breathe,
+        draw,
+        erase,
+        trace,
+        neon,
+        glitch,
+        wobble,
+        roll,
+        zoomIn,
+        fadeUp,
+        flicker,
+        hologram,
+        electric,
+        ghost,
+        levitate,
+        burst,
+        heat,
+        crystal,
+        springPop,
+        decay,
+        magnetPulse,
+        wobbleSpring,
       }
+      const ctxProps = ctx as Partial<Record<AnimKey, boolean>>
+      const animFlags = Object.fromEntries(
+        ANIM_PRIORITY.map((k) => [
+          k,
+          ANIMATE_ONLY_KEYS.has(k) ? false : (legacyProps[k] ?? ctxProps[k] ?? false),
+        ]),
+      ) as Record<AnimKey, boolean>
       activeAnim = ANIM_PRIORITY.find((k) => animFlags[k]) ?? null
     }
 
@@ -295,13 +317,12 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
       computedStyle.transform = baseTransform
     }
 
-    if (isAnimating) {
-      const durSource = activeAnim!
-      computedStyle['--ppi-dur'] = resolveAnimDuration(durSource, resolvedSpeed, resolvedDuration)
+    if (isAnimating && activeAnim) {
+      computedStyle['--ppi-dur'] = resolveAnimDuration(activeAnim, resolvedSpeed, resolvedDuration)
       computedStyle['--ppi-delay'] = resolvedDelay != null ? `${resolvedDelay}ms` : '0s'
 
       const isOnceByDefault =
-        ONCE_BY_DEFAULT.has(activeAnim!) || (isDrawFamily && activeAnim !== 'trace')
+        ONCE_BY_DEFAULT.has(activeAnim) || (isDrawFamily && activeAnim !== 'trace')
       const defaultCount = isOnceByDefault ? 1 : 'infinite'
       computedStyle['--ppi-count'] = String(resolvedIterationCount ?? defaultCount)
 
@@ -327,7 +348,7 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
     // ---------------------------------------------------------------------------
     const animClasses: string[] = []
     // Draw-family anims use CSS class on the SVG element (`.ppi-draw path { … }` selector pattern)
-    if (isCssAnim || isDrawFamily) animClasses.push(animClass(activeAnim!))
+    if ((isCssAnim || isDrawFamily) && activeAnim) animClasses.push(animClass(activeAnim))
 
     const classParts = [classNamePrefix, className, ...animClasses, classNameSuffix].filter(Boolean)
     const finalClassName = classParts.length > 0 ? classParts.join(' ') : undefined
@@ -340,18 +361,20 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
     // ---------------------------------------------------------------------------
     useDrawEffect(() => {
       if (!isDrawFamily || !svgRef.current) return
-      const elements = svgRef.current.querySelectorAll(
-        'path, circle, line, polyline, rect, ellipse',
-      )
+      const elements = svgRef.current.querySelectorAll(SVG_GEOMETRY_SELECTOR)
       elements.forEach((el) => {
+        const geom = el as SVGGeometryElement
         const len =
-          typeof (el as SVGGeometryElement).getTotalLength === 'function'
-            ? (el as SVGGeometryElement).getTotalLength()
-            : 100
+          typeof geom.getTotalLength === 'function'
+            ? geom.getTotalLength()
+            : (console.warn(
+                `[beluga-icon] Could not measure path length for <${el.tagName}>; defaulting to 100.`,
+              ),
+              100)
         const s = (el as SVGElement & { style: CSSStyleDeclaration }).style
         s.setProperty('--ppi-draw-len', String(len))
         if (activeAnim === 'trace') {
-          const traceLen = Math.max(len * 0.3, 20)
+          const traceLen = Math.max(len * TRACE_SEGMENT_RATIO, MIN_TRACE_LEN)
           s.setProperty('--ppi-trace-len', String(traceLen))
           // Pre-compute the negative offset so @keyframes doesn't need calc().
           // calc(-1 * var()) inside @keyframes has uneven browser support.
@@ -363,8 +386,6 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
     // ---------------------------------------------------------------------------
     // Effect: WAAPI physics animations
     // ---------------------------------------------------------------------------
-    const waapiAnimRef = useRef<Animation | null>(null)
-
     useEffect(() => {
       const el = svgRef.current
       if (!el || !isWaapi) {
@@ -415,77 +436,9 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
     ])
 
     // ---------------------------------------------------------------------------
-    // Effect: trigger — hover / click / visible
+    // Effect: trigger — hover / click / visible (delegated to hook)
     // ---------------------------------------------------------------------------
-    useEffect(() => {
-      const el = svgRef.current
-      if (!el || resolvedTrigger === 'auto' || !isAnimating) return
-
-      const setPlayState = (state: 'running' | 'paused') => {
-        el.style.animationPlayState = state
-        el.querySelectorAll('path, circle, line, polyline, rect, ellipse').forEach((child) => {
-          ;(child as HTMLElement).style.animationPlayState = state
-        })
-        if (state === 'running') waapiAnimRef.current?.play()
-        else waapiAnimRef.current?.pause()
-      }
-
-      setPlayState('paused')
-
-      let cleanup: () => void
-
-      if (resolvedTrigger === 'hover') {
-        let hasPlayed = false
-        const onEnter = () => {
-          if (resolvedPlayOnce && hasPlayed) return
-          hasPlayed = true
-          setPlayState('running')
-        }
-        const onLeave = () => setPlayState('paused')
-        el.addEventListener('mouseenter', onEnter)
-        el.addEventListener('mouseleave', onLeave)
-        cleanup = () => {
-          el.removeEventListener('mouseenter', onEnter)
-          el.removeEventListener('mouseleave', onLeave)
-        }
-      } else if (resolvedTrigger === 'click') {
-        let hasPlayed = false
-        const onClick = () => {
-          if (resolvedPlayOnce && hasPlayed) return
-          hasPlayed = true
-          setPlayState('paused')
-          void el.getBoundingClientRect()
-          setPlayState('running')
-        }
-        el.addEventListener('click', onClick)
-        cleanup = () => el.removeEventListener('click', onClick)
-      } else {
-        // 'visible'
-        const observer = new IntersectionObserver(
-          ([entry]) => {
-            if (entry.isIntersecting) {
-              setPlayState('running')
-              if (resolvedPlayOnce) observer.disconnect()
-            } else if (!resolvedPlayOnce) {
-              setPlayState('paused')
-            }
-          },
-          { threshold: 0.1 },
-        )
-        observer.observe(el)
-        cleanup = () => observer.disconnect()
-      }
-
-      return () => {
-        cleanup()
-        if (el) {
-          el.style.animationPlayState = ''
-          el.querySelectorAll('path, circle, line, polyline, rect, ellipse').forEach((child) => {
-            ;(child as HTMLElement).style.animationPlayState = ''
-          })
-        }
-      }
-    }, [resolvedTrigger, resolvedPlayOnce, isAnimating])
+    useTriggerAnimation(svgRef, waapiAnimRef, resolvedTrigger, resolvedPlayOnce, isAnimating)
 
     const svgEl = (
       <svg

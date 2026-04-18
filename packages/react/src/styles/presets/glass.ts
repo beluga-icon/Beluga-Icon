@@ -14,4 +14,19 @@ export const css = `
   -webkit-backdrop-filter: blur(12px) saturate(1.5);
   border: 1px solid color-mix(in srgb, currentColor 12%, rgba(255,255,255,0.35));
 }
+
+@media (prefers-color-scheme: dark) {
+  .ppi-style-glass {
+    background:
+      linear-gradient(
+        135deg,
+        rgba(255,255,255,0.09) 0%,
+        rgba(255,255,255,0.02) 100%
+      ),
+      color-mix(in srgb, currentColor 8%, transparent);
+    border-color: color-mix(in srgb, currentColor 14%, rgba(255,255,255,0.12));
+    backdrop-filter: blur(12px) saturate(1.8);
+    -webkit-backdrop-filter: blur(12px) saturate(1.8);
+  }
+}
 `

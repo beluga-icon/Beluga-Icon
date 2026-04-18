@@ -1,3 +1,4 @@
+import type { IconStyleType } from '@beluga-icon/core'
 import * as circle from './presets/circle'
 import * as rounded from './presets/rounded'
 import * as glass from './presets/glass'
@@ -22,7 +23,7 @@ import * as aurora from './presets/aurora'
 
 type StylePreset = { className: string; css: string }
 
-const STYLE_PRESETS: Record<string, StylePreset> = {
+const STYLE_PRESETS: Record<IconStyleType, StylePreset> = {
   circle,
   rounded,
   glass,

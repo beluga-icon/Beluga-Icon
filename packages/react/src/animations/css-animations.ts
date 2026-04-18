@@ -86,9 +86,10 @@ const CSS_PRESETS: Record<string, CssPreset> = {
 // Speed → duration lookup (auto-built from presets)
 // ---------------------------------------------------------------------------
 
-export const SPEED_DURATION: Record<string, Record<string, string>> = Object.fromEntries(
-  Object.entries(CSS_PRESETS).map(([key, p]) => [key, p.durations]),
-)
+export const SPEED_DURATION: Record<
+  string,
+  Record<'slow' | 'normal' | 'fast', string>
+> = Object.fromEntries(Object.entries(CSS_PRESETS).map(([key, p]) => [key, p.durations]))
 
 /**
  * Merge additional duration tables (draw, WAAPI) so a single lookup works for

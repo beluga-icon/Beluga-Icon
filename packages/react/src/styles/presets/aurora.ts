@@ -1,18 +1,9 @@
 export const className = 'ppi-style-aurora'
 export const css = `
-/* Aurora borealis — animated hue-shifting conic gradient with color injection */
-@keyframes ppi-sk-aurora-spin {
-  0%   { --ppi-aurora-angle: 0deg; }
-  100% { --ppi-aurora-angle: 360deg; }
-}
-
+/* Aurora borealis — animated hue-shifting gradient with optional color injection */
 @keyframes ppi-sk-aurora-shift {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
 }
 
 .ppi-style-aurora {

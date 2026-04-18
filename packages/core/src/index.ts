@@ -10,4 +10,4 @@ export type {
   AnimConfig,
   IconStyleType,
 } from './types'
-export { resolveSize, SIZE_MAP } from './types'
+export { resolveSize } from './types'

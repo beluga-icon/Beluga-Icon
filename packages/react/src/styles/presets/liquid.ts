@@ -1,6 +1,6 @@
 export const className = 'ppi-style-liquid'
 export const css = `
-/* ── Apple Liquid Glass ─────────────────────────────────────────── */
+/* Apple Liquid Glass ─────────────────────────────────────────────────────── */
 
 .ppi-style-liquid {
   position: relative;
@@ -8,11 +8,11 @@ export const css = `
   border-radius: 36%;
 
   /*
-   * Çok katmanlı cam arka planı:
-   * 1. Üst-sol specular catchlight  — camın en parlak noktası
-   * 2. Sağ-alt sekonder yansıma    — derinlik için karşı köşe
-   * 3. Kenar iç parlaması          — cam yüzeyinin iç ışık saçılımı
-   * 4. currentColor tint           — çevre renk absorbsiyonu
+   * Layered glass background:
+   * 1. Top-left specular catchlight  — brightest point on the glass surface
+   * 2. Bottom-right secondary glint  — opposite-corner depth reflection
+   * 3. Edge inner bloom              — internal light scatter on the rim
+   * 4. currentColor tint             — ambient colour absorption
    */
   background:
     radial-gradient(
@@ -45,7 +45,6 @@ export const css = `
     inset 0 0 28px rgba(255,255,255,0.05);
 }
 
-/* ── Dark mode ──────────────────────────────────────────────────── */
 @media (prefers-color-scheme: dark) {
   .ppi-style-liquid {
     background:

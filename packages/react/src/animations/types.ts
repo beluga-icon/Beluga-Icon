@@ -1,3 +1,6 @@
+/** CSS selector covering every SVG geometry element that carries stroke animations. */
+export const SVG_GEOMETRY_SELECTOR = 'path, circle, line, polyline, rect, ellipse' as const
+
 // Canonical list of every animation key used across the system.
 export type AnimKey =
   | 'spin'
@@ -124,3 +127,15 @@ export const WAAPI_ANIMS = new Set<AnimKey>(['springPop', 'decay', 'magnetPulse'
 
 /** Stroke-path animations (draw / erase / trace family). */
 export const DRAW_ANIMS = new Set<AnimKey>(['draw', 'erase', 'trace'])
+
+/**
+ * Keys that are only accessible via the `animate` prop — they have no
+ * corresponding boolean shorthand prop. Always false in legacy resolution.
+ */
+export const ANIMATE_ONLY_KEYS = new Set<AnimKey>([
+  'rgbSplit',
+  'liquidMorph',
+  'aurora',
+  'shatter',
+  'cinematic',
+])
