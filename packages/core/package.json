@@ -40,10 +40,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/fatihserhatturan/Power-Puff-Icon",
+    "url": "https://github.com/beluga-icon/beluga-icon",
     "directory": "packages/core"
   },
-  "homepage": "https://github.com/fatihserhatturan/Power-Puff-Icon#readme",
+  "homepage": "https://github.com/beluga-icon/beluga-icon#readme",
   "devDependencies": {
     "tsup": "^8.3.0",
     "typescript": "^6.0.2"
