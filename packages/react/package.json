@@ -43,7 +43,7 @@
     "react": ">=17.0.0"
   },
   "dependencies": {
-    "@beluga-icon/core": "*"
+    "@beluga-icon/core": "^0.1.0"
   },
   "devDependencies": {
     "@types/react": "^19.2.14",
@@ -63,6 +63,9 @@
     "beluga-icon"
   ],
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "engines": {
     "node": ">=18.0.0"
   }

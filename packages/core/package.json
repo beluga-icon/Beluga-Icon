@@ -24,7 +24,17 @@
     "prepack": "npm run build",
     "test": "echo 'Tests run from monorepo root: npm test'"
   },
+  "keywords": [
+    "icon",
+    "icons",
+    "svg",
+    "typescript",
+    "beluga-icon"
+  ],
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "engines": {
     "node": ">=18.0.0"
   },
