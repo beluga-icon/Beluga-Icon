@@ -1,22 +1,39 @@
-# Beluga Icon
+<p align="center">
+  <img src="docs/beluga-icon.svg" width="96" height="96" alt="Beluga Icon" />
+</p>
 
-[![CI](https://github.com/fatihserhatturan/Power-Puff-Icon/actions/workflows/ci.yml/badge.svg)](https://github.com/fatihserhatturan/Power-Puff-Icon/actions/workflows/ci.yml)
-[![npm version](https://img.shields.io/npm/v/@beluga-icon/react)](https://www.npmjs.com/package/@beluga-icon/react)
-[![Bundle size](https://img.shields.io/bundlephobia/minzip/@beluga-icon/react)](https://bundlephobia.com/package/@beluga-icon/react)
-[![License: MIT](https://img.shields.io/badge/License-MIT-black.svg)](LICENSE)
+<h1 align="center">Beluga Icon</h1>
 
-**500 icons · 24 categories · React · TypeScript · Tree-shakeable**
+<p align="center">
+  1800+ stroke-based SVG icons for React — with built-in animations, visual styles, and full TypeScript support.
+</p>
 
-Stroke-based SVG icons with React support, full TypeScript types, and tree-shaking built in.
+<p align="center">
+  <a href="https://github.com/fatihserhatturan/Power-Puff-Icon/actions/workflows/ci.yml">
+    <img src="https://github.com/fatihserhatturan/Power-Puff-Icon/actions/workflows/ci.yml/badge.svg" alt="CI" />
+  </a>
+  <a href="https://www.npmjs.com/package/@beluga-icon/react">
+    <img src="https://img.shields.io/npm/v/@beluga-icon/react?color=0ea5e9&label=npm" alt="npm version" />
+  </a>
+  <a href="https://bundlephobia.com/package/@beluga-icon/react">
+    <img src="https://img.shields.io/bundlephobia/minzip/@beluga-icon/react?label=minzipped" alt="Bundle size" />
+  </a>
+  <img src="https://img.shields.io/badge/TypeScript-strict-3178c6" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/license-MIT-black" alt="License: MIT" />
+</p>
+
+<p align="center">
+  <b>Bring your own style.</b> Every icon accepts an <code>iconStyle</code> and <code>animation</code> prop — no extra wrappers, no CSS overrides needed.
+</p>
 
 ---
 
 ## Packages
 
-| Package | Description |
-|---------|-------------|
-| [`@beluga-icon/react`](./packages/react) | React icon components |
-| [`@beluga-icon/core`](./packages/core) | Shared types & utilities |
+| Package                                  | Version                                                                                                                  | Description              |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | ------------------------ |
+| [`@beluga-icon/react`](./packages/react) | [![npm](https://img.shields.io/npm/v/@beluga-icon/react?color=0ea5e9)](https://www.npmjs.com/package/@beluga-icon/react) | React icon components    |
+| [`@beluga-icon/core`](./packages/core)   | [![npm](https://img.shields.io/npm/v/@beluga-icon/core?color=0ea5e9)](https://www.npmjs.com/package/@beluga-icon/core)   | Shared types & utilities |
 
 ---
 
@@ -26,77 +43,176 @@ Stroke-based SVG icons with React support, full TypeScript types, and tree-shaki
 npm install @beluga-icon/react
 ```
 
+**Peer dependency:** React ≥ 17
+
 ---
 
-## Usage
+## Quick Start
 
 ```tsx
-import { SearchIcon, HeartIcon, ArrowUpIcon } from '@beluga-icon/react'
+import { SearchIcon, HeartIcon, BellIcon } from '@beluga-icon/react'
 
-// Basic usage
-<SearchIcon />
+function App() {
+  return (
+    <div>
+      {/* Default — inherits color from CSS */}
+      <SearchIcon />
 
-// With props
-<HeartIcon size="xl" color="#e11d48" strokeWidth={1.5} />
+      {/* Glass style with hover animation */}
+      <HeartIcon iconStyle="glass" animation="heartbeat" trigger="hover" />
 
-// Accessible icon (screen-reader visible)
-<ArrowUpIcon label="Scroll to top" />
+      {/* Neon glow with custom color */}
+      <BellIcon iconStyle="neon" color="#a855f7" animation="pulse" />
 
-// Ref forwarding
-const ref = useRef<SVGSVGElement>(null)
-<SearchIcon ref={ref} />
+      {/* Accessible — screen reader visible */}
+      <SearchIcon size="lg" label="Search" />
+    </div>
+  )
+}
 ```
 
 ---
 
-## Icon Props
+## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl' \| number` | `'md'` | Named sizes: xs=12, sm=16, md=20, lg=24, xl=32, 2xl=48px. Numeric values are pixel width/height. |
-| `color` | `string` | `'currentColor'` | Stroke color — any CSS color. Inherits text color by default. |
-| `strokeWidth` | `number` | `2` | Stroke width in pixels. |
-| `label` | `string` | — | Accessible label. Sets `aria-label` + `role="img"`. Omit for decorative icons. |
-| `className` | `string` | — | CSS class forwarded to the `<svg>` element. |
-| `style` | `Record<string, string \| number>` | — | Inline styles forwarded to the `<svg>` element. |
-| `ref` | `React.Ref<SVGSVGElement>` | — | Forwarded ref to the underlying `<svg>` element. |
-| `...rest` | `SVGProps<SVGSVGElement>` | — | All other native SVG attributes are forwarded. |
+| Prop          | Type                                                      | Default          | Description                                    |
+| ------------- | --------------------------------------------------------- | ---------------- | ---------------------------------------------- |
+| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl' \| number` | `'md'`           | Named size or pixel value                      |
+| `color`       | `string`                                                  | `'currentColor'` | Stroke color — any valid CSS color             |
+| `strokeWidth` | `number`                                                  | `2`              | Stroke width in pixels                         |
+| `iconStyle`   | `IconStyleType`                                           | —                | Visual style preset                            |
+| `styleColors` | `Record<string, string>`                                  | —                | Custom color injection for color-aware styles  |
+| `animation`   | `AnimKey`                                                 | —                | Animation preset                               |
+| `trigger`     | `'auto' \| 'hover' \| 'click' \| 'visible'`               | `'auto'`         | When the animation plays                       |
+| `speed`       | `'slow' \| 'normal' \| 'fast'`                            | `'normal'`       | Animation speed                                |
+| `playOnce`    | `boolean`                                                 | `false`          | Play once instead of looping                   |
+| `label`       | `string`                                                  | —                | Accessible label (`aria-label` + `role="img"`) |
+| `className`   | `string`                                                  | —                | Extra class on the `<svg>` element             |
+| `ref`         | `React.Ref<SVGSVGElement>`                                | —                | Forwarded ref to the underlying SVG            |
+
+All standard SVG attributes (`onClick`, `style`, `data-*`, etc.) are also accepted.
 
 ---
 
-## `IconProvider` — Global Defaults
+## Styles
+
+21 built-in visual style presets — apply any one with the `iconStyle` prop.
+
+| Style          | Description                                      |
+| -------------- | ------------------------------------------------ |
+| `circle`       | Solid filled circle background                   |
+| `rounded`      | Rounded square background                        |
+| `flat`         | Minimal flat background                          |
+| `outline`      | Thin border, transparent fill                    |
+| `ghost`        | Subtle transparent fill, no border               |
+| `glass`        | Frosted glass with backdrop blur                 |
+| `liquid`       | Apple Liquid Glass — layered specular highlights |
+| `neon`         | Glowing neon drop-shadow                         |
+| `glow`         | Soft pulsing glow ring                           |
+| `shadow`       | Elevated with layered box shadow                 |
+| `gradient`     | Diagonal gradient background                     |
+| `badge`        | Compact badge shape                              |
+| `outline-ring` | Double border ring                               |
+| `neumorphic`   | Soft-UI extruded surface                         |
+| `emboss`       | Pressed emboss effect                            |
+| `inset`        | Inset / debossed surface                         |
+| `ios`          | iOS-style rounded square                         |
+| `fluent`       | Microsoft Fluent-inspired surface                |
+| `metallic`     | Brushed metal sheen                              |
+| `duotone`      | Two-tone layered fill                            |
+| `aurora`       | Animated hue-shifting gradient                   |
+
+### Color Injection
+
+Color-aware styles accept custom palettes via `styleColors`:
+
+```tsx
+{
+  /* Gradient */
+}
+;<StarIcon iconStyle="gradient" styleColors={{ from: '#f43f5e', mid: '#a855f7', to: '#06b6d4' }} />
+
+{
+  /* Aurora — three hue stops */
+}
+;<BellIcon iconStyle="aurora" styleColors={{ a: '#06b6d4', b: '#8b5cf6', c: '#f43f5e' }} />
+
+{
+  /* Metallic */
+}
+;<LockIcon
+  iconStyle="metallic"
+  styleColors={{ light: '#e2e8f0', base: '#94a3b8', dark: '#475569' }}
+/>
+
+{
+  /* Duotone */
+}
+;<HeartIcon iconStyle="duotone" styleColors={{ a: '#f43f5e', b: '#fecdd3' }} />
+```
+
+---
+
+## Animations
+
+46 built-in animation presets — apply any one with the `animation` prop.
+
+**Mechanical**
+`spin` · `pulse` · `bounce` · `shake` · `wiggle` · `ping` · `blink` · `float` · `heartbeat` · `flash` · `tada` · `jello` · `swing` · `rubberBand` · `flipX` · `breathe` · `wobble` · `roll`
+
+**SVG Path**
+`draw` · `erase` · `trace`
+
+**Effects**
+`neon` · `glitch` · `flicker` · `hologram` · `electric` · `ghost` · `burst` · `heat` · `crystal` · `rgbSplit` · `liquidMorph` · `aurora` · `shatter` · `cinematic`
+
+**Physics**
+`zoomIn` · `fadeUp` · `levitate` · `springPop` · `decay` · `magnetPulse` · `wobbleSpring`
+
+### Trigger Modes
+
+```tsx
+{
+  /* Plays on mount, loops */
+}
+;<LoaderIcon animation="spin" trigger="auto" />
+
+{
+  /* Plays once on hover */
+}
+;<BellIcon animation="shake" trigger="hover" playOnce />
+
+{
+  /* Plays on click */
+}
+;<HeartIcon animation="heartbeat" trigger="click" />
+
+{
+  /* Plays when scrolled into view */
+}
+;<StarIcon animation="draw" trigger="visible" playOnce />
+```
+
+---
+
+## IconProvider — Global Defaults
 
 Set default props for all icons in a subtree. Explicit props on individual icons always win.
 
 ```tsx
 import { IconProvider } from '@beluga-icon/react'
 
-// Global defaults for the whole app
-<IconProvider value={{ size: 'lg', color: '#333', strokeWidth: 1.5 }}>
-  <App />
-</IconProvider>
-
-// Nested providers — inner overrides outer for matching props only
-<IconProvider value={{ size: 'md', color: 'blue' }}>
-  <Header />
-  <IconProvider value={{ color: 'red' }}>
-    {/* size='md' from outer, color='red' from inner */}
-    <Sidebar />
-  </IconProvider>
-</IconProvider>
-
-// Per-icon override always takes precedence
-<IconProvider value={{ size: 'xl' }}>
-  <HeartIcon />            {/* size='xl' from provider */}
-  <HeartIcon size="sm" />  {/* size='sm' — explicit wins */}
+;<IconProvider iconStyle="glass" animation="pulse" trigger="hover" size="lg">
+  <SearchIcon /> {/* inherits all provider defaults */}
+  <HeartIcon color="#ef4444" /> {/* overrides color, inherits the rest */}
 </IconProvider>
 ```
 
 ---
 
-## `createIcon` — Custom Icons
+## Custom Icons
 
-Create custom icons with identical behavior and API to library icons, including ref forwarding, `IconProvider` support, and full TypeScript types.
+Create your own icons with the same API — animations, styles, and provider support included.
 
 ```tsx
 import { createIcon } from '@beluga-icon/react'
@@ -111,38 +227,63 @@ const MyBrandIcon = createIcon({
   ),
 })
 
-// Behaves exactly like any library icon
-<MyBrandIcon size="xl" color="blue" label="My brand" />
-<MyBrandIcon ref={ref} strokeWidth={1} />
+<MyBrandIcon size="xl" iconStyle="glass" animation="pulse" label="My Brand" />
 ```
 
 ---
 
-## Categories
+## Accessibility
 
-| Category | Category | Category | Category |
-|----------|----------|----------|----------|
-| accessibility | arrows | buildings | chart |
-| commerce | communication | development | devices |
-| files | food | layout | math |
-| media | medical | nature | navigation |
-| productivity | shapes | social | status |
-| time | transportation | ui | weather |
+Icons are **decorative by default** (`aria-hidden="true"`). Add a `label` to expose them to screen readers:
+
+```tsx
+{
+  /* Decorative — hidden from screen readers */
+}
+;<HeartIcon />
+
+{
+  /* Accessible — announces "Add to favorites" */
+}
+;<HeartIcon label="Add to favorites" />
+```
+
+---
+
+## Tree Shaking
+
+All exports are named and `"sideEffects": false` is set in `package.json`. Only the icons you import are included in your bundle.
+
+```tsx
+import { SearchIcon, HeartIcon, BellIcon } from '@beluga-icon/react'
+```
+
+---
+
+## Icon Library — 1800+ Icons · 30+ Categories
+
+| Category      | Category      | Category       | Category |
+| ------------- | ------------- | -------------- | -------- |
+| accessibility | arrows        | buildings      | chart    |
+| commerce      | communication | development    | devices  |
+| files         | food          | gaming         | layout   |
+| math          | media         | medical        | nature   |
+| navigation    | network       | productivity   | security |
+| shapes        | social        | sports         | status   |
+| text          | time          | transportation | ui       |
+| users         | weather       | …              |          |
 
 ---
 
 ## Development
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for the full guide.
-
 ```bash
-npm install          # install dependencies
-npm run demo         # icon browser at http://localhost:5173
-npm test             # run tests
+npm install          # install all workspace dependencies
+npm run demo         # start icon browser at http://localhost:5173
+npm test             # run all tests (vitest)
 npm run lint         # ESLint
-npm run typecheck    # TypeScript check
+npm run typecheck    # TypeScript strict check
 npm run build        # build all packages
-npm run size         # bundle size check
 npm run generate     # regenerate icons from svgs/
 ```
 
@@ -152,47 +293,34 @@ npm run generate     # regenerate icons from svgs/
 
 ```
 beluga-icon/
-├── .github/workflows/    CI + release automation
-├── apps/demo/            Vite + React icon browser
+├── .github/
+│   └── workflows/        CI and release automation
+├── apps/
+│   └── demo/             Vite + React icon browser
 ├── packages/
-│   ├── core/             @beluga-icon/core — shared types
+│   ├── core/             @beluga-icon/core — shared types & utilities
 │   └── react/            @beluga-icon/react — React components
 ├── scripts/
 │   └── generate-icons.ts SVG → TSX generator
-└── svgs/                 Source SVG files (24 category dirs)
+├── svgs/                 Source SVG files (30+ category dirs)
+└── docs/                 Logos and assets
 ```
 
 ---
 
-## Publishing
+## Release
 
-This project uses [Changesets](https://github.com/changesets/changesets). The [release workflow](.github/workflows/release.yml) handles versioning and publishing automatically.
+This project uses [Changesets](https://github.com/changesets/changesets). Pushing a changeset to `main` triggers the release workflow — it opens a version PR, and merging that PR publishes to npm automatically.
 
 ```bash
-npm run changeset  # create a changeset after making changes
-npm run version    # bump versions (run by CI)
-npm run release    # publish to npm (run by CI)
+npx changeset        # describe what changed and pick a version bump
+git add . && git push
+# → GitHub Actions opens a Release PR
+# → merge it → packages publish to npm
 ```
 
 ---
 
----
-SVG Drawing Standarts : 
-
-Draw a [ICON_NAME] icon as SVG following these rules:
-- viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2", stroke-linecap="round", stroke-linejoin="round"
-- No width/height attributes on the SVG element
-- Use only <path>, <circle>, or <line> elements
-- No fill on any element, no hardcoded colors, no transforms, no groups
-- Stroke-only style (outline, not filled shapes)
-- All corners and line ends must be round
-- Icon should fill most of the 24x24 canvas with ~1-2px padding from edges
-- Keep it minimal and readable at 16px size
-
----
-
-
-
-## License
-
-MIT © Beluga Icon Contributors
+<p align="center">
+  Made with ♥ · MIT License
+</p>
