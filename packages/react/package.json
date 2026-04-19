@@ -1,6 +1,6 @@
 {
   "name": "@beluga-icon/react",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "React icon components for Beluga Icon",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -43,7 +43,7 @@
     "react": ">=17.0.0"
   },
   "dependencies": {
-    "@beluga-icon/core": "^0.1.0"
+    "@beluga-icon/core": "^0.1.1"
   },
   "devDependencies": {
     "@types/react": "^19.2.14",
