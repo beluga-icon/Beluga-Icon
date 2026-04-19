@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/beluga-icon.svg" width="96" height="96" alt="Beluga Icon" />
+  <img src="docs/beluga-icon.svg" width="140" height="140" alt="Beluga Icon" />
 </p>
 
 <h1 align="center">Beluga Icon</h1>
@@ -24,6 +24,10 @@
 
 <p align="center">
   <b>Bring your own style.</b> Every icon accepts an <code>iconStyle</code> and <code>animation</code> prop — no extra wrappers, no CSS overrides needed.
+</p>
+
+<p align="center">
+  <a href="https://www.npmjs.com/package/@beluga-icon/react"><b>→ View on npm</b></a>
 </p>
 
 ---
@@ -201,7 +205,6 @@ Set default props for all icons in a subtree. Explicit props on individual icons
 
 ```tsx
 import { IconProvider } from '@beluga-icon/react'
-
 ;<IconProvider iconStyle="glass" animation="pulse" trigger="hover" size="lg">
   <SearchIcon /> {/* inherits all provider defaults */}
   <HeartIcon color="#ef4444" /> {/* overrides color, inherits the rest */}
@@ -274,53 +277,3 @@ import { SearchIcon, HeartIcon, BellIcon } from '@beluga-icon/react'
 | users         | weather       | …              |          |
 
 ---
-
-## Development
-
-```bash
-npm install          # install all workspace dependencies
-npm run demo         # start icon browser at http://localhost:5173
-npm test             # run all tests (vitest)
-npm run lint         # ESLint
-npm run typecheck    # TypeScript strict check
-npm run build        # build all packages
-npm run generate     # regenerate icons from svgs/
-```
-
----
-
-## Project Structure
-
-```
-beluga-icon/
-├── .github/
-│   └── workflows/        CI and release automation
-├── apps/
-│   └── demo/             Vite + React icon browser
-├── packages/
-│   ├── core/             @beluga-icon/core — shared types & utilities
-│   └── react/            @beluga-icon/react — React components
-├── scripts/
-│   └── generate-icons.ts SVG → TSX generator
-├── svgs/                 Source SVG files (30+ category dirs)
-└── docs/                 Logos and assets
-```
-
----
-
-## Release
-
-This project uses [Changesets](https://github.com/changesets/changesets). Pushing a changeset to `main` triggers the release workflow — it opens a version PR, and merging that PR publishes to npm automatically.
-
-```bash
-npx changeset        # describe what changed and pick a version bump
-git add . && git push
-# → GitHub Actions opens a Release PR
-# → merge it → packages publish to npm
-```
-
----
-
-<p align="center">
-  Made with ♥ · MIT License
-</p>
