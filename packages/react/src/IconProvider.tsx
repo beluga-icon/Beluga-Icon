@@ -50,7 +50,6 @@ const IconContext = createContext<IconContextValue>({})
  */
 export function IconProvider({ value, children }: IconProviderProps) {
   const parent = useContext(IconContext)
-  // Inner values win over outer values for matching keys.
   const merged = { ...parent, ...value }
   return <IconContext.Provider value={merged}>{children}</IconContext.Provider>
 }

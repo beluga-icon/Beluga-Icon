@@ -23,10 +23,7 @@ export {
   WAAPI_SPEED_DURATION,
 } from './waapi-animations'
 
-// ---------------------------------------------------------------------------
-// Merge draw + WAAPI durations into the shared SPEED_DURATION table on import
-// so `resolveAnimDuration` works for every AnimKey with a single call.
-// ---------------------------------------------------------------------------
+// merges draw + WAAPI durations so resolveAnimDuration works for every AnimKey
 import { extendSpeedDuration } from './css-animations'
 import { DRAW_SPEED_DURATION } from './draw-animations'
 import { WAAPI_SPEED_DURATION } from './waapi-animations'

@@ -284,9 +284,6 @@ export interface IconMeta {
   version: string
 }
 
-/**
- * Resolved pixel dimensions for a given IconSize value.
- */
 export const SIZE_MAP: Record<string, number> = {
   xs: 12,
   sm: 16,
@@ -296,9 +293,6 @@ export const SIZE_MAP: Record<string, number> = {
   '2xl': 48,
 }
 
-/**
- * Resolve an IconSize value to a pixel number.
- */
 export function resolveSize(size: IconSize = 'md'): number {
   if (typeof size === 'number') return size
   return SIZE_MAP[size] ?? SIZE_MAP.md

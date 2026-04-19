@@ -1,7 +1,6 @@
 /** CSS selector covering every SVG geometry element that carries stroke animations. */
 export const SVG_GEOMETRY_SELECTOR = 'path, circle, line, polyline, rect, ellipse' as const
 
-// Canonical list of every animation key used across the system.
 export type AnimKey =
   | 'spin'
   | 'pulse'
@@ -105,7 +104,6 @@ const ANIM_CLASS_OVERRIDES: Partial<Record<AnimKey, string>> = {
   liquidMorph: 'ppi-liquid-morph',
 }
 
-/** Resolve an AnimKey to its CSS class name. */
 export function animClass(key: AnimKey): string {
   return ANIM_CLASS_OVERRIDES[key] ?? `ppi-${key}`
 }
@@ -125,7 +123,6 @@ export const ONCE_BY_DEFAULT = new Set<AnimKey>([
 /** Animations driven by WAAPI (el.animate()) rather than CSS class injection. */
 export const WAAPI_ANIMS = new Set<AnimKey>(['springPop', 'decay', 'magnetPulse', 'wobbleSpring'])
 
-/** Stroke-path animations (draw / erase / trace family). */
 export const DRAW_ANIMS = new Set<AnimKey>(['draw', 'erase', 'trace'])
 
 /**

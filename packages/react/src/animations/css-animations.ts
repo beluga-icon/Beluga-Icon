@@ -34,10 +34,6 @@ import * as burst from './presets/burst'
 import * as heat from './presets/heat'
 import * as crystal from './presets/crystal'
 
-// ---------------------------------------------------------------------------
-// Preset registry — maps AnimKey → { className, durations, css }
-// ---------------------------------------------------------------------------
-
 type CssPreset = {
   className: string
   durations: { slow: string; normal: string; fast: string }
@@ -82,10 +78,6 @@ const CSS_PRESETS: Record<string, CssPreset> = {
   cinematic,
 }
 
-// ---------------------------------------------------------------------------
-// Speed → duration lookup (auto-built from presets)
-// ---------------------------------------------------------------------------
-
 export const SPEED_DURATION: Record<
   string,
   Record<'slow' | 'normal' | 'fast', string>
@@ -104,10 +96,6 @@ export function resolveAnimDuration(animType: string, speed: string, duration?: 
   return SPEED_DURATION[animType]?.[speed] ?? '1s'
 }
 
-// ---------------------------------------------------------------------------
-// Named spring / elastic easing presets
-// ---------------------------------------------------------------------------
-
 const SPRING_EASINGS: Record<string, string> = {
   'spring-soft': 'cubic-bezier(0.34, 1.56, 0.64, 1)',
   'spring-medium': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
@@ -121,13 +109,8 @@ export function resolveEasing(easing?: string): string | undefined {
   return SPRING_EASINGS[easing] ?? easing
 }
 
-// ---------------------------------------------------------------------------
-// Runtime CSS injection (SSR-safe)
-// ---------------------------------------------------------------------------
-
 const ANIM_STYLE_ID = 'ppi-animations'
 
-// Combine all preset CSS strings + reduced-motion reset (auto-generated from presets).
 const REDUCED_MOTION_CLASSES = Object.values(CSS_PRESETS)
   .map((p) => `.${p.className}`)
   .join(', ')

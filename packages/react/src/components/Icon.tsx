@@ -53,19 +53,11 @@ export interface IconProps
       | 'opacity'
     > {}
 
-// ---------------------------------------------------------------------------
-// Variant presets
-// ---------------------------------------------------------------------------
-
 const VARIANT_PRESETS = {
   outline: { multiplier: 1, linecap: 'round' as const, linejoin: 'round' as const },
   bold: { multiplier: 1.25, linecap: 'round' as const, linejoin: 'round' as const },
   sharp: { multiplier: 1, linecap: 'butt' as const, linejoin: 'miter' as const },
 }
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
 
 function buildBaseTransform(rotate?: number, flip?: IconFlip): string {
   const parts: string[] = []
@@ -86,10 +78,6 @@ function resolveAnimConfig(animate: AnimationType | AnimConfig | undefined): Ani
   return animate
 }
 
-// ---------------------------------------------------------------------------
-// Component
-// ---------------------------------------------------------------------------
-
 /**
  * Base SVG wrapper used by every generated icon component.
  * Handles size, color, accessibility, transforms, animations, and forwards all native SVG props.
@@ -98,9 +86,7 @@ function resolveAnimConfig(animate: AnimationType | AnimConfig | undefined): Ani
 export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.ReactNode }>(
   function Icon(
     {
-      // ---- New unified animate prop ----
       animate,
-      // ---- Layout & appearance ----
       size,
       color,
       className,
@@ -110,7 +96,6 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
       children,
       rotate,
       flip,
-      // ---- Timing controls (used both by animate prop and legacy boolean props) ----
       speed,
       duration,
       delay,
@@ -118,7 +103,6 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
       easing,
       trigger,
       playOnce,
-      // ---- Appearance fine-tuning ----
       fill,
       strokeLinecap,
       strokeLinejoin,
@@ -126,7 +110,6 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
       opacity,
       iconStyle,
       styleColors,
-      // ---- Legacy boolean animation props (still supported, animate takes priority) ----
       spin,
       pulse,
       bounce,
@@ -171,7 +154,6 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
     const ctx = useIconContext()
     const { classNamePrefix, classNameSuffix } = ctx
 
-    // Internal refs: svgRef for DOM access, waapiAnimRef for WAAPI lifecycle.
     const svgRef = useRef<SVGSVGElement>(null)
     const waapiAnimRef = useRef<Animation | null>(null)
     const setRef = useCallback(
@@ -183,16 +165,10 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
       [ref],
     )
 
-    // ---------------------------------------------------------------------------
-    // Size & color
-    // ---------------------------------------------------------------------------
     const resolvedSize = size ?? ctx.size ?? 'md'
     const resolvedColor = color ?? ctx.color ?? 'currentColor'
     const px = resolveSize(resolvedSize)
 
-    // ---------------------------------------------------------------------------
-    // Variant
-    // ---------------------------------------------------------------------------
     const resolvedVariant = variant ?? ctx.variant
     const preset = resolvedVariant ? VARIANT_PRESETS[resolvedVariant] : null
 
@@ -208,14 +184,8 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
     const resolvedLinejoin = strokeLinejoin ?? ctx.strokeLinejoin ?? preset?.linejoin ?? 'round'
     const resolvedFill = fill ?? ctx.fill ?? 'none'
 
-    // ---------------------------------------------------------------------------
-    // Resolve animate prop (new API) — takes priority over boolean props
-    // ---------------------------------------------------------------------------
     const animConfig = resolveAnimConfig(animate ?? ctx.animate)
 
-    // ---------------------------------------------------------------------------
-    // Timing — sourced from animate config first, then explicit props, then context
-    // ---------------------------------------------------------------------------
     const resolvedSpeed = animConfig?.speed ?? speed ?? ctx.speed ?? 'normal'
     const resolvedDelay = animConfig?.delay ?? delay ?? ctx.delay
     const resolvedEasing = resolveEasing(animConfig?.easing ?? easing ?? ctx.easing)
@@ -226,23 +196,15 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
       ? 1
       : (animConfig?.iterationCount ?? iterationCount ?? ctx.iterationCount)
 
-    // ---------------------------------------------------------------------------
-    // Resolve transforms
-    // ---------------------------------------------------------------------------
     const resolvedRotate = rotate ?? ctx.rotate
     const resolvedFlip = flip ?? ctx.flip
     const resolvedOpacity = opacity ?? ctx.opacity
 
-    // ---------------------------------------------------------------------------
-    // Active animation — animate prop wins; fallback to boolean legacy props
-    // ---------------------------------------------------------------------------
     let activeAnim: AnimKey | null = null
 
     if (animConfig) {
       activeAnim = animConfig.type as AnimKey
     } else {
-      // Map each legacy boolean prop by its AnimKey for dynamic lookup.
-      // ANIMATE_ONLY_KEYS have no boolean shorthand — always false here.
       const legacyProps: Partial<Record<AnimKey, boolean | undefined>> = {
         spin,
         pulse,
@@ -300,14 +262,8 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
     if (isCssAnim) ensureAnimStyles()
     if (isDrawFamily) ensureDrawStyles()
 
-    // ---------------------------------------------------------------------------
-    // Build base transform (rotate + flip)
-    // ---------------------------------------------------------------------------
     const baseTransform = buildBaseTransform(resolvedRotate, resolvedFlip)
 
-    // ---------------------------------------------------------------------------
-    // CSS custom properties for animation timing
-    // ---------------------------------------------------------------------------
     const computedStyle: Record<string, string | number> = {}
 
     if (isAnimating && baseTransform) {
@@ -338,14 +294,8 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
     const finalStyle =
       Object.keys(computedStyle).length > 0 ? { ...computedStyle, ...style } : style
 
-    // ---------------------------------------------------------------------------
-    // Icon style — inject CSS once, then render wrapper span
-    // ---------------------------------------------------------------------------
     if (iconStyle) ensureIconStyles()
 
-    // ---------------------------------------------------------------------------
-    // className composition
-    // ---------------------------------------------------------------------------
     const animClasses: string[] = []
     // Draw-family anims use CSS class on the SVG element (`.ppi-draw path { … }` selector pattern)
     if ((isCssAnim || isDrawFamily) && activeAnim) animClasses.push(animClass(activeAnim))
@@ -353,12 +303,6 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
     const classParts = [classNamePrefix, className, ...animClasses, classNameSuffix].filter(Boolean)
     const finalClassName = classParts.length > 0 ? classParts.join(' ') : undefined
 
-    // ---------------------------------------------------------------------------
-    // Effect: draw / erase / trace — measure path lengths and set CSS variables.
-    // useLayoutEffect (or its SSR-safe alias) fires before the browser paints,
-    // so the animation always starts with the correct --ppi-draw-len values
-    // instead of the CSS fallback defaults.
-    // ---------------------------------------------------------------------------
     useDrawEffect(() => {
       if (!isDrawFamily || !svgRef.current) return
       const elements = svgRef.current.querySelectorAll(SVG_GEOMETRY_SELECTOR)
@@ -383,9 +327,6 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
       })
     }, [isDrawFamily, activeAnim])
 
-    // ---------------------------------------------------------------------------
-    // Effect: WAAPI physics animations
-    // ---------------------------------------------------------------------------
     useEffect(() => {
       const el = svgRef.current
       if (!el || !isWaapi) {
@@ -435,9 +376,6 @@ export const Icon = forwardRef<SVGSVGElement, IconProps & { children: React.Reac
       baseTransform,
     ])
 
-    // ---------------------------------------------------------------------------
-    // Effect: trigger — hover / click / visible (delegated to hook)
-    // ---------------------------------------------------------------------------
     useTriggerAnimation(svgRef, waapiAnimRef, resolvedTrigger, resolvedPlayOnce, isAnimating)
 
     const svgEl = (
