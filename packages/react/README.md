@@ -208,6 +208,12 @@ All exports are named and `"sideEffects": false` is set in `package.json`. Only 
 import { SearchIcon, HeartIcon, BellIcon } from '@beluga-icon/react'
 ```
 
+For the smallest possible import path, you can also import a single icon module:
+
+```tsx
+import { SearchIcon } from '@beluga-icon/react/icons/ui/Search'
+```
+
 ## Icon Library — 1800+ Icons across 30+ Categories
 
 | Category       | Examples                                       |

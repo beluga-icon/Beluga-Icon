@@ -11,6 +11,14 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
+    },
+    "./icons": {
+      "types": "./dist/esm/icons/index.d.ts",
+      "import": "./dist/esm/icons/index.js"
+    },
+    "./icons/*": {
+      "types": "./dist/esm/icons/*.d.ts",
+      "import": "./dist/esm/icons/*.js"
     }
   },
   "sideEffects": false,
@@ -21,7 +29,7 @@
     "THIRD_PARTY_NOTICES.md"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format esm,cjs --dts --clean",
+    "build": "tsup src/index.ts --format esm,cjs --dts --clean && tsc -p tsconfig.esm.json && node scripts/fix-esm-imports.mjs",
     "dev": "tsup src/index.ts --format esm,cjs --dts --watch",
     "size": "size-limit",
     "prepack": "npm run build",
