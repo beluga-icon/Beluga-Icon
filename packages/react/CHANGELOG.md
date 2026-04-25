@@ -1,5 +1,12 @@
 # @beluga-icon/react
 
+## 0.2.0
+
+### Minor Changes
+
+- 358b85e: Add preserved ESM icon subpath exports so individual icon modules can be imported
+  directly, for example `@beluga-icon/react/icons/ui/Search`.
+
 ## Unreleased
 
 ### Minor Changes
